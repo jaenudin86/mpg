@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/testGray">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Record"
+        android:textSize="24dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:elevation="40dp"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vehicle: "/>
+
+        <EditText
+            android:id="@+id/vehicle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="97 Honda Accord"
+            android:textSize="@dimen/entry_text_size"
+            android:background="@color/entryTextBoxColor"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Car Mileage:"/>
+
+        <EditText
+            android:id="@+id/mileage"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:hint="89045"
+            android:gravity="right"
+            android:inputType="numberDecimal|numberSigned"
+            android:textSize="@dimen/entry_text_size"
+            android:background="@color/entryTextBoxColor"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="mi"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gallons added:"/>
+
+        <EditText
+            android:id="@+id/gallons"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:hint="14.56"
+            android:gravity="right"
+            android:inputType="numberDecimal|numberSigned"
+            android:textSize="@dimen/entry_text_size"
+            android:background="@color/entryTextBoxColor"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="gal"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price:"/>
+
+        <EditText
+            android:id="@+id/price"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:hint="36.59"
+            android:gravity="right"
+            android:inputType="numberDecimal|numberSigned"
+            android:textSize="@dimen/entry_text_size"
+            android:background="@color/entryTextBoxColor"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date:"
+            android:layout_weight="2"/>
+
+        <EditText
+            android:id="@+id/date"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:hint="10/1/15"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:inputType="date"
+            android:textSize="@dimen/entry_text_size"
+            android:background="@color/entryTextBoxColor"/>
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/add_new_car_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Record"
+        android:layout_margin="50dp"
+        android:layout_gravity="center"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:background="@color/colorPrimary"
+        android:elevation="40dp"/>
+
+</LinearLayout>
