@@ -2,19 +2,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_camara" android:icon="@android:drawable/ic_menu_camera"
+        <item android:id="@+id/nav_camara"
+            android:icon="@android:drawable/ic_menu_camera"
             android:title="Add Record" />
-        <item android:id="@+id/nav_gallery" android:icon="@android:drawable/ic_menu_gallery"
+        <item android:id="@+id/nav_history_list"
+            android:icon="@android:drawable/ic_menu_gallery"
             android:title="History" />
-        <item android:id="@+id/nav_slideshow" android:icon="@android:drawable/ic_menu_slideshow"
+        <item android:id="@+id/nav_stats"
+            android:icon="@android:drawable/ic_menu_slideshow"
+            android:title="Stats" />
+        <item android:id="@+id/nav_graph"
+            android:icon="@android:drawable/ic_menu_slideshow"
             android:title="Graph" />
     </group>
 
     <item android:title="Settings">
         <menu>
-            <item android:id="@+id/nav_share" android:icon="@android:drawable/ic_menu_share"
+            <item android:id="@+id/nav_share"
+                android:icon="@android:drawable/ic_menu_share"
                 android:title="Settings" />
-            <item android:id="@+id/nav_send" android:icon="@android:drawable/ic_menu_share"
+            <item android:id="@+id/nav_send"
+                android:icon="@android:drawable/ic_menu_share"
                 android:title="Export Data" />
         </menu>
     </item>

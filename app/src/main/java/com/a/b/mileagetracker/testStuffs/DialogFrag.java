@@ -26,7 +26,8 @@ public class DialogFrag extends DialogFragment {
     // Use this instance of the interface to deliver action events
     DialogInterface mListener;
 //    SQLDao mSqlDao = new DataDAOImplementation();
-    SQLDao mMySQLiteHelper;
+//    SQLDao mMySQLiteHelper;
+    private MySQLiteHelper dbHelper;
 
     public interface DialogInterface{
         public void onDialogAddVehicle();
@@ -40,8 +41,8 @@ public class DialogFrag extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-        mMySQLiteHelper = new MySQLiteHelper(getActivity().getApplicationContext());
+//        mMySQLiteHelper = new MySQLiteHelper(getActivity().getApplicationContext());
+        dbHelper=MySQLiteHelper.getInstance(getActivity().getApplicationContext());
 
         LayoutInflater inflater=getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.car_selector_dialog, null);
@@ -56,7 +57,7 @@ public class DialogFrag extends DialogFragment {
             @Override
             public void onClick(View v) {
                 try {
-                    mMySQLiteHelper.addEntry(
+                    dbHelper.addEntry(
                             vehicle.getText().toString(),
                             Integer.parseInt(mileage.getText().toString()),
                             Double.parseDouble(gallons.getText().toString()),

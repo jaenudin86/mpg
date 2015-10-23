@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 /**
  * Created by Andrew on 10/12/2015.
  */
-public class DataDAOImplementation extends Fragment implements SQLDao{
+public class DataDAOImplementation extends Fragment{
     private SQLiteDatabase db;
     private MySQLiteHelper dbHelper;
 
@@ -35,31 +35,4 @@ public class DataDAOImplementation extends Fragment implements SQLDao{
 //        cr.query(UserDictionary.Words.CONTENT_URI, mProjection)
     }
 
-    @Override
-    public void createVehicle(String vehicle) {
-        logger("createVehicle");
-    }
-
-    @Override
-    public void addEntry(String vehicle, int miles, double gallons, double price, int date) {
-        dbHelper = MySQLiteHelper.getInstance(getActivity().getApplicationContext());
-        db=dbHelper.getWritableDatabase();
-        logger("addEntry: "+vehicle+", "+miles+", "+gallons+", "+price+", "+date);
-    }
-
-    @Override
-    public Cursor getAllData() {
-        logger("getAllData");
-        return null;
-    }
-
-    @Override
-    public void deleteRecord(int entry) {
-        logger("deleteRecord");
-    }
-
-    @Override
-    public void changeRecord(int id, String vehicle, int miles, double gallons, double price, int date) {
-        logger("changeRecord");
-    }
 }

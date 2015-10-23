@@ -26,16 +26,16 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by Andrew on 10/14/2015.
  */
-public class ReceiverTestFragment extends Fragment {
+public class AllDataListViewFragment extends Fragment {
 
     private MySQLiteHelper dbHelper;
-    private SQLiteDatabase db;
+//    private SQLiteDatabase db;
     private ListView listview;
     private ListView listview2;
     public static SimpleCursorAdapter cursorAdapter;
     public static MyCursorAdapter advancedCursorAdapter;
 
-    public ReceiverTestFragment(){
+    public AllDataListViewFragment(){
 
     }
 
@@ -48,34 +48,30 @@ public class ReceiverTestFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        dbHelper = MySQLiteHelper.getInstance(getActivity().getApplicationContext());
-        db=dbHelper.getWritableDatabase();
-
     }
-
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.receiver_test_fragment, container, false);
+
+        dbHelper = MySQLiteHelper.getInstance(getActivity().getApplicationContext());
+//        db=dbHelper.getWritableDatabase();
+        Cursor cursor=dbHelper.getAllData();
+
         listview=(ListView) view.findViewById(R.id.listview);
-        listview2=(ListView) view.findViewById(R.id.listview2);
-        Cursor cursor = db.rawQuery("SELECT _id, location FROM fillupTable", null);
-        Log.e("output","output: "+cursor.getColumnName(0)+", "+cursor.getColumnName(1));
-
-        String[] columns={cursor.getColumnName(1)};
-        int[] displayViews = {R.id.list_text};
-        cursorAdapter=new SimpleCursorAdapter(getActivity(),R.layout.list_item,cursor,columns,displayViews,0);
         advancedCursorAdapter = new MyCursorAdapter(getActivity(), cursor,0);
-
-
-        listview2.setAdapter(advancedCursorAdapter);
-        listview.setAdapter(cursorAdapter);
-//        listview.setOnItemClickListener();
-
-
+        listview.setAdapter(advancedCursorAdapter);
+/**
+ * SimpleCursorAdapter method of creating view
+ */
+//        listview=(ListView) view.findViewById(R.id.listview);
+//        String[] columns={cursor.getColumnName(1)};
+//        int[] displayViews = {R.id.list_text};
+//        cursorAdapter=new SimpleCursorAdapter(getActivity(),R.layout.list_item,cursor,columns,displayViews,0);
+//        listview.setAdapter(cursorAdapter);
+////        listview.setOnItemClickListener();
         return view;
-//        return inflater.inflate(R.layout.receiver_test_fragment, container, false);
     }
 
 
@@ -83,10 +79,10 @@ public class ReceiverTestFragment extends Fragment {
     public void onEvent(MessageEvent event){
         Log.e("onEvent", "onEvent received");
         Toast.makeText(getActivity(),event.message,Toast.LENGTH_LONG).show();
-        String insert_query="INSERT INTO fillupTable (location) "+"VALUES ('bp')";
-        db.execSQL(insert_query);
-        Cursor c =db.rawQuery("SELECT _id, location FROM fillupTable",null);
-        cursorAdapter.changeCursor(c);
+//        String insert_query="INSERT INTO fillupTable (location) "+"VALUES ('bp')";
+//        db.execSQL(insert_query);
+//        Cursor c =db.rawQuery("SELECT _id, location FROM fillupTable",null);
+//        cursorAdapter.changeCursor(c);
 
     }
 

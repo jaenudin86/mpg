@@ -15,24 +15,36 @@ import com.a.b.mileagetracker.R;
  */
 public class MyCursorAdapter extends CursorAdapter {
 
-    private LayoutInflater mInflator;
+    private LayoutInflater mInflater;
 
     public MyCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
-        mInflator=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mInflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
-        return mInflator.inflate(R.layout.advanced_list_item, parent,false);
+        return mInflater.inflate(R.layout.advanced_list_item, parent,false);
     }
 
     @Override
     //View returned from newView is passed as a first parameter to bindView
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView content=(TextView) view.findViewById(R.id.list_text);
-        content.setText(cursor.getString(cursor.getColumnIndex("location")));
+        TextView vehicle=(TextView) view.findViewById(R.id.vehicle_list_item);
+        TextView mileage=(TextView) view.findViewById(R.id.mileage_list_item);
+        TextView gallons=(TextView) view.findViewById(R.id.gallons_list_item);
+        TextView price=(TextView) view.findViewById(R.id.price_list_item);
+        TextView date=(TextView) view.findViewById(R.id.date_list_item);
+        TextView location= (TextView) view.findViewById(R.id.location_list_item);
+
+        vehicle.setText(cursor.getString(cursor.getColumnIndex("vehicle")));
+        mileage.setText(cursor.getString(cursor.getColumnIndex("mileage")));
+        gallons.setText(cursor.getString(cursor.getColumnIndex("quantity")));
+        price.setText(cursor.getString(cursor.getColumnIndex("price")));
+        date.setText(cursor.getString(cursor.getColumnIndex("date")));
+        location.setText(cursor.getString(cursor.getColumnIndex("location")));
+
 
     }
 }

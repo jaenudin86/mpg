@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="testGray">#BFBFBF</color>
     <color name="entryTextBoxColor">#FFFFFF</color>
+    <color name="lightgray">#CFCFCF</color>
 </resources>

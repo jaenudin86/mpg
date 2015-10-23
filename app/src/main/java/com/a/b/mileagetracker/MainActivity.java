@@ -2,16 +2,13 @@ package com.a.b.mileagetracker;
 
 import android.app.Dialog;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,18 +26,19 @@ import android.widget.Toast;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
 import com.a.b.mileagetracker.testStuffs.DialogFrag;
 import com.a.b.mileagetracker.testStuffs.MessageEvent;
-import com.a.b.mileagetracker.testStuffs.ReceiverTestFragment;
+import com.a.b.mileagetracker.testStuffs.AllDataListViewFragment;
+import com.a.b.mileagetracker.testStuffs.OverallStatsFragment;
 
 import de.greenrobot.event.EventBus;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogFrag.DialogInterface {
-    ReceiverTestFragment receiverTest;
+    AllDataListViewFragment receiverTest;
+    OverallStatsFragment overallStatsFragment;
     private MySQLiteHelper dbHelper;
     private SQLiteDatabase db;
     private SimpleCursorAdapter cursorAdapter;
     private ListView listview;
     private DialogFragment newFragment;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,44 +65,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        receiverTest = new ReceiverTestFragment();
+//        receiverTest = new AllDataListViewFragment();
+        overallStatsFragment = new OverallStatsFragment();
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.add(R.id.fragment_holder, receiverTest);
+        ft.add(R.id.fragment_holder, overallStatsFragment);
+        ft.addToBackStack("stats");
         ft.commit();
 
 //        'getApplicationContext' to help with garbage collection
 //        dbHelper = new MySQLiteHelper(getApplicationContext());
         dbHelper = MySQLiteHelper.getInstance(getApplicationContext());
-
-
-
     }
-//    public void getData(){
-////        'getReadableDatabase' sets up the database, notice the SQLiteDatabase parent class initialization
-//        db =dbHelper.getReadableDatabase();
-//        Cursor c = db.rawQuery("SELECT * FROM fillupTable", null);
-//        String names="";
-//        for(String s: c.getColumnNames()){
-//            names=names+s+", ";
-//        }
-//        Log.e("names","column names: "+names);
-//
-//        if(c.moveToFirst()){
-//            String record="";
-//            do{
-//                record= String.format("%d ,%.1f ,%d miles, location %s",
-//                        c.getInt(0),
-//                        c.getFloat(1),
-//                        c.getInt(2),
-//                        c.getString(3));
-//
-//                Log.e("record", "record: "+record);
-//
-//            }while(c.moveToNext());
-//        }
-//
-//    }
+
     public void showCarSelectorDialog(){
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.car_selector_dialog);
@@ -149,37 +122,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_camara) {
-            android.support.v4.app.FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
+            android.support.v4.app.FragmentTransaction ftDialog=getSupportFragmentManager().beginTransaction();
             android.support.v4.app.Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
             if(prev!=null){
-                ft.remove(prev);
+                ftDialog.remove(prev);
             }
-            ft.addToBackStack(null);
+            ftDialog.addToBackStack(null);
             newFragment=DialogFrag.newInstance();
 //            dialogFrag= DialogFrag.newInstance();
-            newFragment.show(ft, "dialog");
-
-
+            newFragment.show(ftDialog, "dialog");
 
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_history_list) {
+
+            AllDataListViewFragment allDataListViewFragment = new AllDataListViewFragment();
+            ft.add(R.id.fragment_holder, allDataListViewFragment);
+            ft.commit();
 
             EventBus.getDefault().post(new MessageEvent("hello test from Activity"));
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_stats) {
 
-//            dialogFrag=new DialogFrag();
-//            dialogFrag.setTargetFragment(this, YES_NO_CALL);
-//            dialogFrag.show(getFragmentManager(),"tag");
+//            if(!overallStatsFragment.isAdded()) {
+                ft.replace(R.id.fragment_holder, overallStatsFragment);
+                ft.commit();
 
+        } else if (id == R.id.nav_graph) {
             dbHelper.getAllData();
-//            getData();
-
-
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

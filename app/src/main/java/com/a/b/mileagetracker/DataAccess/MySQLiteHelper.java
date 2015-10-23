@@ -10,6 +10,7 @@ import android.os.*;
 import android.util.Log;
 
 import java.lang.Process;
+import java.text.DecimalFormat;
 
 /**
  * Created by Andrew on 10/12/2015.
@@ -27,7 +28,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_LOCATION = "location";
     private static final String DATABASE_NAME = "GasAppDB";
-    private static final int DATABASE_VERSION = 21;
+    private static final int DATABASE_VERSION = 23;
 //    private static final String DATABASE_CREATE = "create table "
 //            + TABLE_NAME + "(" + COLUMN_ID
 //            + " integer primary key autoincrement, " + COLUMN_MILEAGE+"varchar(7), "+COLUMN_QUANTITY+"varchar(7), "+COLUMN_LOCATION+"varchar(7))"
@@ -59,6 +60,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        db=getWritableDatabase();
         Log.e("MySQLiteHelper called", "MySQLiteHelper called");
     }
 
@@ -117,18 +119,18 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         values.put(COLUMN_PRICE, price);
         values.put(COLUMN_LOCATION, "dummy");
 
-        db.insert(TABLE_NAME,COLUMN_LOCATION,values);
+        db.insert(TABLE_NAME, COLUMN_LOCATION, values);
     }
 
     @Override
     public Cursor getAllData() {
-        db=getReadableDatabase();
+//        db=getReadableDatabase();
         Cursor c=db.rawQuery("SELECT * FROM fillupTable", null);
         String names="";
         for(String s: c.getColumnNames()){
             names=names+s+", ";
         }
-        Log.e("names","column names: "+names);
+        Log.e("names", "column names: " + names);
 
         if(c.moveToFirst()){
             String record="";
@@ -149,6 +151,41 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     }
 
     @Override
+    public Cursor getMilesQuantityPrice() {
+//        Cursor c = db.rawQuery("SELECT * FROM fillupTable", null);
+        Cursor c=db.query(TABLE_NAME, new String[]{COLUMN_MILEAGE, COLUMN_QUANTITY, COLUMN_PRICE}, null, null, null, null, null, null);
+
+        return c;
+    }
+    @Override
+    public Cursor getMilesColumn() {
+        Cursor c=db.query(TABLE_NAME, new String[] {COLUMN_MILEAGE}, null, null, null, null, null, null);
+
+        return c;
+    }
+
+    @Override
+    public Cursor getSumGallons() {
+        Cursor c=db.rawQuery("SELECT SUM ("+COLUMN_QUANTITY+") FROM "+TABLE_NAME,null);
+        Log.e("getsum","getsumgallons: "+c.getColumnName(0));
+        return c;
+    }
+
+    @Override
+    public Cursor getQuantityColumn() {
+        Cursor c = db.query(TABLE_NAME, new String[]{COLUMN_QUANTITY},null,null,null,null,null);
+        return c;
+    }
+
+    @Override
+    public Double getTotalAmountSpent() {
+        Cursor cPrice=db.rawQuery("SELECT SUM (" + COLUMN_PRICE + ") FROM "+TABLE_NAME, null);
+        DecimalFormat df=new DecimalFormat("#.##");
+        cPrice.moveToFirst();
+        return Double.parseDouble(df.format(Double.parseDouble(cPrice.getString(0))));
+    }
+
+    @Override
     public void deleteRecord(int entry) {
 
     }
@@ -157,6 +194,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     public void changeRecord(int id, String vehicle, int miles, double gallons, double price, int date) {
 
     }
+
+
 
     private class LoadThread extends Thread{
         private int position=-1;
