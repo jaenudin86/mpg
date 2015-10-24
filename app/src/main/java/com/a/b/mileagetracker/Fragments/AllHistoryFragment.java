@@ -1,4 +1,4 @@
-package com.a.b.mileagetracker.testStuffs;
+package com.a.b.mileagetracker.Fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.a.b.mileagetracker.DataAccess.MyCursorAdapter;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
 import com.a.b.mileagetracker.R;
+import com.a.b.mileagetracker.testStuffs.MessageEvent;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by Andrew on 10/14/2015.
  */
-public class AllDataListViewFragment extends Fragment {
+public class AllHistoryFragment extends Fragment {
 
     private MySQLiteHelper dbHelper;
 //    private SQLiteDatabase db;
@@ -35,7 +36,7 @@ public class AllDataListViewFragment extends Fragment {
     public static SimpleCursorAdapter cursorAdapter;
     public static MyCursorAdapter advancedCursorAdapter;
 
-    public AllDataListViewFragment(){
+    public AllHistoryFragment(){
 
     }
 
@@ -58,6 +59,7 @@ public class AllDataListViewFragment extends Fragment {
         dbHelper = MySQLiteHelper.getInstance(getActivity().getApplicationContext());
 //        db=dbHelper.getWritableDatabase();
         Cursor cursor=dbHelper.getAllData();
+        cursor.moveToFirst();
 
         listview=(ListView) view.findViewById(R.id.listview);
         advancedCursorAdapter = new MyCursorAdapter(getActivity(), cursor,0);

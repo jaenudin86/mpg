@@ -11,6 +11,7 @@ import android.util.Log;
 
 import java.lang.Process;
 import java.text.DecimalFormat;
+import java.util.logging.Logger;
 
 /**
  * Created by Andrew on 10/12/2015.
@@ -107,17 +108,18 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     }
 
     @Override
-    public void addEntry(String vehicle, int miles, double gallons, double price, int date) {
+    public void addEntry(String vehicle, int miles, double gallons, double price, int date, String location) {
 //        dbHelper = MySQLiteHelper.getInstance(getActivity().getApplicationContext());
         db=getWritableDatabase();
-        logger("MySQLiteHelper.java addEntry: " + vehicle + ", " + miles + ", " + gallons + ", " + price + ", " + date);
+        logger("MySQLiteHelper.java addEntry: vehicle: " + vehicle + ", miles: " + miles + ", gals: " + gallons + ", $" + price + ", date: " + date + ", location: " + location);
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_VEHICLE, vehicle);
         values.put(COLUMN_MILEAGE, miles);
         values.put(COLUMN_QUANTITY, gallons);
         values.put(COLUMN_PRICE, price);
-        values.put(COLUMN_LOCATION, "dummy");
+        values.put(COLUMN_DATE, date);
+        values.put(COLUMN_LOCATION, location);
 
         db.insert(TABLE_NAME, COLUMN_LOCATION, values);
     }
@@ -130,22 +132,25 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         for(String s: c.getColumnNames()){
             names=names+s+", ";
         }
+        logger("getAllData() method in MySqlHelper: ---start---");
         Log.e("names", "column names: " + names);
 
         if(c.moveToFirst()){
             String record="";
             do{
-                record= String.format("%d , vehicle: %s, %d miles, %.3f gallons, %.2f dollars, location %s",
+                record= String.format("%d _id , vehicle: %s, %d miles, %.3f gallons, %.2f dollars, date: %d, location %s",
                         c.getInt(0),
                         c.getString(1),
                         c.getInt(2),
                         c.getFloat(3),
                         c.getFloat(4),
-                        c.getString(5));
+                        c.getInt(5),
+                        c.getString(6));
 
                 Log.e("record", "record: "+record);
 
             }while(c.moveToNext());
+            logger("getAllData() method in MySqlHelper: ---end---");
         }
         return c;
     }

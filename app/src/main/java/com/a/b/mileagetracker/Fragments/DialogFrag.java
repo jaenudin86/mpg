@@ -1,21 +1,17 @@
-package com.a.b.mileagetracker.testStuffs;
+package com.a.b.mileagetracker.Fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.a.b.mileagetracker.DataAccess.DataDAOImplementation;
-import com.a.b.mileagetracker.DataAccess.MyCursorAdapter;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
-import com.a.b.mileagetracker.DataAccess.SQLDao;
 import com.a.b.mileagetracker.R;
 
 /**
@@ -46,6 +42,7 @@ public class DialogFrag extends DialogFragment {
 
         LayoutInflater inflater=getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.car_selector_dialog, null);
+        final EditText location= (EditText) view.findViewById(R.id.station_location);
         final EditText vehicle = (EditText) view.findViewById(R.id.vehicle);
         final EditText mileage = (EditText) view.findViewById(R.id.mileage);
         final EditText gallons = (EditText) view.findViewById(R.id.gallons);
@@ -62,9 +59,9 @@ public class DialogFrag extends DialogFragment {
                             Integer.parseInt(mileage.getText().toString()),
                             Double.parseDouble(gallons.getText().toString()),
                             Double.parseDouble(price.getText().toString()),
-                            Integer.parseInt(date.getText().toString()));
-
-                    mListener.onDialogAddVehicle();
+                            Integer.parseInt(date.getText().toString()),
+                            location.getText().toString());
+                        mListener.onDialogAddVehicle();
                 } catch (NumberFormatException e) {
                     Toast.makeText(getActivity(),"wrong number format",Toast.LENGTH_LONG).show();
                     e.printStackTrace();

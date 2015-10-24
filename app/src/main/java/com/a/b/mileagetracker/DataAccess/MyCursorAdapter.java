@@ -38,12 +38,13 @@ public class MyCursorAdapter extends CursorAdapter {
         TextView date=(TextView) view.findViewById(R.id.date_list_item);
         TextView location= (TextView) view.findViewById(R.id.location_list_item);
 
-        vehicle.setText(cursor.getString(cursor.getColumnIndex("vehicle")));
-        mileage.setText(cursor.getString(cursor.getColumnIndex("mileage")));
-        gallons.setText(cursor.getString(cursor.getColumnIndex("quantity")));
-        price.setText(cursor.getString(cursor.getColumnIndex("price")));
+        vehicle.setText("Vehicle: "+(cursor.getString(cursor.getColumnIndex("vehicle"))));
+        mileage.setText("Mileage: "+cursor.getString(cursor.getColumnIndex("mileage")));
+        gallons.setText("Quantity added: "+cursor.getString(cursor.getColumnIndex("quantity"))+" gallons");
+        price.setText("Price: $"+cursor.getString(cursor.getColumnIndex("price")));
         date.setText(cursor.getString(cursor.getColumnIndex("date")));
-        location.setText(cursor.getString(cursor.getColumnIndex("location")));
+//        date.setText("test");
+        location.setText("Station: "+cursor.getString(cursor.getColumnIndex("location")));
 
 
     }

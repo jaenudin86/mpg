@@ -1,4 +1,4 @@
-package com.a.b.mileagetracker.testStuffs;
+package com.a.b.mileagetracker.Fragments;
 
 import android.app.Fragment;
 import android.content.Context;
