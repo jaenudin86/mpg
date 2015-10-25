@@ -1,6 +1,5 @@
 package com.a.b.mileagetracker.Fragments;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.database.Cursor;

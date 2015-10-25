@@ -14,7 +14,7 @@ import java.sql.Time;
  */
 public interface SQLDao {
     public void createVehicle(String vehicle);
-    public void addEntry(String vehicle, int miles, double gallons, double price, int date, String location);
+    public void addEntry(String vehicle, int miles, double gallons, double price, long date, String location);
     public Cursor getAllData();
     public Cursor getMilesQuantityPrice();
     public void deleteRecord(int entry);
@@ -23,4 +23,5 @@ public interface SQLDao {
     public Cursor getSumGallons();
     public Cursor getQuantityColumn();
     public Double getTotalAmountSpent();
+    int getLastDate();
 }

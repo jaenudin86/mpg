@@ -2,9 +2,14 @@ package com.a.b.mileagetracker.Fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -14,19 +19,31 @@ import android.widget.Toast;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
 import com.a.b.mileagetracker.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * Created by Andrew on 10/20/2015.
  */
-public class DialogFrag extends DialogFragment {
+public class DialogFrag extends DialogFragment implements View.OnClickListener{
 
     // Use this instance of the interface to deliver action events
     DialogInterface mListener;
 //    SQLDao mSqlDao = new DataDAOImplementation();
 //    SQLDao mMySQLiteHelper;
     private MySQLiteHelper dbHelper;
+    private DatePickerDialog fromDatePickerDialog;
+    private SimpleDateFormat dateFormatter;
+    private EditText dateView;
+
+
 
     public interface DialogInterface{
-        public void onDialogAddVehicle();
+        void onDialogAddVehicle();
+        void onEditDate();
     }
 
     public DialogFrag(){}
@@ -41,25 +58,34 @@ public class DialogFrag extends DialogFragment {
         dbHelper=MySQLiteHelper.getInstance(getActivity().getApplicationContext());
 
         LayoutInflater inflater=getActivity().getLayoutInflater();
-        final View view = inflater.inflate(R.layout.car_selector_dialog, null);
+        final View view = inflater.inflate(R.layout.add_record, null);
         final EditText location= (EditText) view.findViewById(R.id.station_location);
         final EditText vehicle = (EditText) view.findViewById(R.id.vehicle);
         final EditText mileage = (EditText) view.findViewById(R.id.mileage);
         final EditText gallons = (EditText) view.findViewById(R.id.gallons);
         final EditText price = (EditText) view.findViewById(R.id.price);
-        final EditText date = (EditText) view.findViewById(R.id.date);
-        Button bt=(Button) view.findViewById(R.id.add_new_car_button);
 
+        dateView = (EditText) view.findViewById(R.id.date);
+        dateView.setInputType(InputType.TYPE_NULL);
+        dateView.setOnClickListener(this);
+
+        dateFormatter=new SimpleDateFormat("MMM-dd-yyyy", Locale.US);
+
+        setDateField();
+
+        Button bt=(Button) view.findViewById(R.id.add_new_car_button);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                convertDateFieldToInt();
+
                 try {
                     dbHelper.addEntry(
                             vehicle.getText().toString(),
                             Integer.parseInt(mileage.getText().toString()),
                             Double.parseDouble(gallons.getText().toString()),
                             Double.parseDouble(price.getText().toString()),
-                            Integer.parseInt(date.getText().toString()),
+                            convertDateFieldToInt(),
                             location.getText().toString());
                         mListener.onDialogAddVehicle();
                 } catch (NumberFormatException e) {
@@ -71,18 +97,34 @@ public class DialogFrag extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
-
-//        builder.setPositiveButton("yes", null);
-//        builder.setNegativeButton("no",null);
-
-//        return new AlertDialog.Builder(getActivity())
-//                .setTitle("yeeeppps")
-//                .setMessage("noooppppee")
-////                .setPositiveButton("click me!",)
-//                .create();
         return builder.create();
     }
+    private void setDateField(){
+            Calendar newCalendar = Calendar.getInstance();
+            fromDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
 
+                @Override
+                public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                    Calendar newDate = Calendar.getInstance();
+                    newDate.set(year, monthOfYear, dayOfMonth);
+                    dateView.setText(dateFormatter.format(newDate.getTime()));
+                }
+            },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        convertDateFieldToInt();
+    }
+    private long convertDateFieldToInt(){
+        String dateString= dateView.getText().toString();
+        Log.e("somedate","date: "+dateString);
+        SimpleDateFormat sdf=new SimpleDateFormat("MMM-dd-yyyy");
+        try {
+            Date date = sdf.parse(dateString);
+            Log.e("date","date: "+date.getTime());
+            return date.getTime()/1000;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
     @Override
@@ -102,6 +144,12 @@ public class DialogFrag extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+    }
+    @Override
+    public void onClick(View v) {
+        if (v == dateView) {
+            Log.e("clicked dateview", "clicked dateview");
+            fromDatePickerDialog.show();
+        }
     }
 }

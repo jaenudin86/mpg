@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     private static MySQLiteHelper singleton =null;
-    private SQLiteDatabase db;
+    public SQLiteDatabase db;
 
     public static final String TABLE_NAME = "fillupTable";
     public static final String COLUMN_VEHICLE ="vehicle";
@@ -29,11 +29,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_LOCATION = "location";
     private static final String DATABASE_NAME = "GasAppDB";
-    private static final int DATABASE_VERSION = 23;
-//    private static final String DATABASE_CREATE = "create table "
-//            + TABLE_NAME + "(" + COLUMN_ID
-//            + " integer primary key autoincrement, " + COLUMN_MILEAGE+"varchar(7), "+COLUMN_QUANTITY+"varchar(7), "+COLUMN_LOCATION+"varchar(7))"
-//            + " text not null);";
+    private static final int DATABASE_VERSION = 26;
     private static final String DATABASE_CREATE="create table "
         +TABLE_NAME+" ("
         +"_id INTEGER "+
@@ -61,7 +57,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        db=getWritableDatabase();
         Log.e("MySQLiteHelper called", "MySQLiteHelper called");
     }
 
@@ -72,21 +67,21 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        Log.e("MySQLiteHelper called","MySQLiteHelper called onCreate()");
+        if (db != null) {
+            db = getWritableDatabase();
+
+        }
+        Log.e("MySQLiteHelper called", "MySQLiteHelper called onCreate()");
         try {
             database.execSQL(DATABASE_CREATE);
-            database.execSQL(INSERT_QUERY);
-//            ContentValues cv = new ContentValues();
-//            cv.put(COLUMN_LOCATION, "Chevron");
-//            cv.put(COLUMN_MILEAGE, "172500");
-//            cv.put(COLUMN_QUANTITY, "12.5");
-//            database.insert(TABLE_NAME, COLUMN_LOCATION, cv);
+//            addEntry("test Vehicle", 8500, 12.546, 34.56, 1443111100, "Chevron");
+//            addEntry("test Vehicle2", 8600, 2.546, 6.56, 1443715900, "Texaco");
+//            addEntry("test Vehicle3", 8600, 2.546, 7.56, 1444579900, "Exxon Mobil");
             Log.e("Created db", "Created db");
-
-        }catch (SQLException e){
-            Log.e("failed to creat db","failed to create db");
+        } catch (SQLException e) {
+            Log.e("failed to creat db", "failed to create db");
         }
-        Log.e("created db sucessfully","created db sucessfully!!!!");
+        Log.e("created db sucessfully", "created db sucessfully!!!!");
     }
 
     @Override
@@ -108,9 +103,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     }
 
     @Override
-    public void addEntry(String vehicle, int miles, double gallons, double price, int date, String location) {
+    public void addEntry(String vehicle, int miles, double gallons, double price, long date, String location) {
 //        dbHelper = MySQLiteHelper.getInstance(getActivity().getApplicationContext());
-        db=getWritableDatabase();
+//        db=getWritableDatabase();
         logger("MySQLiteHelper.java addEntry: vehicle: " + vehicle + ", miles: " + miles + ", gals: " + gallons + ", $" + price + ", date: " + date + ", location: " + location);
 
         ContentValues values = new ContentValues();
@@ -126,8 +121,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     @Override
     public Cursor getAllData() {
-//        db=getReadableDatabase();
-        Cursor c=db.rawQuery("SELECT * FROM fillupTable", null);
+        db=getReadableDatabase();
+        Cursor c=db.rawQuery("SELECT * FROM "+TABLE_NAME+" ORDER BY "+COLUMN_DATE+" DESC", null);
         String names="";
         for(String s: c.getColumnNames()){
             names=names+s+", ";
@@ -171,9 +166,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     @Override
     public Cursor getSumGallons() {
-        Cursor c=db.rawQuery("SELECT SUM ("+COLUMN_QUANTITY+") FROM "+TABLE_NAME,null);
-        Log.e("getsum","getsumgallons: "+c.getColumnName(0));
-        return c;
+            Cursor c = db.rawQuery("SELECT SUM (" + COLUMN_QUANTITY + ") FROM " + TABLE_NAME, null);
+        c.moveToFirst();
+        if(c.getDouble(0)>0) {
+            return c;
+        }else{
+            return null;
+        }
     }
 
     @Override
@@ -184,10 +183,21 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     @Override
     public Double getTotalAmountSpent() {
-        Cursor cPrice=db.rawQuery("SELECT SUM (" + COLUMN_PRICE + ") FROM "+TABLE_NAME, null);
-        DecimalFormat df=new DecimalFormat("#.##");
+        Cursor cPrice=db.rawQuery("SELECT SUM (" + COLUMN_PRICE + ") FROM " + TABLE_NAME, null);
         cPrice.moveToFirst();
-        return Double.parseDouble(df.format(Double.parseDouble(cPrice.getString(0))));
+        if(cPrice.getDouble(0)>0) {
+            DecimalFormat df = new DecimalFormat("#.##");
+            return Double.parseDouble(df.format(Double.parseDouble(cPrice.getString(0))));
+        }else{
+            return 0.0;
+        }
+    }
+
+    @Override
+    public int getLastDate() {
+        Cursor c=db.rawQuery("SELECT MAX("+COLUMN_DATE+") FROM "+TABLE_NAME,null);
+        c.moveToFirst();
+        return Integer.parseInt(c.getString(0));
     }
 
     @Override
@@ -200,9 +210,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     }
 
-
-
-    private class LoadThread extends Thread{
+    private class  LoadThread extends Thread{
         private int position=-1;
         private String location;
         LoadThread(String location){

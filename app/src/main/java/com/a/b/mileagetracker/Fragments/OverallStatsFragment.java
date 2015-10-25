@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
 import com.a.b.mileagetracker.R;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Andrew on 10/22/2015.
@@ -43,27 +46,36 @@ public class OverallStatsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         dbHelper=MySQLiteHelper.getInstance(getActivity().getApplicationContext());
-
         View view = inflater.inflate(R.layout.overall_stats_fragment, container, false);
-        TextView mpgSinceLast=(TextView)view.findViewById(R.id.perfm_mpg_since_last);
-        TextView mpgTotal =(TextView) view.findViewById(R.id.perfm_mpg_overall);
-        TextView milesTravelled=(TextView) view.findViewById(R.id.perfm_miles_travelled);
-        TextView totalMilesTravelled =(TextView) view.findViewById(R.id.perfm_miles_travelled_total);
-        TextView totalAmountSpent=(TextView) view.findViewById(R.id.perfm_spent_total);
-        TextView conclusion = (TextView) view.findViewById(R.id.perfm_conclusion);
 
-        Cursor milesCursor= dbHelper.getMilesColumn();
-        mMilesRecent=getMilesSinceLast();
-        mMilesTotal=getMilesTotal();
+        Cursor c = dbHelper.getAllData();
+        if(c.getCount()>0) {
 
+            TextView mpgSinceLast = (TextView) view.findViewById(R.id.perfm_mpg_since_last);
+            TextView mpgTotalView = (TextView) view.findViewById(R.id.perfm_mpg_overall);
+            TextView milesTravelled = (TextView) view.findViewById(R.id.perfm_miles_travelled);
+            TextView totalMilesTravelled = (TextView) view.findViewById(R.id.perfm_miles_travelled_total);
+            TextView totalAmountSpent = (TextView) view.findViewById(R.id.perfm_spent_total);
+            TextView conclusion = (TextView) view.findViewById(R.id.perfm_conclusion);
 
-        mpgSinceLast.setText("Most recent: "+getMpgRecent()+" mpg");
-        mpgTotal.setText("Total: "+getMpgTotal()+" mpg");
-        milesTravelled.setText("Miles since last record: " + mMilesRecent);
-        totalMilesTravelled.setText("Total miles tracked: "+mMilesTotal);
-        totalAmountSpent.setText("$ "+dbHelper.getTotalAmountSpent()+" since 10/1/15");
+            mMilesRecent = getMilesSinceLast();
+            mMilesTotal = getMilesTotal();
+            Double mpgRecent=getMpgRecent();
+            Double mpgTotal=getMpgTotal();
 
-        logData(milesCursor);
+            mpgSinceLast.setText((mpgRecent>0?"Most recent: "+mpgRecent+" mpg": null));
+            mpgTotalView.setText((mpgTotal>0?"Total: "+mpgTotal+" mpg":"Need 2 or more data points to calculate MPG. Please Add another record"));
+            milesTravelled.setText((mpgRecent>0?"Miles since last record: " + mpgRecent:null));
+            totalMilesTravelled.setText((mMilesTotal>0?"Total miles tracked: " + mMilesTotal:null));
+            totalAmountSpent.setText("$ " + dbHelper.getTotalAmountSpent() + " since "+getLastDate());
+
+            logData();
+        }else{
+            TextView noData=(TextView) view.findViewById(R.id.perfm_miles_travelled);
+            TextView noDataL2=(TextView) view.findViewById(R.id.perfm_spent_total);
+            noData.setText("No data collected!");
+            noDataL2.setText("Click \"Add Record\" to get started");
+        }
         return view;
     }
     private Double getMpgRecent(){
@@ -80,21 +92,16 @@ public class OverallStatsFragment extends Fragment {
     private Double getMpgTotal(){
         Double gallons;
         DecimalFormat df=new DecimalFormat("#.###");
-//        if(c!=null && c.moveToFirst()){
-            Cursor galCur=dbHelper.getSumGallons();
-            galCur.moveToFirst();
-
-            gallons=Double.parseDouble(galCur.getString(0));
-            return Double.parseDouble(df.format(mMilesTotal/gallons));
-//        }else{
-//            return 0.0;
-//        }
+        Cursor galCur=dbHelper.getSumGallons();
+        galCur.moveToFirst();
+        gallons=Double.parseDouble(galCur.getString(0));
+        return Double.parseDouble(df.format(mMilesTotal/gallons));
     }
 
     private int getMilesTotal(){
         int last,first;
         Cursor cMiles=dbHelper.getMilesColumn();
-        if(cMiles!=null && cMiles.moveToLast()) {
+        if(cMiles.getCount()>1 && cMiles.moveToLast()) {
             last = Integer.parseInt(cMiles.getString(0));
             cMiles.moveToFirst();
             first = Integer.parseInt(cMiles.getString(0));
@@ -108,7 +115,7 @@ public class OverallStatsFragment extends Fragment {
     private int getMilesSinceLast(){
         int last,previous;
         Cursor cMiles=dbHelper.getMilesColumn();
-        if(cMiles!=null && cMiles.moveToLast()) {
+        if(cMiles!=null && cMiles.moveToLast()&&cMiles.getCount()>1) {
             last = Integer.parseInt(cMiles.getString(0));
             cMiles.moveToPrevious();
             previous = Integer.parseInt(cMiles.getString(0));
@@ -118,6 +125,16 @@ public class OverallStatsFragment extends Fragment {
             cMiles.close();
             return 0;
         }
+    }
+    private String getLastDate(){
+//        int intDate=dbHelper.getLastDate();
+        Date date=new Date(dbHelper.getLastDate()*1000);
+        java.text.DateFormat format=new SimpleDateFormat("MM/dd/yyyy");
+        String formatted = format.format(date);
+
+
+
+        return formatted;
     }
 
 
@@ -147,10 +164,12 @@ public class OverallStatsFragment extends Fragment {
 
     /**
      * Deleteable methods for internal logging only
-     * @param c
+     * @param
      */
 
-    public void logData(Cursor c){
+    public void logData(){
+        Cursor c= dbHelper.getMilesColumn();
+
         String names="";
         for(String s: c.getColumnNames()){
             names=names+s+", ";
@@ -173,8 +192,9 @@ public class OverallStatsFragment extends Fragment {
             }
             c.moveToLast();
             Log.e("row", "row by row (last): " + c.getString(0));
-            c.moveToPrevious();
-            Log.e("row", "row by row (previous): " + c.getString(0));
+            if(c.moveToPrevious()) {
+                Log.e("row", "row by row (previous): " + c.getString(0));
+            }
         }
 //        c.close();
     }

@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
+import com.a.b.mileagetracker.Fragments.DatePicker;
 import com.a.b.mileagetracker.Fragments.DialogFrag;
 import com.a.b.mileagetracker.Fragments.GraphFragment;
 import com.a.b.mileagetracker.testStuffs.ExportDatabase;
@@ -82,11 +83,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void showCarSelectorDialog(){
         Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.car_selector_dialog);
+        dialog.setContentView(R.layout.add_record);
         dialog.show();
 
         LayoutInflater factory=LayoutInflater.from(this);
-        View textEntry= factory.inflate(R.layout.car_selector_dialog, null);
+        View textEntry= factory.inflate(R.layout.add_record, null);
     }
 
     @Override
@@ -162,10 +163,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             dbHelper.getAllData();
         } else if (id == R.id.nav_share) {
-
+            DatePicker datePicker = new DatePicker();
+            ft.replace(R.id.fragment_holder, datePicker).commit();
         } else if (id == R.id.nav_send) {
-
-
 
             ExportDatabase exportDb=new ExportDatabase(getApplicationContext());
             exportDb.execute();
@@ -182,6 +182,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onDialogAddVehicle() {
         Log.e("touched button","touched button, message received in Activity");
         newFragment.dismiss();
+    }
+
+    @Override
+    public void onEditDate() {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        DatePicker datePicker = new DatePicker();
+        ft.replace(R.id.fragment_holder, datePicker).commit();
+        Log.e("onEditDate","onEditDate");
 
     }
 //    public void testExport(){
