@@ -40,6 +40,7 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
     public interface DialogInterface{
         void onDialogAddVehicle();
         void onEditDate();
+        void selectCurrentCar(String make, String model, int year);
     }
 
     public AddRecordDialogFrag(){}

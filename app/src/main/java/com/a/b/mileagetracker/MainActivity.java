@@ -4,6 +4,7 @@ import android.app.Dialog;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         LayoutInflater factory=LayoutInflater.from(this);
         View textEntry= factory.inflate(R.layout.add_record, null);
     }
+
 
     @Override
     public void onBackPressed() {
@@ -193,6 +195,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DatePicker datePicker = new DatePicker();
         ft.replace(R.id.fragment_holder, datePicker).commit();
         Log.e("onEditDate","onEditDate");
+
+    }
+
+    @Override
+    public void selectCurrentCar(String make, String model, int year) {
+        String currentCar=make+model+year;
+        SharedPreferences settings = getSharedPreferences("prefs", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("currentVehicle",currentCar);
+
+        Log.e("shared preferences","shared prefs: "+currentCar);
 
     }
 //    public void testExport(){
