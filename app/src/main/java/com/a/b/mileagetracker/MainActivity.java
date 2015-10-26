@@ -24,8 +24,9 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
+import com.a.b.mileagetracker.Fragments.AddVehicleDialogFrag;
 import com.a.b.mileagetracker.Fragments.DatePicker;
-import com.a.b.mileagetracker.Fragments.DialogFrag;
+import com.a.b.mileagetracker.Fragments.AddRecordDialogFrag;
 import com.a.b.mileagetracker.Fragments.GraphFragment;
 import com.a.b.mileagetracker.testStuffs.ExportDatabase;
 import com.a.b.mileagetracker.testStuffs.MessageEvent;
@@ -34,7 +35,7 @@ import com.a.b.mileagetracker.Fragments.OverallStatsFragment;
 
 import de.greenrobot.event.EventBus;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogFrag.DialogInterface {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, AddRecordDialogFrag.DialogInterface {
     AllHistoryFragment receiverTest;
     OverallStatsFragment overallStatsFragment;
     private MySQLiteHelper dbHelper;
@@ -138,8 +139,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 ftDialog.remove(prev);
             }
             ftDialog.addToBackStack(null);
-            newFragment=DialogFrag.newInstance();
-//            dialogFrag= DialogFrag.newInstance();
+            newFragment= AddRecordDialogFrag.newInstance();
+//            dialogFrag= AddRecordDialogFrag.newInstance();
             newFragment.show(ftDialog, "dialog");
 
             // Handle the camera action
@@ -162,9 +163,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.replace(R.id.fragment_holder, graphFrag).commit();
 
             dbHelper.getAllData();
-        } else if (id == R.id.nav_share) {
-            DatePicker datePicker = new DatePicker();
-            ft.replace(R.id.fragment_holder, datePicker).commit();
+        } else if (id == R.id.nav_settings) {
+            AddVehicleDialogFrag addVehicle=new AddVehicleDialogFrag().newInstance();
+            addVehicle.show(fragmentManager,"addVehicle");
+
         } else if (id == R.id.nav_send) {
 
             ExportDatabase exportDb=new ExportDatabase(getApplicationContext());
