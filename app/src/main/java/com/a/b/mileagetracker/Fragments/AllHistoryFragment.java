@@ -2,24 +2,25 @@ package com.a.b.mileagetracker.Fragments;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.a.b.mileagetracker.DataAccess.DropDownCursorAdapter;
 import com.a.b.mileagetracker.DataAccess.MyCursorAdapter;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
 import com.a.b.mileagetracker.R;
 import com.a.b.mileagetracker.testStuffs.MessageEvent;
-
-import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
@@ -29,14 +30,10 @@ import de.greenrobot.event.EventBus;
 public class AllHistoryFragment extends Fragment {
 
     private MySQLiteHelper dbHelper;
-//    private SQLiteDatabase db;
     private ListView listview;
-    private ListView listview2;
-    public static SimpleCursorAdapter cursorAdapter;
     public static MyCursorAdapter advancedCursorAdapter;
 
     public AllHistoryFragment(){
-
     }
 
     @Override
@@ -53,10 +50,31 @@ public class AllHistoryFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.receiver_test_fragment, container, false);
+        dbHelper=MySQLiteHelper.getInstance(getActivity().getApplicationContext());
+        View view = inflater.inflate(R.layout.all_data_listview_fragment, container, false);
+        TextView header=(TextView) view.findViewById(R.id.all_data_listview_title);
+        Spinner carSpinner=(Spinner) view.findViewById(R.id.dropdown_spinner_all_data_frag);
+
+        SharedPreferences mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        header.setText("All entries for: "+(mSharedPrefs.getString("currentVehicle","not found")));
+
+        final Cursor c=dbHelper.getAllDataFromKeyTable();
+        DropDownCursorAdapter dropDownAdapt = new DropDownCursorAdapter(getActivity(), c, 0);
+        carSpinner.setAdapter(dropDownAdapt);
+//        carSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                Log.e("selected","selected: "+parent+", "+view+", "+position+", "+id);
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
+        carSpinner.setOnItemSelectedListener(dropDownAdapt);
 
         dbHelper = MySQLiteHelper.getInstance(getActivity().getApplicationContext());
-//        db=dbHelper.getWritableDatabase();
         Cursor cursor=dbHelper.getAllData();
         cursor.moveToFirst();
 
@@ -75,8 +93,6 @@ public class AllHistoryFragment extends Fragment {
         return view;
     }
 
-
-
     public void onEvent(MessageEvent event){
         Log.e("onEvent", "onEvent received");
         Toast.makeText(getActivity(),event.message,Toast.LENGTH_LONG).show();
@@ -84,9 +100,7 @@ public class AllHistoryFragment extends Fragment {
 //        db.execSQL(insert_query);
 //        Cursor c =db.rawQuery("SELECT _id, location FROM fillupTable",null);
 //        cursorAdapter.changeCursor(c);
-
     }
-
 
 //    public void onEvent(SomeOtherEvent event){
 //        Log.e("","something else received");

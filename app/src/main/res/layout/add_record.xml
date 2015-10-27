@@ -10,15 +10,42 @@
         android:text="Add Record"
         android:textSize="@dimen/dialog_header_text_size"
         android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:elevation="40dp"/>
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="Vehicle: "
+            android:layout_marginLeft="30dp"/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/vehicle_dropdown_spinner"></Spinner>
+
+
+        <!--<EditText-->
+            <!--android:id="@+id/vehicle"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:hint="97 Honda Accord"-->
+            <!--android:textSize="@dimen/entry_text_size"-->
+            <!--android:background="@color/entryTextBoxColor"/>-->
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="20dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,27 +56,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Chevron"
-            android:textSize="@dimen/entry_text_size"
-            android:background="@color/entryTextBoxColor"/>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Vehicle: "/>
-
-        <EditText
-            android:id="@+id/vehicle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="97 Honda Accord"
             android:textSize="@dimen/entry_text_size"
             android:background="@color/entryTextBoxColor"/>
     </LinearLayout>

@@ -3,6 +3,7 @@ package com.a.b.mileagetracker.Fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
+import com.a.b.mileagetracker.DataAccess.SQLDao;
 import com.a.b.mileagetracker.R;
 
 
@@ -20,6 +22,7 @@ import com.a.b.mileagetracker.R;
  */
 public class AddVehicleDialogFrag extends DialogFragment {
     AddRecordDialogFrag.DialogInterface mListener;
+    SharedPreferences mSharedPrefs;
     private MySQLiteHelper dbHelper;
 
     public static AddVehicleDialogFrag newInstance() {
@@ -40,10 +43,27 @@ public class AddVehicleDialogFrag extends DialogFragment {
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.selectCurrentCar("hello", "test", 2009);
+//                mListener.selectCurrentCar(addMake.getText().toString(), addModel.getText().toString(), Integer.parseInt(addYear.getText().toString()));
+                String currentVehicle=
+                        addMake.getText().toString()+
+                        addModel.getText().toString()+
+                        Integer.parseInt(addYear.getText().toString());
+                currentVehicle=currentVehicle.replaceAll("\\s","");
 
+                String currentVehicleGUI=Integer.parseInt(addYear.getText().toString())+" "
+                        +addMake.getText().toString()+" "
+                        + addModel.getText().toString();
 
+                mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editPrefs=mSharedPrefs.edit();
+                editPrefs.putString("currentVehicle",currentVehicle);
+                editPrefs.putString("currentVehicleGUI", currentVehicleGUI);
+                editPrefs.commit();
 
+                dbHelper.createVehicleTable(Integer.parseInt(addYear.getText().toString()),
+                        addMake.getText().toString(),
+                        addModel.getText().toString(),
+                        currentVehicle);
             }
         });
 

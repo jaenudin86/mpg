@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     AllHistoryFragment receiverTest;
     OverallStatsFragment overallStatsFragment;
     private MySQLiteHelper dbHelper;
-    private SQLiteDatabase db;
     private SimpleCursorAdapter cursorAdapter;
     private ListView listview;
     private DialogFragment newFragment;
@@ -134,16 +133,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camara) {
-            android.support.v4.app.FragmentTransaction ftDialog=getSupportFragmentManager().beginTransaction();
-            android.support.v4.app.Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
-            if(prev!=null){
-                ftDialog.remove(prev);
+        if (id == R.id.nav_add_record) {
+            if(dbHelper.keyTableHasData()==false){
+                AddVehicleDialogFrag addVehicle=new AddVehicleDialogFrag().newInstance();
+                addVehicle.show(fragmentManager,"addVehicle");
+            }else {
+
+                android.support.v4.app.FragmentTransaction ftDialog = getSupportFragmentManager().beginTransaction();
+                android.support.v4.app.Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
+                if (prev != null) {
+                    ftDialog.remove(prev);
+                }
+                ftDialog.addToBackStack(null);
+                newFragment = AddRecordDialogFrag.newInstance();
+                newFragment.show(ftDialog, "dialog");
             }
-            ftDialog.addToBackStack(null);
-            newFragment= AddRecordDialogFrag.newInstance();
-//            dialogFrag= AddRecordDialogFrag.newInstance();
-            newFragment.show(ftDialog, "dialog");
 
             // Handle the camera action
         } else if (id == R.id.nav_history_list) {
@@ -166,8 +170,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             dbHelper.getAllData();
         } else if (id == R.id.nav_settings) {
+
             AddVehicleDialogFrag addVehicle=new AddVehicleDialogFrag().newInstance();
             addVehicle.show(fragmentManager,"addVehicle");
+
 
         } else if (id == R.id.nav_send) {
 
@@ -204,6 +210,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences settings = getSharedPreferences("prefs", 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("currentVehicle",currentCar);
+        editor.commit();
 
         Log.e("shared preferences","shared prefs: "+currentCar);
 

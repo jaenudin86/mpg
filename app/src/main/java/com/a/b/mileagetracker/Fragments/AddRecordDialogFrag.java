@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.InputType;
@@ -12,8 +15,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.a.b.mileagetracker.DataAccess.DropDownCursorAdapter;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
 import com.a.b.mileagetracker.R;
 
@@ -56,11 +62,21 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
 
         LayoutInflater inflater=getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.add_record, null);
+
+        final Spinner carSelector=(Spinner) view.findViewById(R.id.vehicle_dropdown_spinner);
+        final Cursor c=dbHelper.getAllDataFromKeyTable();
+        DropDownCursorAdapter dropDownAdapt = new DropDownCursorAdapter(getActivity(), c, 0);
+        carSelector.setAdapter(dropDownAdapt);
+        carSelector.setOnItemSelectedListener(dropDownAdapt);
+//        c.close();
+
         final EditText location= (EditText) view.findViewById(R.id.station_location);
-        final EditText vehicle = (EditText) view.findViewById(R.id.vehicle);
         final EditText mileage = (EditText) view.findViewById(R.id.mileage);
         final EditText gallons = (EditText) view.findViewById(R.id.gallons);
         final EditText price = (EditText) view.findViewById(R.id.price);
+
+        SharedPreferences sharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        String currentVehicle=sharedPrefs.getString("currentVehicleGUI", "car");
 
         dateView = (EditText) view.findViewById(R.id.date);
         dateView.setInputType(InputType.TYPE_NULL);
@@ -78,14 +94,15 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
                 convertDateFieldToInt();
 
                 try {
+//                    String carSelectorString= ((Cursor)carSelector.getSelectedItem()).getString(c.getColumnIndex("key_table"));
+//                    Log.e("carselector spinner","csst: "+carSelectorString);
                     dbHelper.addEntry(
-                            vehicle.getText().toString(),
                             Integer.parseInt(mileage.getText().toString()),
                             Double.parseDouble(gallons.getText().toString()),
                             Double.parseDouble(price.getText().toString()),
                             convertDateFieldToInt(),
                             location.getText().toString());
-                        mListener.onDialogAddVehicle();
+                        mListener.onDialogAddVehicle();  //close dialog from Activity
                 } catch (NumberFormatException e) {
                     Toast.makeText(getActivity(),"wrong number format",Toast.LENGTH_LONG).show();
                     e.printStackTrace();

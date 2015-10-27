@@ -49,7 +49,7 @@ public class OverallStatsFragment extends Fragment {
         View view = inflater.inflate(R.layout.overall_stats_fragment, container, false);
 
         Cursor c = dbHelper.getAllData();
-        if(c.getCount()>0) {
+        if(c!=null&& c.getCount()>0) {
 
             TextView mpgSinceLast = (TextView) view.findViewById(R.id.perfm_mpg_since_last);
             TextView mpgTotalView = (TextView) view.findViewById(R.id.perfm_mpg_overall);
