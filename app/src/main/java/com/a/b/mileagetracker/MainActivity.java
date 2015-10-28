@@ -5,13 +5,19 @@ import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.internal.view.menu.MenuBuilder;
+import android.support.v7.internal.widget.ActionBarOverlayLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,18 +27,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
+import com.a.b.mileagetracker.DataAccess.ToolBarCursorAdapter;
 import com.a.b.mileagetracker.Fragments.AddVehicleDialogFrag;
 import com.a.b.mileagetracker.Fragments.DatePicker;
 import com.a.b.mileagetracker.Fragments.AddRecordDialogFrag;
 import com.a.b.mileagetracker.Fragments.GraphFragment;
+import com.a.b.mileagetracker.Model.TestObject;
+import com.a.b.mileagetracker.Model.ToolbarSpinnerAdapter;
 import com.a.b.mileagetracker.testStuffs.ExportDatabase;
 import com.a.b.mileagetracker.testStuffs.MessageEvent;
 import com.a.b.mileagetracker.Fragments.AllHistoryFragment;
 import com.a.b.mileagetracker.Fragments.OverallStatsFragment;
+
+import junit.framework.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
@@ -43,13 +59,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SimpleCursorAdapter cursorAdapter;
     private ListView listview;
     private DialogFragment newFragment;
+    private SharedPreferences mSharedPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("clicked??", "clicked maybe yes??");
+                toolbar.setTitle("clicked");
+
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +105,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 //        'getApplicationContext' to help with garbage collection
 //        dbHelper = new MySQLiteHelper(getApplicationContext());
+//        dbHelper = MySQLiteHelper.getInstance(getApplicationContext());
+
+//        int abTitleId=getResources().getIdentifier("action_bar_title", "id","android");
+//        findViewById(abTitleId).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.e("clicked the bar","clicked!!!!!!!");
+//            }
+//        });
+
+        mSharedPrefs=getSharedPreferences("prefs",0);
+        getSupportActionBar().setTitle(mSharedPrefs.getString("currentVehicleGUI", "defValue"));
+
+        View spinnerContainer = LayoutInflater.from(this).inflate(R.layout.toolbar_spinner, toolbar,false);
+        ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        toolbar.addView(spinnerContainer, lp);
+//        ToolbarSpinnerAdapter spinnerAdapter = new ToolbarSpinnerAdapter(getApplicationContext());
+//
+//        TestObject testObj1=new TestObject();
+//        TestObject testObj2=new TestObject();
+//        testObj1.setName("97 Honda Accord");
+//        testObj2.setName("2008 Ferrari Murciélago");
+//        List to = new ArrayList<TestObject>();
+//        to.add(testObj1);
+//        to.add(testObj2);
+//
+//        spinnerAdapter.addItems(to);
+//        Spinner spinner =(Spinner) spinnerContainer.findViewById(R.id.toolbar_spinner);
+//        spinner.setAdapter(spinnerAdapter);
+
         dbHelper = MySQLiteHelper.getInstance(getApplicationContext());
+        final Cursor c=dbHelper.getAllDataFromKeyTable();
+        c.moveToFirst();
+        Log.e("cursor","cursor: "+c);
+
+        ToolBarCursorAdapter toolBarAdapter = new ToolBarCursorAdapter(getApplicationContext(), c,0);
+        Spinner spinner =(Spinner) spinnerContainer.findViewById(R.id.toolbar_spinner);
+        spinner.setAdapter(toolBarAdapter);
+        spinner.setOnItemSelectedListener(toolBarAdapter);
     }
 
     public void showCarSelectorDialog(){
@@ -105,8 +169,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -114,10 +180,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
+        Log.e("settings","settings selected00 actionbar");
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Log.e("settings","settings selected00");
             return true;
         }
 

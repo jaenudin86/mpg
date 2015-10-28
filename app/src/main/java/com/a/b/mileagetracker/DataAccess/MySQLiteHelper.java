@@ -85,7 +85,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        if (db != null) {
+        if (db == null) {
             db = getWritableDatabase();
         }
         Log.e("MySQLiteHelper called", "MySQLiteHelper called onCreate()");
@@ -248,6 +248,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     @Override
     public Cursor getAllDataFromKeyTable() {
+        db = getWritableDatabase();
         Cursor c=db.rawQuery("SELECT * FROM "+KEY_TABLE_NAME,null);
         return c;
     }
@@ -257,7 +258,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     }
 
-    private class  LoadThread extends Thread{
+    private class LoadThread extends Thread{
         private int position=-1;
         private String location;
         LoadThread(String location){
