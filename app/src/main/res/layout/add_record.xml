@@ -25,11 +25,15 @@
             android:text="Vehicle: "
             android:layout_marginLeft="30dp"/>
 
-        <Spinner
+        <!--<Spinner-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/vehicle_dropdown_spinner"></Spinner>-->
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/vehicle_dropdown_spinner"></Spinner>
-
+            android:id="@+id/current_vehicle_add_record_frag"
+            android:textSize="20dp"/>
 
         <!--<EditText-->
             <!--android:id="@+id/vehicle"-->

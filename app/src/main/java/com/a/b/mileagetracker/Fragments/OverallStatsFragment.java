@@ -13,11 +13,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
+import com.a.b.mileagetracker.Model.MessageEvent;
 import com.a.b.mileagetracker.R;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Andrew on 10/22/2015.
@@ -27,14 +30,17 @@ public class OverallStatsFragment extends Fragment {
     public MySQLiteHelper dbHelper;
     private int mMilesRecent=0;
     private int mMilesTotal=0;
+    private TextView mpgSinceLast;
+    private TextView mpgTotalView;
+    private TextView milesTravelled;
+    private TextView totalMilesTravelled;
+    private TextView totalAmountSpent;
+    private TextView conclusion;
+    private Double mpgRecent;
+    private Double mpgTotal;
 
     public OverallStatsFragment(){
 
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
     }
 
     @Override
@@ -48,36 +54,45 @@ public class OverallStatsFragment extends Fragment {
         dbHelper=MySQLiteHelper.getInstance(getActivity().getApplicationContext());
         View view = inflater.inflate(R.layout.overall_stats_fragment, container, false);
 
-        Cursor c = dbHelper.getAllData();
-        if(c!=null&& c.getCount()>0) {
+        mpgSinceLast = (TextView) view.findViewById(R.id.perfm_mpg_since_last);
+        mpgTotalView = (TextView) view.findViewById(R.id.perfm_mpg_overall);
+        milesTravelled = (TextView) view.findViewById(R.id.perfm_miles_travelled);
+        totalMilesTravelled = (TextView) view.findViewById(R.id.perfm_miles_travelled_total);
+        totalAmountSpent = (TextView) view.findViewById(R.id.perfm_spent_total);
+        conclusion = (TextView) view.findViewById(R.id.perfm_conclusion);
 
-            TextView mpgSinceLast = (TextView) view.findViewById(R.id.perfm_mpg_since_last);
-            TextView mpgTotalView = (TextView) view.findViewById(R.id.perfm_mpg_overall);
-            TextView milesTravelled = (TextView) view.findViewById(R.id.perfm_miles_travelled);
-            TextView totalMilesTravelled = (TextView) view.findViewById(R.id.perfm_miles_travelled_total);
-            TextView totalAmountSpent = (TextView) view.findViewById(R.id.perfm_spent_total);
-            TextView conclusion = (TextView) view.findViewById(R.id.perfm_conclusion);
+        displayCurrentVehicleStats();
 
-            mMilesRecent = getMilesSinceLast();
-            mMilesTotal = getMilesTotal();
-            Double mpgRecent=getMpgRecent();
-            Double mpgTotal=getMpgTotal();
-
-            mpgSinceLast.setText((mpgRecent>0?"Most recent: "+mpgRecent+" mpg": null));
-            mpgTotalView.setText((mpgTotal>0?"Total: "+mpgTotal+" mpg":"Need 2 or more data points to calculate MPG. Please Add another record"));
-            milesTravelled.setText((mpgRecent>0?"Miles since last record: " + mpgRecent:null));
-            totalMilesTravelled.setText((mMilesTotal>0?"Total miles tracked: " + mMilesTotal:null));
-            totalAmountSpent.setText("$ " + dbHelper.getTotalAmountSpent() + " since "+getLastDate());
-
-            logData();
-        }else{
-            TextView noData=(TextView) view.findViewById(R.id.perfm_miles_travelled);
-            TextView noDataL2=(TextView) view.findViewById(R.id.perfm_spent_total);
-            noData.setText("No data collected!");
-            noDataL2.setText("Click \"Add Record\" to get started");
-        }
         return view;
     }
+    private void displayCurrentVehicleStats(){
+//        Cursor c = dbHelper.getAllData().getCount();
+//        if(c!=null&& c.getCount()?>0) {
+        if(dbHelper.getAllData().getCount()>0){
+            displayResults();
+            logData();
+        }else{
+            noRecordForCurrentVehicle();
+        }
+    }
+
+    private void displayResults(){
+        mMilesRecent = getMilesSinceLast();
+        mMilesTotal = getMilesTotal();
+        mpgRecent=getMpgRecent();
+        mpgTotal=getMpgTotal();
+
+        mpgSinceLast.setText((mpgRecent>0?"Most recent: "+mpgRecent+" mpg": null));
+        mpgTotalView.setText((mpgTotal>0?"Total: "+mpgTotal+" mpg":"Need 2 or more data points to calculate MPG. Please Add another record"));
+        milesTravelled.setText((mpgRecent>0?"Miles since last record: " + mpgRecent:null));
+        totalMilesTravelled.setText((mMilesTotal>0?"Total miles tracked: " + mMilesTotal:null));
+        totalAmountSpent.setText("$ " + dbHelper.getTotalAmountSpent() + " since "+getLastDate());
+    }
+    private void noRecordForCurrentVehicle(){
+        milesTravelled.setText("No data collected for selected vehicle!");
+        totalAmountSpent.setText("Click \"Add Record\" to get started");
+    }
+
     private Double getMpgRecent(){
         Double gallons;
         Cursor cQuant=dbHelper.getQuantityColumn();
@@ -131,13 +146,8 @@ public class OverallStatsFragment extends Fragment {
         Date date=new Date(dbHelper.getLastDate()*1000);
         java.text.DateFormat format=new SimpleDateFormat("MM/dd/yyyy");
         String formatted = format.format(date);
-
-
-
         return formatted;
     }
-
-
 //    private int getMilesTotal(Cursor c){
 //        int last=0,first = 0;
 //        if(c!=null && c.moveToLast()) {
@@ -197,5 +207,19 @@ public class OverallStatsFragment extends Fragment {
             }
         }
 //        c.close();
+    }
+    public void onEvent(MessageEvent event){
+        displayCurrentVehicleStats();
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 }

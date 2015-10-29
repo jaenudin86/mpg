@@ -2,19 +2,16 @@ package com.a.b.mileagetracker;
 
 import android.app.Dialog;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
-import android.support.v7.internal.view.menu.MenuBuilder;
-import android.support.v7.internal.widget.ActionBarOverlayLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -32,34 +29,32 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
 import com.a.b.mileagetracker.DataAccess.ToolBarCursorAdapter;
 import com.a.b.mileagetracker.Fragments.AddVehicleDialogFrag;
 import com.a.b.mileagetracker.Fragments.DatePicker;
 import com.a.b.mileagetracker.Fragments.AddRecordDialogFrag;
+import com.a.b.mileagetracker.Fragments.EditHistoryEntryFragment;
 import com.a.b.mileagetracker.Fragments.GraphFragment;
-import com.a.b.mileagetracker.Model.TestObject;
-import com.a.b.mileagetracker.Model.ToolbarSpinnerAdapter;
 import com.a.b.mileagetracker.testStuffs.ExportDatabase;
-import com.a.b.mileagetracker.testStuffs.MessageEvent;
+import com.a.b.mileagetracker.Model.MessageEvent;
 import com.a.b.mileagetracker.Fragments.AllHistoryFragment;
 import com.a.b.mileagetracker.Fragments.OverallStatsFragment;
 
-import junit.framework.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import de.greenrobot.event.EventBus;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, AddRecordDialogFrag.DialogInterface {
-    AllHistoryFragment receiverTest;
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogInterfaces.DialogInterface {
     OverallStatsFragment overallStatsFragment;
-    private MySQLiteHelper dbHelper;
+    private MySQLiteHelper mDBHelper;
     private SimpleCursorAdapter cursorAdapter;
     private ListView listview;
-    private DialogFragment newFragment;
+    private DialogFragment dialogFragment;
+    private AddVehicleDialogFrag addVehicleDialogFrag;
+    private EditHistoryEntryFragment mEditEntryData;
     private SharedPreferences mSharedPrefs;
+    public static ToolBarCursorAdapter toolBarAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,26 +116,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View spinnerContainer = LayoutInflater.from(this).inflate(R.layout.toolbar_spinner, toolbar,false);
         ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         toolbar.addView(spinnerContainer, lp);
-//        ToolbarSpinnerAdapter spinnerAdapter = new ToolbarSpinnerAdapter(getApplicationContext());
-//
+
+//        ToolbarSpinnerAdapter spinnerAdapter = new ToolbarSpinnerAdapter(getApplicationContext());//
 //        TestObject testObj1=new TestObject();
 //        TestObject testObj2=new TestObject();
 //        testObj1.setName("97 Honda Accord");
 //        testObj2.setName("2008 Ferrari Murciélago");
 //        List to = new ArrayList<TestObject>();
 //        to.add(testObj1);
-//        to.add(testObj2);
-//
+//        to.add(testObj2);//
 //        spinnerAdapter.addItems(to);
 //        Spinner spinner =(Spinner) spinnerContainer.findViewById(R.id.toolbar_spinner);
 //        spinner.setAdapter(spinnerAdapter);
 
-        dbHelper = MySQLiteHelper.getInstance(getApplicationContext());
-        final Cursor c=dbHelper.getAllDataFromKeyTable();
+        mDBHelper = MySQLiteHelper.getInstance(getApplicationContext());
+        final Cursor c=mDBHelper.getAllDataFromKeyTable();
         c.moveToFirst();
-        Log.e("cursor","cursor: "+c);
+        Log.e("cursor", "cursor: " + c);
 
-        ToolBarCursorAdapter toolBarAdapter = new ToolBarCursorAdapter(getApplicationContext(), c,0);
+        toolBarAdapter = new ToolBarCursorAdapter(getApplicationContext(), c,0);
         Spinner spinner =(Spinner) spinnerContainer.findViewById(R.id.toolbar_spinner);
         spinner.setAdapter(toolBarAdapter);
         spinner.setOnItemSelectedListener(toolBarAdapter);
@@ -203,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_add_record) {
-            if(dbHelper.keyTableHasData()==false){
+            if(mDBHelper.keyTableHasData()==false){
                 AddVehicleDialogFrag addVehicle=new AddVehicleDialogFrag().newInstance();
                 addVehicle.show(fragmentManager,"addVehicle");
             }else {
@@ -214,8 +208,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     ftDialog.remove(prev);
                 }
                 ftDialog.addToBackStack(null);
-                newFragment = AddRecordDialogFrag.newInstance();
-                newFragment.show(ftDialog, "dialog");
+                dialogFragment = AddRecordDialogFrag.newInstance();
+                dialogFragment.show(ftDialog, "dialog");
             }
 
             // Handle the camera action
@@ -236,12 +230,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_graph) {
             GraphFragment graphFrag= GraphFragment.newInstance("sending message");
             ft.replace(R.id.fragment_holder, graphFrag).commit();
-
-            dbHelper.getAllData();
+            mDBHelper.getAllData();
         } else if (id == R.id.nav_settings) {
 
-            AddVehicleDialogFrag addVehicle=new AddVehicleDialogFrag().newInstance();
-            addVehicle.show(fragmentManager,"addVehicle");
+            addVehicleDialogFrag=new AddVehicleDialogFrag().newInstance();
+            addVehicleDialogFrag.show(fragmentManager,"addVehicle");
 
 
         } else if (id == R.id.nav_send) {
@@ -258,9 +251,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onDialogAddVehicle() {
-        Log.e("touched button","touched button, message received in Activity");
-        newFragment.dismiss();
+    public void onDialogAddEntryDismiss() {
+        dialogFragment.dismiss();
+    }
+
+    @Override
+    public void onDialogAddVehicleDismiss() {
+        addVehicleDialogFrag.dismiss();
+
+        mDBHelper = MySQLiteHelper.getInstance(getApplicationContext());
+        Cursor cursor=mDBHelper.getAllDataFromKeyTable();
+        toolBarAdapter.changeCursor(cursor);
+        toolBarAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void openEditVehicleEntryFragment() {
+//        FragmentManager fm = getFragmentManager();
+//        FragmentTransaction ft = fm.beginTransaction();
+//        Fragment mEditEntryData = new EditHistoryEntryFragment().newInstance();
+//        ft.replace(R.id.fragment_holder, mEditEntryData);
+//        mEditEntryData.show(ft, "editEntry");
+
+        EditHistoryEntryFragment editHistoryLineItem = new EditHistoryEntryFragment();
+        editHistoryLineItem.show(getSupportFragmentManager(),"editLineItem");
+
     }
 
     @Override
@@ -270,7 +285,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DatePicker datePicker = new DatePicker();
         ft.replace(R.id.fragment_holder, datePicker).commit();
         Log.e("onEditDate","onEditDate");
-
     }
 
     @Override
@@ -282,7 +296,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         editor.commit();
 
         Log.e("shared preferences","shared prefs: "+currentCar);
-
     }
 //    public void testExport(){
 //        boolean success = false;

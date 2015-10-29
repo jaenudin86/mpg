@@ -11,7 +11,10 @@ import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import com.a.b.mileagetracker.Model.MessageEvent;
 import com.a.b.mileagetracker.R;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Andrew on 10/27/2015.
@@ -24,7 +27,7 @@ public class ToolBarCursorAdapter extends CursorAdapter implements AdapterView.O
     public ToolBarCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         this.context = context;
-        cursor=c;
+        this.cursor=c;
         mInflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -43,12 +46,28 @@ public class ToolBarCursorAdapter extends CursorAdapter implements AdapterView.O
     }
 
     @Override
+    public void changeCursor(Cursor c) {
+        cursor=c;
+        super.changeCursor(cursor);
+    }
+
+    @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String currentVehicleGUI=cursor.getString(cursor.getColumnIndex("key_year"))+" "+cursor.getString(cursor.getColumnIndex("key_make"))+" "+cursor.getString(cursor.getColumnIndex("key_model"));
         String currentVehicle=cursor.getString(cursor.getColumnIndex("key_table"));
         Log.e("Selected!", "Selected!!!!!: row id: " + currentVehicle);
         SharedPreferences sharedPrefs=context.getSharedPreferences("prefs",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=sharedPrefs.edit();
+        editor.putString("currentVehicleGUI", currentVehicleGUI);
         editor.putString("currentVehicle",currentVehicle).commit();
+        EventBus.getDefault().post(new MessageEvent(currentVehicle));
+
+
+//        mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editPrefs=mSharedPrefs.edit();
+//        editPrefs.putString("currentVehicle",currentVehicle);
+//        editPrefs.putString("currentVehicleGUI", currentVehicleGUI);
+//        editPrefs.commit();
     }
 
     @Override

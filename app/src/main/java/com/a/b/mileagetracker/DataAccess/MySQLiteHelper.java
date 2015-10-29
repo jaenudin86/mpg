@@ -73,9 +73,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         mContext=context;
-        mSharedPrefs=this.mContext.getSharedPreferences("prefs",Context.MODE_PRIVATE);
-        currentVehicle=mSharedPrefs.getString("currentVehicle","null");
-        Log.e("MySQLiteHelper called", "MySQLiteHelper called, current vehicle: "+currentVehicle);
+        mSharedPrefs=this.mContext.getSharedPreferences("prefs", Context.MODE_PRIVATE);
     }
 
     /**
@@ -144,6 +142,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     @Override
     public void addEntry(int miles, double gallons, double price, long date, String location) {
+
+        currentVehicle=mSharedPrefs.getString("currentVehicle","null");
         logger("MySQLiteHelper.java addEntry: miles: " + miles + ", gals: " + gallons + ", $" + price + ", date: " + date + ", location: " + location);
 
         ContentValues values = new ContentValues();
@@ -164,6 +164,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     public Cursor getAllData() {
         db=getReadableDatabase();
         try {
+            currentVehicle=mSharedPrefs.getString("currentVehicle","null");
+            Log.e("cv", "current vehicle: "+currentVehicle);
             Cursor c=db.rawQuery("SELECT * FROM "+ currentVehicle +" ORDER BY "+COLUMN_DATE+" DESC", null);
             String names="";
             for(String s: c.getColumnNames()){
@@ -199,6 +201,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     @Override
     public Cursor getMilesColumn() {
+        currentVehicle=mSharedPrefs.getString("currentVehicle","null");
         Cursor c=db.query(currentVehicle, new String[] {COLUMN_MILEAGE}, null, null, null, null, null, null);
 
         return c;
@@ -206,6 +209,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     @Override
     public Cursor getSumGallons() {
+        currentVehicle=mSharedPrefs.getString("currentVehicle","null");
         Cursor c = db.rawQuery("SELECT SUM (" + COLUMN_QUANTITY + ") FROM " + currentVehicle, null);
         c.moveToFirst();
         if(c.getDouble(0)>0) {
@@ -217,12 +221,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     @Override
     public Cursor getQuantityColumn() {
+        currentVehicle=mSharedPrefs.getString("currentVehicle","null");
         Cursor c = db.query(currentVehicle, new String[]{COLUMN_QUANTITY},null,null,null,null,null);
         return c;
     }
 
     @Override
     public Double getTotalAmountSpent() {
+        currentVehicle=mSharedPrefs.getString("currentVehicle","null");
         Cursor cPrice=db.rawQuery("SELECT SUM (" + COLUMN_PRICE + ") FROM " + currentVehicle, null);
         cPrice.moveToFirst();
         if(cPrice.getDouble(0)>0) {
@@ -235,6 +241,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     @Override
     public int getLastDate() {
+        currentVehicle=mSharedPrefs.getString("currentVehicle","null");
         Cursor c=db.rawQuery("SELECT MAX("+COLUMN_DATE+") FROM "+ currentVehicle,null);
         c.moveToFirst();
         return Integer.parseInt(c.getString(0));
@@ -255,7 +262,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     @Override
     public void changeRecord(int id, String vehicle, int miles, double gallons, double price, int date) {
-
     }
 
     private class LoadThread extends Thread{
@@ -275,7 +281,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
                     getReadableDatabase().rawQuery("SELECT * FROM "+ KEY_TABLE_NAME +" WHERE position = ? ", args);
             c.getColumnCount();
 
-
             c.close();
         }
     }
@@ -283,7 +288,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         Log.e("DataDAOImplementation",log);
     }
     private class UpdateThread extends Thread{
-
     }
 }
 

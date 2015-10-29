@@ -17,8 +17,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
 import com.a.b.mileagetracker.DataAccess.DropDownCursorAdapter;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
 import com.a.b.mileagetracker.R;
@@ -35,7 +37,7 @@ import java.util.Locale;
 public class AddRecordDialogFrag extends DialogFragment implements View.OnClickListener{
 
     // Use this instance of the interface to deliver action events
-    DialogInterface mListener;
+    DialogInterfaces.DialogInterface mListener;
 //    SQLDao mSqlDao = new DataDAOImplementation();
 //    SQLDao mMySQLiteHelper;
     private MySQLiteHelper dbHelper;
@@ -43,11 +45,11 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
     private SimpleDateFormat dateFormatter;
     private EditText dateView;
 
-    public interface DialogInterface{
-        void onDialogAddVehicle();
-        void onEditDate();
-        void selectCurrentCar(String make, String model, int year);
-    }
+//    public interface DialogInterface{
+//        void onDialogAddEntryDismiss();
+//        void onEditDate();
+//        void selectCurrentCar(String make, String model, int year);
+//    }
 
     public AddRecordDialogFrag(){}
 
@@ -57,18 +59,16 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-//        mMySQLiteHelper = new MySQLiteHelper(getActivity().getApplicationContext());
         dbHelper=MySQLiteHelper.getInstance(getActivity().getApplicationContext());
 
         LayoutInflater inflater=getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.add_record, null);
 
-        final Spinner carSelector=(Spinner) view.findViewById(R.id.vehicle_dropdown_spinner);
-        final Cursor c=dbHelper.getAllDataFromKeyTable();
-        DropDownCursorAdapter dropDownAdapt = new DropDownCursorAdapter(getActivity(), c, 0);
-        carSelector.setAdapter(dropDownAdapt);
-        carSelector.setOnItemSelectedListener(dropDownAdapt);
-//        c.close();
+//        final Spinner carSelector=(Spinner) view.findViewById(R.id.vehicle_dropdown_spinner);
+//        final Cursor c=dbHelper.getAllDataFromKeyTable();
+//        DropDownCursorAdapter dropDownAdapt = new DropDownCursorAdapter(getActivity(), c, 0);
+//        carSelector.setAdapter(dropDownAdapt);
+//        carSelector.setOnItemSelectedListener(dropDownAdapt);
 
         final EditText location= (EditText) view.findViewById(R.id.station_location);
         final EditText mileage = (EditText) view.findViewById(R.id.mileage);
@@ -76,7 +76,9 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
         final EditText price = (EditText) view.findViewById(R.id.price);
 
         SharedPreferences sharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        String currentVehicle=sharedPrefs.getString("currentVehicleGUI", "car");
+        final TextView vehicle = (TextView) view.findViewById(R.id.current_vehicle_add_record_frag);
+//        String currentVehicle=sharedPrefs.getString("currentVehicleGUI", "car");
+        vehicle.setText(sharedPrefs.getString("currentVehicleGUI", "car"));
 
         dateView = (EditText) view.findViewById(R.id.date);
         dateView.setInputType(InputType.TYPE_NULL);
@@ -102,7 +104,7 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
                             Double.parseDouble(price.getText().toString()),
                             convertDateFieldToInt(),
                             location.getText().toString());
-                        mListener.onDialogAddVehicle();  //close dialog from Activity
+                        mListener.onDialogAddEntryDismiss();  //close dialog from Activity
                 } catch (NumberFormatException e) {
                     Toast.makeText(getActivity(),"wrong number format",Toast.LENGTH_LONG).show();
                     e.printStackTrace();
@@ -148,7 +150,7 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
         // Verify that the host activity implements the callback interface
         try {
             // Instantiate the NoticeDialogListener so we can send events to the host
-            mListener = (DialogInterface) activity;
+            mListener = (DialogInterfaces.DialogInterface) activity;
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(activity.toString()
