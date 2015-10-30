@@ -2,7 +2,6 @@ package com.a.b.mileagetracker;
 
 import android.app.Dialog;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
@@ -36,10 +35,10 @@ import com.a.b.mileagetracker.DataAccess.ToolBarCursorAdapter;
 import com.a.b.mileagetracker.Fragments.AddVehicleDialogFrag;
 import com.a.b.mileagetracker.Fragments.DatePicker;
 import com.a.b.mileagetracker.Fragments.AddRecordDialogFrag;
-import com.a.b.mileagetracker.Fragments.EditHistoryEntryFragment;
+import com.a.b.mileagetracker.Fragments.EditHistoryFragment;
 import com.a.b.mileagetracker.Fragments.GraphFragment;
 import com.a.b.mileagetracker.testStuffs.ExportDatabase;
-import com.a.b.mileagetracker.Model.MessageEvent;
+import com.a.b.mileagetracker.Events.RefreshHistoryListViewEvent;
 import com.a.b.mileagetracker.Fragments.AllHistoryFragment;
 import com.a.b.mileagetracker.Fragments.OverallStatsFragment;
 
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ListView listview;
     private DialogFragment dialogFragment;
     private AddVehicleDialogFrag addVehicleDialogFrag;
-    private EditHistoryEntryFragment mEditEntryData;
+    private EditHistoryFragment mEditEntryData;
     private SharedPreferences mSharedPrefs;
     public static ToolBarCursorAdapter toolBarAdapter;
 
@@ -219,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.replace(R.id.fragment_holder, allDataListViewFragment);
             ft.commit();
 
-            EventBus.getDefault().post(new MessageEvent("hello test from Activity"));
+            EventBus.getDefault().post(new RefreshHistoryListViewEvent("hello test from Activity"));
 
         } else if (id == R.id.nav_stats) {
 
@@ -256,8 +255,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //    }
 
     @Override
-    public void onDialogAddVehicleDismiss() {
+    public void onDialogAddVehicleDismiss(String tag) {
         addVehicleDialogFrag.dismiss();
+//        dismissDialogFragment(tag);
 
         mDBHelper = MySQLiteHelper.getInstance(getApplicationContext());
         Cursor cursor=mDBHelper.getAllDataFromKeyTable();
@@ -268,12 +268,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void dismissDialogFragment(String tag) {
         DialogFragment dF=(DialogFragment) getSupportFragmentManager().findFragmentByTag(tag);
-        dF.dismiss();
+        if(dF!=null){
+            dF.dismiss();
+        }
     }
 
     @Override
     public void openEditVehicleEntryFragment() {
-        EditHistoryEntryFragment editHistoryLineItem = new EditHistoryEntryFragment();
+        EditHistoryFragment editHistoryLineItem = new EditHistoryFragment();
         editHistoryLineItem.show(getSupportFragmentManager(), "editLineItem");
 //        editHistoryLineItem.setFieldsWithData();
     }

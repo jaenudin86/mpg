@@ -8,6 +8,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.text.DecimalFormat;
 
@@ -17,7 +18,7 @@ import java.text.DecimalFormat;
 public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     private static MySQLiteHelper singleton =null;
-    public SQLiteDatabase db;
+    public SQLiteDatabase mDb;
     private SharedPreferences mSharedPrefs;
     private Context mContext;
     public String currentVehicle="";
@@ -36,7 +37,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_LOCATION = "location";
     private static final String DATABASE_NAME = "GasAppDB";
-    private static final int DATABASE_VERSION = 29;
+    private static final int DATABASE_VERSION = 30;
     private static final String KEY_DB_CREATE="create table "
             + KEY_TABLE_NAME +" ("
             +"_id INTEGER "+
@@ -83,9 +84,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        if (db == null) {
-            db = getWritableDatabase();
-        }
+//        if (db == null) {
+//            db = getWritableDatabase();
+//        }
+        mDb=database;
         Log.e("MySQLiteHelper called", "MySQLiteHelper called onCreate()");
         try {
             database.execSQL(KEY_DB_CREATE);
@@ -116,17 +118,22 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     @Override
     public void createVehicleTable(int year, String make, String model, String vehicleKey) {
-        db.execSQL("create table "
-                +vehicleKey+"("
-                +"_id INTEGER "+
-                "PRIMARY KEY AUTOINCREMENT, "
-                +COLUMN_VEHICLE+" TEXT, "
-                +COLUMN_MILEAGE+" INTEGER, "
-                +COLUMN_QUANTITY+" FLOAT, "
-                +COLUMN_PRICE+" FLOAT, "
-                +COLUMN_DATE+" INTEGER, "
-                +COLUMN_LOCATION+" TEXT )");
-        addVehicleToKeyTable(year, make, model, vehicleKey);
+        try {
+            mDb.execSQL("create table "
+                    +vehicleKey+"("
+                    +"_id INTEGER "+
+                    "PRIMARY KEY AUTOINCREMENT, "
+                    +COLUMN_VEHICLE+" TEXT, "
+                    +COLUMN_MILEAGE+" INTEGER, "
+                    +COLUMN_QUANTITY+" FLOAT, "
+                    +COLUMN_PRICE+" FLOAT, "
+                    +COLUMN_DATE+" INTEGER, "
+                    +COLUMN_LOCATION+" TEXT )");
+            addVehicleToKeyTable(year, make, model, vehicleKey);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Toast.makeText(mContext.getApplicationContext(),"Invalid vehicle make or type",Toast.LENGTH_LONG).show();
+        }
     }
     public void addVehicleToKeyTable(int year, String make, String model, String vehicleKey){
         ContentValues values = new ContentValues();
@@ -134,7 +141,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         values.put(KEY_COLUMN_MAKE, make);
         values.put(KEY_COLUMN_MODEL, model);
         values.put(KEY_COLUMN_TABLE, vehicleKey);
-        db.insert(KEY_TABLE_NAME, KEY_COLUMN_MAKE, values);
+        mDb.insert(KEY_TABLE_NAME, KEY_COLUMN_MAKE, values);
     }
     public String cleanString(String input){
         return input.replaceAll("\\s","");
@@ -154,7 +161,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         values.put(COLUMN_LOCATION, location);
 
         if(currentVehicle!=null){
-            db.insert(currentVehicle, COLUMN_LOCATION, values);
+            mDb.insert(currentVehicle, COLUMN_LOCATION, values);
         }else{
             Log.e("SP","Shared preferences doesn't have current vehicle selected");
         }
@@ -164,8 +171,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     public void deleteEntry(long position) {
         String pos=Long.toString(position);
         currentVehicle=mSharedPrefs.getString("currentVehicle","null");
-        db=getWritableDatabase();
-        int result=db.delete(currentVehicle,"_id = ?", new String[] {pos});
+        mDb=getWritableDatabase();
+        int result=mDb.delete(currentVehicle,"_id = ?", new String[] {pos});
         Log.e("result","delete entry results ==> "+result+" for: "+currentVehicle+" at position: "+pos);
         getAllData(); //<--for testing only
 
@@ -173,36 +180,39 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     @Override
     public Cursor getAllData() {
-        db=getReadableDatabase();
+        mDb=getReadableDatabase();
         try {
-            currentVehicle=mSharedPrefs.getString("currentVehicle","null");
-            Log.e("cv", "current vehicle: "+currentVehicle);
-            Cursor c=db.rawQuery("SELECT * FROM "+ currentVehicle +" ORDER BY "+COLUMN_DATE+" DESC", null);
-            String names="";
-            for(String s: c.getColumnNames()){
-                names=names+s+", ";
+            currentVehicle=mSharedPrefs.getString("currentVehicle",null);
+            if(currentVehicle!=null){
+                Log.e("cv", "current vehicle: "+currentVehicle);
+                Cursor c=mDb.rawQuery("SELECT * FROM "+ currentVehicle +" ORDER BY "+COLUMN_DATE+" DESC", null);
+                String names="";
+                for(String s: c.getColumnNames()){
+                    names=names+s+", ";
+                }
+                logger("getAllData() method in MySqlHelper: ---start---");
+                Log.e("names", "column names: " + names);
+
+                if(c.moveToFirst()){
+                    String record="";
+                    do{
+                        record= String.format("%d _id , vehicle: %s, %d miles, %.3f gallons, %.2f dollars, date: %d, location %s",
+                                c.getInt(0),
+                                c.getString(1),
+                                c.getInt(2),
+                                c.getFloat(3),
+                                c.getFloat(4),
+                                c.getInt(5),
+                                c.getString(6));
+
+                        Log.e("record", "record: "+record);
+
+                    }while(c.moveToNext());
+                    logger("getAllData() method in MySqlHelper: ---end---");
+                }
+                return c;
             }
-            logger("getAllData() method in MySqlHelper: ---start---");
-            Log.e("names", "column names: " + names);
 
-            if(c.moveToFirst()){
-                String record="";
-                do{
-                    record= String.format("%d _id , vehicle: %s, %d miles, %.3f gallons, %.2f dollars, date: %d, location %s",
-                            c.getInt(0),
-                            c.getString(1),
-                            c.getInt(2),
-                            c.getFloat(3),
-                            c.getFloat(4),
-                            c.getInt(5),
-                            c.getString(6));
-
-                    Log.e("record", "record: "+record);
-
-                }while(c.moveToNext());
-                logger("getAllData() method in MySqlHelper: ---end---");
-            }
-            return c;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -213,7 +223,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     @Override
     public Cursor getMilesColumn() {
         currentVehicle=mSharedPrefs.getString("currentVehicle","null");
-        Cursor c=db.query(currentVehicle, new String[] {COLUMN_MILEAGE}, null, null, null, null, null, null);
+        Cursor c=mDb.query(currentVehicle, new String[] {COLUMN_MILEAGE}, null, null, null, null, null, null);
 
         return c;
     }
@@ -221,7 +231,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     @Override
     public Cursor getSumGallons() {
         currentVehicle=mSharedPrefs.getString("currentVehicle","null");
-        Cursor c = db.rawQuery("SELECT SUM (" + COLUMN_QUANTITY + ") FROM " + currentVehicle, null);
+        Cursor c = mDb.rawQuery("SELECT SUM (" + COLUMN_QUANTITY + ") FROM " + currentVehicle, null);
         c.moveToFirst();
         if(c.getDouble(0)>0) {
             return c;
@@ -233,14 +243,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     @Override
     public Cursor getQuantityColumn() {
         currentVehicle=mSharedPrefs.getString("currentVehicle","null");
-        Cursor c = db.query(currentVehicle, new String[]{COLUMN_QUANTITY},null,null,null,null,null);
+        Cursor c = mDb.query(currentVehicle, new String[]{COLUMN_QUANTITY},null,null,null,null,null);
         return c;
     }
 
     @Override
     public Double getTotalAmountSpent() {
         currentVehicle=mSharedPrefs.getString("currentVehicle","null");
-        Cursor cPrice=db.rawQuery("SELECT SUM (" + COLUMN_PRICE + ") FROM " + currentVehicle, null);
+        Cursor cPrice=mDb.rawQuery("SELECT SUM (" + COLUMN_PRICE + ") FROM " + currentVehicle, null);
         cPrice.moveToFirst();
         if(cPrice.getDouble(0)>0) {
             DecimalFormat df = new DecimalFormat("#.##");
@@ -253,21 +263,21 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     @Override
     public int getLastDate() {
         currentVehicle=mSharedPrefs.getString("currentVehicle","null");
-        Cursor c=db.rawQuery("SELECT MAX("+COLUMN_DATE+") FROM "+ currentVehicle,null);
+        Cursor c=mDb.rawQuery("SELECT MAX("+COLUMN_DATE+") FROM "+ currentVehicle,null);
         c.moveToFirst();
         return Integer.parseInt(c.getString(0));
     }
 
     @Override
     public boolean keyTableHasData() {
-        Cursor c=db.rawQuery("SELECT * FROM "+KEY_TABLE_NAME,null);
+        Cursor c=mDb.rawQuery("SELECT * FROM "+KEY_TABLE_NAME,null);
         return c.getCount()>0? true:false;
     }
 
     @Override
     public Cursor getAllDataFromKeyTable() {
-        db = getWritableDatabase();
-        Cursor c=db.rawQuery("SELECT * FROM "+KEY_TABLE_NAME,null);
+        mDb = getWritableDatabase();
+        Cursor c=mDb.rawQuery("SELECT * FROM "+KEY_TABLE_NAME,null);
         return c;
     }
 

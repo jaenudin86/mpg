@@ -1,11 +1,9 @@
 package com.a.b.mileagetracker.Fragments;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
-import com.a.b.mileagetracker.Model.MessageEvent;
+import com.a.b.mileagetracker.Events.RefreshHistoryListViewEvent;
 import com.a.b.mileagetracker.R;
 
 import java.text.DecimalFormat;
@@ -68,7 +66,7 @@ public class OverallStatsFragment extends Fragment {
     private void displayCurrentVehicleStats(){
 //        Cursor c = dbHelper.getAllData().getCount();
 //        if(c!=null&& c.getCount()?>0) {
-        if(dbHelper.getAllData().getCount()>0){
+        if(dbHelper.getAllData()!=null&&dbHelper.getAllData().getCount()>0){
             displayResults();
             logData();
         }else{
@@ -208,7 +206,7 @@ public class OverallStatsFragment extends Fragment {
         }
 //        c.close();
     }
-    public void onEvent(MessageEvent event){
+    public void onEvent(RefreshHistoryListViewEvent event){
         displayCurrentVehicleStats();
     }
     @Override

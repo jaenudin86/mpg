@@ -6,7 +6,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.InputType;
@@ -15,14 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
-import com.a.b.mileagetracker.DataAccess.DropDownCursorAdapter;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
+import com.a.b.mileagetracker.Events.RefreshHistoryListViewEvent;
 import com.a.b.mileagetracker.R;
 
 import java.text.ParseException;
@@ -30,6 +27,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Andrew on 10/20/2015.
@@ -94,7 +93,6 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
             @Override
             public void onClick(View v) {
                 convertDateFieldToInt();
-
                 try {
 //                    String carSelectorString= ((Cursor)carSelector.getSelectedItem()).getString(c.getColumnIndex("key_table"));
 //                    Log.e("carselector spinner","csst: "+carSelectorString);
@@ -106,6 +104,7 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
                             location.getText().toString());
 //                        mListener.onDialogAddEntryDismiss();  //close dialog from Activity
                     mListener.dismissDialogFragment(getTag());
+                    EventBus.getDefault().post(new RefreshHistoryListViewEvent("refreshing"));
                 } catch (NumberFormatException e) {
                     Toast.makeText(getActivity(),"wrong number format",Toast.LENGTH_LONG).show();
                     e.printStackTrace();

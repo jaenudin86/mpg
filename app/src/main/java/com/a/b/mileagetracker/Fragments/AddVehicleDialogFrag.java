@@ -12,11 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
-import com.a.b.mileagetracker.DataAccess.SQLDao;
 import com.a.b.mileagetracker.R;
+
+import org.apache.commons.lang3.text.WordUtils;
 
 
 /**
@@ -45,29 +47,61 @@ public class AddVehicleDialogFrag extends DialogFragment {
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String currentVehicle=
-                        addMake.getText().toString()+
-                        addModel.getText().toString()+
-                        Integer.parseInt(addYear.getText().toString());
-                currentVehicle=currentVehicle.replaceAll("\\s", "");
+                try {
+                    String currentVehicle="\""+
+                            addMake.getText().toString()+
+                            addModel.getText().toString()+
+                            Integer.parseInt(addYear.getText().toString())+"\"";
+                    currentVehicle=currentVehicle.replaceAll("\\s", "");
 
-                String currentVehicleGUI=Integer.parseInt(addYear.getText().toString())+" "
-                        +addMake.getText().toString()+" "
-                        + addModel.getText().toString();
+//                    String make=addMake.getText().toString();
+//                    String model=addModel.getText().toString();
+//
+//                    WordUtils.capitalizeFully(make);
+//                    WordUtils.capitalizeFully(model);
+//                    make=WordUtils.capitalizeFully(make);
+//                    model=WordUtils.capitalizeFully(model);
+//
+//                    Log.e("errgnhrg","make/model: "+make+", "+model);
 
-                mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editPrefs=mSharedPrefs.edit();
-                editPrefs.putString("currentVehicle",currentVehicle);
-                editPrefs.putString("currentVehicleGUI", currentVehicleGUI);
-                editPrefs.commit();
+//                    make=WordUtils.capitalizeFully(addMake.getText().toString());
+//                    model=WordUtils.capitalizeFully(addModel.getText().toString());
+//                    String currentVehicleGUI=(Integer.parseInt(addYear.getText().toString())+" "+make+" "+model);
 
-                dbHelper.createVehicleTable(Integer.parseInt(addYear.getText().toString()),
-                        addMake.getText().toString(),
-                        addModel.getText().toString(),
-                        currentVehicle);
-                mListener.onDialogAddVehicleDismiss();
-//                mListener.dismissDialogFragment(getTag());
+                    int year=Integer.parseInt(addYear.getText().toString());
+                    String make=WordUtils.capitalizeFully(addMake.getText().toString());
+                    String model=WordUtils.capitalizeFully(addModel.getText().toString());
 
+                    String currentVehicleGUI=year+" "+make+" "+model;
+
+                    Log.e("currentVehicleGUI","currentVehicleGUI: "+currentVehicleGUI);
+
+//                    String currentVehicleGUI=Integer.parseInt(addYear.getText().toString())+" "
+//                            +addMake.getText().toString()+" "
+//                            + addModel.getText().toString();
+
+                    mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editPrefs=mSharedPrefs.edit();
+                    editPrefs.putString("currentVehicle", currentVehicle);
+                    editPrefs.putString("currentVehicleGUI", currentVehicleGUI);
+                    editPrefs.commit();
+                    try {
+                        String cv=currentVehicle;
+                        dbHelper.createVehicleTable(year,make,model,cv);
+
+//                        dbHelper.createVehicleTable(Integer.parseInt(addYear.getText().toString()),
+//                                addMake.getText().toString(),
+//                                addModel.getText().toString(),
+//                                currentVehicle);
+                        mListener.onDialogAddVehicleDismiss(getTag());
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getActivity(),"Invalid Car",Toast.LENGTH_LONG).show();
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(),"Invalid year, please try again",Toast.LENGTH_LONG).show();
+                }
             }
         });
 

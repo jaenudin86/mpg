@@ -27,4 +27,5 @@ dependencies {
     compile 'com.android.support:design:23.0.1'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile files('libs/opencsv-3.5.jar')
+    compile 'org.apache.commons:commons-lang3:3.0'
 }

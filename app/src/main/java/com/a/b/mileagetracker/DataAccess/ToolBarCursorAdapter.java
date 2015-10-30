@@ -11,7 +11,7 @@ import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import com.a.b.mileagetracker.Model.MessageEvent;
+import com.a.b.mileagetracker.Events.RefreshHistoryListViewEvent;
 import com.a.b.mileagetracker.R;
 
 import de.greenrobot.event.EventBus;
@@ -60,7 +60,7 @@ public class ToolBarCursorAdapter extends CursorAdapter implements AdapterView.O
         SharedPreferences.Editor editor=sharedPrefs.edit();
         editor.putString("currentVehicleGUI", currentVehicleGUI);
         editor.putString("currentVehicle",currentVehicle).commit();
-        EventBus.getDefault().post(new MessageEvent(currentVehicle));
+        EventBus.getDefault().post(new RefreshHistoryListViewEvent(currentVehicle));
 
 
 //        mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);

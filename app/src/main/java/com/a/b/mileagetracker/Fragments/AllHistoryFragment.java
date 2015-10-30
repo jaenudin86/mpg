@@ -19,9 +19,9 @@ import android.widget.Toast;
 import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
 import com.a.b.mileagetracker.DataAccess.HistoryCursorAdapter;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
-import com.a.b.mileagetracker.Model.EditHistoryEvent;
+import com.a.b.mileagetracker.Events.EditHistoryEvent;
 import com.a.b.mileagetracker.R;
-import com.a.b.mileagetracker.Model.MessageEvent;
+import com.a.b.mileagetracker.Events.RefreshHistoryListViewEvent;
 
 import de.greenrobot.event.EventBus;
 
@@ -94,7 +94,7 @@ public class AllHistoryFragment extends Fragment {
         return view;
     }
 
-    public void onEvent(MessageEvent event){
+    public void onEvent(RefreshHistoryListViewEvent event){
 
         mDBHelper = MySQLiteHelper.getInstance(getActivity().getApplicationContext());
         Cursor cursor=mDBHelper.getAllData();
@@ -104,7 +104,6 @@ public class AllHistoryFragment extends Fragment {
         header.setText("All entries for: "+event);
         Log.e("onEvent", "onEvent received");
 
-        Toast.makeText(getActivity(),event.message,Toast.LENGTH_LONG).show();
 //        String insert_query="INSERT INTO fillupTable (location) "+"VALUES ('bp')";
 //        db.execSQL(insert_query);
 //        Cursor c =db.rawQuery("SELECT _id, location FROM fillupTable",null);
