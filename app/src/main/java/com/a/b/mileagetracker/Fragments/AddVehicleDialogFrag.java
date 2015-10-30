@@ -48,37 +48,17 @@ public class AddVehicleDialogFrag extends DialogFragment {
             @Override
             public void onClick(View v) {
                 try {
-                    String currentVehicle="\""+
-                            addMake.getText().toString()+
-                            addModel.getText().toString()+
-                            Integer.parseInt(addYear.getText().toString())+"\"";
-                    currentVehicle=currentVehicle.replaceAll("\\s", "");
-
-//                    String make=addMake.getText().toString();
-//                    String model=addModel.getText().toString();
-//
-//                    WordUtils.capitalizeFully(make);
-//                    WordUtils.capitalizeFully(model);
-//                    make=WordUtils.capitalizeFully(make);
-//                    model=WordUtils.capitalizeFully(model);
-//
-//                    Log.e("errgnhrg","make/model: "+make+", "+model);
-
-//                    make=WordUtils.capitalizeFully(addMake.getText().toString());
-//                    model=WordUtils.capitalizeFully(addModel.getText().toString());
-//                    String currentVehicleGUI=(Integer.parseInt(addYear.getText().toString())+" "+make+" "+model);
-
                     int year=Integer.parseInt(addYear.getText().toString());
                     String make=WordUtils.capitalizeFully(addMake.getText().toString());
                     String model=WordUtils.capitalizeFully(addModel.getText().toString());
+                    
+                    make=make.trim();
+                    model=model.trim();
+
+                    String currentVehicle="\""+make+model+year+"\"";
+                    currentVehicle=currentVehicle.replaceAll("\\s", "");
 
                     String currentVehicleGUI=year+" "+make+" "+model;
-
-                    Log.e("currentVehicleGUI","currentVehicleGUI: "+currentVehicleGUI);
-
-//                    String currentVehicleGUI=Integer.parseInt(addYear.getText().toString())+" "
-//                            +addMake.getText().toString()+" "
-//                            + addModel.getText().toString();
 
                     mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editPrefs=mSharedPrefs.edit();
@@ -88,11 +68,6 @@ public class AddVehicleDialogFrag extends DialogFragment {
                     try {
                         String cv=currentVehicle;
                         dbHelper.createVehicleTable(year,make,model,cv);
-
-//                        dbHelper.createVehicleTable(Integer.parseInt(addYear.getText().toString()),
-//                                addMake.getText().toString(),
-//                                addModel.getText().toString(),
-//                                currentVehicle);
                         mListener.onDialogAddVehicleDismiss(getTag());
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
@@ -108,7 +83,6 @@ public class AddVehicleDialogFrag extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
         return builder.create();
-
     }
     // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
     @Override

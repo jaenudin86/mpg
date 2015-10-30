@@ -12,26 +12,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5248903d-43ec-4741-9598-91b94ca576cb" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Events/RefreshHistoryListViewEvent.java" />
       <change type="DELETED" beforePath="C:\Users\Andrew\MileageTracker\app\src\main\java\com\a\b\mileagetracker\Model\RefreshHistoryListview.java" afterPath="" />
-      <change type="MOVED" beforePath="C:\Users\Andrew\MileageTracker\app\src\main\java\com\a\b\mileagetracker\Fragments\EditHistoryEntryFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/EditHistoryFragment.java" />
-      <change type="MOVED" beforePath="C:\Users\Andrew\MileageTracker\app\src\main\java\com\a\b\mileagetracker\Model\EditHistoryEvent.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Events/EditHistoryEvent.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddRecordDialogFrag.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddRecordDialogFrag.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddVehicleDialogFrag.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddVehicleDialogFrag.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AllHistoryFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AllHistoryFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/DialogInterfaces.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/DialogInterfaces.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/MySQLiteHelper.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/MySQLiteHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/OverallStatsFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/OverallStatsFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/ToolBarCursorAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/ToolBarCursorAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" afterPath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local.properties" afterPath="$PROJECT_DIR$/local.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="MileageTracker.iws" />
@@ -79,10 +65,12 @@
           <file leaf-file-name="AddVehicleDialogFrag.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddVehicleDialogFrag.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.407669">
-                  <caret line="78" column="97" selection-start-line="78" selection-start-column="97" selection-end-line="78" selection-end-column="97" />
+                <state vertical-scroll-proportion="0.3481332">
+                  <caret line="53" column="20" selection-start-line="53" selection-start-column="20" selection-end-line="53" selection-end-column="20" />
                   <folding>
                     <element signature="imports" expanded="true" />
+                    <element signature="e#1689#3427#0" expanded="true" />
+                    <element signature="e#3426#3427#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -2049,7 +2037,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32973504" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.30520117" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" x="-1528" y="673" width="1528" height="484" />
+      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.30520117" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" x="-1528" y="673" width="1528" height="484" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32973504" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32973504" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -2603,10 +2591,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddVehicleDialogFrag.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.407669">
-          <caret line="78" column="97" selection-start-line="78" selection-start-column="97" selection-end-line="78" selection-end-column="97" />
+        <state vertical-scroll-proportion="0.3481332">
+          <caret line="53" column="20" selection-start-line="53" selection-start-column="20" selection-end-line="53" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1689#3427#0" expanded="true" />
+            <element signature="e#3426#3427#0" expanded="true" />
           </folding>
         </state>
       </provider>
