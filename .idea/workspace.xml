@@ -12,11 +12,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5248903d-43ec-4741-9598-91b94ca576cb" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/DialogInterfaces.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/EditHistoryEntryFragment.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/edit_record.xml" />
-      <change type="MOVED" beforePath="C:\Users\Andrew\MileageTracker\app\src\main\java\com\a\b\mileagetracker\DataAccess\MyCursorAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/HistoryCursorAdapter.java" />
-      <change type="MOVED" beforePath="C:\Users\Andrew\MileageTracker\app\src\main\java\com\a\b\mileagetracker\testStuffs\MessageEvent.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Model/MessageEvent.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Model/EditHistoryEvent.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" />
@@ -24,16 +20,12 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddRecordDialogFrag.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddRecordDialogFrag.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddVehicleDialogFrag.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddVehicleDialogFrag.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AllHistoryFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AllHistoryFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/DropDownCursorAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/DropDownCursorAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Model/GasEntry.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Model/GasEntry.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/DialogInterfaces.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/DialogInterfaces.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/EditHistoryEntryFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/EditHistoryEntryFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/MainActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/MySQLiteHelper.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/MySQLiteHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/OverallStatsFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/OverallStatsFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/Testing.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/Testing.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/ToolBarCursorAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/ToolBarCursorAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Model/ToolbarSpinnerAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Model/ToolbarSpinnerAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/add_record.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/add_record.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/SQLDao.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/SQLDao.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/edit_record.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/edit_record.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="MileageTracker.iws" />
@@ -61,60 +53,42 @@
     <favorites_list name="MileageTracker" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.48056087">
+    <splitter split-orientation="horizontal" split-proportion="0.45251754">
       <split-first>
         <leaf>
           <file leaf-file-name="AddVehicleDialogFrag.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddVehicleDialogFrag.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="28" column="36" selection-start-line="0" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
+                  <caret line="65" column="53" selection-start-line="65" selection-start-column="53" selection-end-line="65" selection-end-column="53" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="add_record.xml" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/add_record.xml">
-              <provider editor-type-id="android-designer">
-                <state />
-              </provider>
+          <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/MainActivity.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-7.62069">
-                  <caret line="13" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="182" selection-end-column="15" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="edit_record.xml" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/edit_record.xml">
-              <provider editor-type-id="android-designer">
-                <state />
-              </provider>
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.7879418">
-                  <caret line="175" column="37" selection-start-line="175" selection-start-column="37" selection-end-line="176" selection-end-column="40" />
+                <state vertical-scroll-proportion="-5.7586207">
+                  <caret line="255" column="7" selection-start-line="255" selection-start-column="7" selection-end-line="255" selection-end-column="7" />
                   <folding>
-                    <element signature="e#433#465#0" expanded="true" />
-                    <element signature="e#1871#1895#0" expanded="true" />
-                    <element signature="e#2668#2692#0" expanded="true" />
-                    <element signature="e#3614#3638#0" expanded="true" />
-                    <element signature="e#4551#4575#0" expanded="true" />
-                    <element signature="e#5396#5420#0" expanded="true" />
+                    <element signature="imports" expanded="true" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="EditHistoryEntryFragment.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="EditHistoryEntryFragment.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/EditHistoryEntryFragment.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-19.827587">
-                  <caret line="96" column="36" selection-start-line="96" selection-start-column="36" selection-end-line="96" selection-end-column="36" />
+                <state vertical-scroll-proportion="0.8762994">
+                  <caret line="202" column="24" selection-start-line="202" selection-start-column="24" selection-end-line="202" selection-end-column="24" />
                   <folding>
-                    <element signature="e#3099#4166#0" expanded="true" />
-                    <element signature="e#4165#4166#0" expanded="true" />
+                    <element signature="imports" expanded="true" />
+                    <element signature="e#2904#3739#0" expanded="true" />
+                    <element signature="e#3738#3739#0" expanded="true" />
+                    <element signature="e#5975#6369#0" expanded="true" />
+                    <element signature="e#6368#6369#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -124,17 +98,21 @@
             <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/DialogInterfaces.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+                  <caret line="9" column="38" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="38" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/MainActivity.java">
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="MessageEvent.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Model/MessageEvent.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-21.0">
-                  <caret line="265" column="5" selection-start-line="265" selection-start-column="5" selection-end-line="265" selection-end-column="5" />
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -144,47 +122,31 @@
             <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AllHistoryFragment.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="125" column="13" selection-start-line="125" selection-start-column="13" selection-end-line="125" selection-end-column="13" />
+                  <caret line="93" column="20" selection-start-line="93" selection-start-column="20" selection-end-line="93" selection-end-column="20" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#3146#3518#0" expanded="true" />
-                    <element signature="e#3517#3518#0" expanded="true" />
+                    <element signature="e#3206#3715#0" expanded="true" />
+                    <element signature="e#3714#3715#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="ToolBarCursorAdapter.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/ToolBarCursorAdapter.java">
+          <file leaf-file-name="MySQLiteHelper.java" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/MySQLiteHelper.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file leaf-file-name="AddRecordDialogFrag.java" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddRecordDialogFrag.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.051463168">
-                  <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.2972973">
+                  <caret line="161" column="0" selection-start-line="161" selection-start-column="0" selection-end-line="161" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="HistoryCursorAdapter.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/HistoryCursorAdapter.java">
+          <file leaf-file-name="AddRecordDialogFrag.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddRecordDialogFrag.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="55" />
+                  <caret line="107" column="42" selection-start-line="107" selection-start-column="42" selection-end-line="107" selection-end-column="42" />
                   <folding />
                 </state>
               </provider>
@@ -199,8 +161,8 @@
       <list>
         <option value="Interface" />
         <option value="valueResourceFile" />
-        <option value="Class" />
         <option value="layoutResourceFile_vertical" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -1640,7 +1602,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/DataDAOImplementation.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/testStuffs/OverallStatsFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_holder.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/testStuffs/FragmentHolder.java" />
@@ -1658,7 +1619,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/add_vehicle.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/nav_header_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/activity_main_drawer.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/SQLDao.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/receiver_test_fragment.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/advanced_list_item.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/dropdown_listitem.xml" />
@@ -1674,23 +1634,25 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Model/GasEntry.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/Testing.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Model/MessageEvent.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/MySQLiteHelper.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/DropDownCursorAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddVehicleDialogFrag.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Model/ToolbarSpinnerAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/MyCursorAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddRecordDialogFrag.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/ToolBarCursorAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/DialogInterfaces.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/HistoryCursorAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/OverallStatsFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AllHistoryFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/EditVehicleEntryFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/add_record.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/EditHistoryEntryFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/edit_record.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddRecordDialogFrag.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/DialogInterfaces.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddVehicleDialogFrag.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/MySQLiteHelper.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/SQLDao.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Model/EditHistoryEvent.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AllHistoryFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/EditHistoryEntryFragment.java" />
       </list>
     </option>
   </component>
@@ -2218,16 +2180,16 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32973504" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.30520117" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" x="-1528" y="673" width="1528" height="484" />
+      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.30520117" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" x="-1528" y="673" width="1528" height="484" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32973504" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32973504" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16364606" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2404318" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3002944" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" x="-469" y="25" width="469" height="1019" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
@@ -2269,88 +2231,49 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/MySQLiteHelper.java</url>
-          <line>212</line>
+          <line>223</line>
           <properties />
           <option name="timeStamp" value="32" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/MySQLiteHelper.java</url>
-          <line>224</line>
+          <line>235</line>
           <properties />
           <option name="timeStamp" value="33" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/MySQLiteHelper.java</url>
-          <line>231</line>
+          <line>242</line>
           <properties />
           <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/MySQLiteHelper.java</url>
-          <line>244</line>
+          <line>255</line>
           <properties />
           <option name="timeStamp" value="35" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/MySQLiteHelper.java</url>
-          <line>188</line>
+          <line>199</line>
           <properties />
           <option name="timeStamp" value="42" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/MySQLiteHelper.java</url>
-          <line>258</line>
+          <line>269</line>
           <properties />
           <option name="timeStamp" value="48" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddVehicleDialogFrag.java</url>
-          <line>67</line>
-          <properties />
-          <option name="timeStamp" value="50" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="57" />
+      <option name="time" value="69" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-23/android/database/sqlite/SQLiteDatabase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33299696">
-          <caret line="1603" column="16" selection-start-line="1603" selection-start-column="16" selection-end-line="1603" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/date_picker_fragment.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44178793">
-          <caret line="25" column="15" selection-start-line="25" selection-start-column="15" selection-end-line="25" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/DatePicker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5093555">
-          <caret line="36" column="53" selection-start-line="36" selection-start-column="53" selection-end-line="36" selection-end-column="53" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1782#2181#0" expanded="false" />
-            <element signature="e#2180#2181#0" expanded="false" />
-            <element signature="e#2354#2750#0" expanded="false" />
-            <element signature="e#2749#2750#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-23/android/os/Handler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.57315844">
@@ -2558,14 +2481,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/SQLDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="18" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/themes.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.1587137">
@@ -2635,26 +2550,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/MySQLiteHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.24138">
-          <caret line="163" column="18" selection-start-line="163" selection-start-column="18" selection-end-line="163" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/DropDownCursorAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.4631685">
           <caret line="38" column="75" selection-start-line="38" selection-start-column="75" selection-end-line="38" selection-end-column="75" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Model/MessageEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.08577195">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
           <folding />
         </state>
       </provider>
@@ -2678,27 +2577,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddVehicleDialogFrag.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="28" column="36" selection-start-line="0" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/OverallStatsFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.27962577">
-          <caret line="43" column="5" selection-start-line="43" selection-start-column="5" selection-end-line="43" selection-end-column="5" />
-          <folding>
-            <element signature="e#1253#1254#0" expanded="true" />
-            <element signature="e#1303#1304#0" expanded="true" />
-            <element signature="e#7166#7167#0" expanded="true" />
-            <element signature="e#7210#7211#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/ToolBarCursorAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2706,72 +2584,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/HistoryCursorAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddRecordDialogFrag.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.051463168">
-          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AllHistoryFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="125" column="13" selection-start-line="125" selection-start-column="13" selection-end-line="125" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3146#3518#0" expanded="true" />
-            <element signature="e#3517#3518#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-21.0">
-          <caret line="265" column="5" selection-start-line="265" selection-start-column="5" selection-end-line="265" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/add_record.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.62069">
-          <caret line="13" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="182" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/EditHistoryEntryFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-19.827587">
-          <caret line="96" column="36" selection-start-line="96" selection-start-column="36" selection-end-line="96" selection-end-column="36" />
-          <folding>
-            <element signature="e#3099#4166#0" expanded="true" />
-            <element signature="e#4165#4166#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/DialogInterfaces.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2783,21 +2595,152 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/add_record.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21205822">
+          <caret line="12" column="41" selection-start-line="12" selection-start-column="41" selection-end-line="12" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/edit_record.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7879418">
-          <caret line="175" column="37" selection-start-line="175" selection-start-column="37" selection-end-line="176" selection-end-column="40" />
+        <state vertical-scroll-proportion="0.35343036">
+          <caret line="20" column="17" selection-start-line="20" selection-start-column="17" selection-end-line="20" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/AppData/Local/Android/sdk/extras/android/m2repository/com/android/support/support-v4/23.0.1/support-v4-23.0.1-sources.jar!/android/support/v4/app/DialogFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22300707">
+          <caret line="43" column="13" selection-start-line="43" selection-start-column="13" selection-end-line="43" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/OverallStatsFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="210" column="36" selection-start-line="210" selection-start-column="24" selection-end-line="210" selection-end-column="36" />
           <folding>
-            <element signature="e#433#465#0" expanded="true" />
-            <element signature="e#1871#1895#0" expanded="true" />
-            <element signature="e#2668#2692#0" expanded="true" />
-            <element signature="e#3614#3638#0" expanded="true" />
-            <element signature="e#4551#4575#0" expanded="true" />
-            <element signature="e#5396#5420#0" expanded="true" />
+            <element signature="e#7166#7167#0" expanded="true" />
+            <element signature="e#7210#7211#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/DialogInterfaces.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="38" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.7586207">
+          <caret line="255" column="7" selection-start-line="255" selection-start-column="7" selection-end-line="255" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddRecordDialogFrag.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="107" column="42" selection-start-line="107" selection-start-column="42" selection-end-line="107" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/HistoryCursorAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5539859">
+          <caret line="55" column="8" selection-start-line="55" selection-start-column="8" selection-end-line="55" selection-end-column="80" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Model/MessageEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-23/android/database/Cursor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33299696">
+          <caret line="99" column="12" selection-start-line="99" selection-start-column="12" selection-end-line="99" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/SQLDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.42885974">
+          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AddVehicleDialogFrag.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="65" column="53" selection-start-line="65" selection-start-column="53" selection-end-line="65" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Model/EditHistoryEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24016145">
+          <caret line="14" column="32" selection-start-line="14" selection-start-column="32" selection-end-line="14" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/EditHistoryEntryFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8762994">
+          <caret line="202" column="24" selection-start-line="202" selection-start-column="24" selection-end-line="202" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2904#3739#0" expanded="true" />
+            <element signature="e#3738#3739#0" expanded="true" />
+            <element signature="e#5975#6369#0" expanded="true" />
+            <element signature="e#6368#6369#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/Fragments/AllHistoryFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="93" column="20" selection-start-line="93" selection-start-column="20" selection-end-line="93" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3206#3715#0" expanded="true" />
+            <element signature="e#3714#3715#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/a/b/mileagetracker/DataAccess/MySQLiteHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2972973">
+          <caret line="161" column="0" selection-start-line="161" selection-start-column="0" selection-end-line="161" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

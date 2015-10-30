@@ -250,10 +250,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    @Override
-    public void onDialogAddEntryDismiss() {
-        dialogFragment.dismiss();
-    }
+//    @Override
+//    public void onDialogAddEntryDismiss() {
+//        dialogFragment.dismiss();
+//    }
 
     @Override
     public void onDialogAddVehicleDismiss() {
@@ -266,16 +266,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    public void dismissDialogFragment(String tag) {
+        DialogFragment dF=(DialogFragment) getSupportFragmentManager().findFragmentByTag(tag);
+        dF.dismiss();
+    }
+
+    @Override
     public void openEditVehicleEntryFragment() {
-//        FragmentManager fm = getFragmentManager();
-//        FragmentTransaction ft = fm.beginTransaction();
-//        Fragment mEditEntryData = new EditHistoryEntryFragment().newInstance();
-//        ft.replace(R.id.fragment_holder, mEditEntryData);
-//        mEditEntryData.show(ft, "editEntry");
-
         EditHistoryEntryFragment editHistoryLineItem = new EditHistoryEntryFragment();
-        editHistoryLineItem.show(getSupportFragmentManager(),"editLineItem");
-
+        editHistoryLineItem.show(getSupportFragmentManager(), "editLineItem");
+//        editHistoryLineItem.setFieldsWithData();
     }
 
     @Override

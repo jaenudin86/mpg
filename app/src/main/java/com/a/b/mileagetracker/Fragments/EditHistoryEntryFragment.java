@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.InputType;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
+import com.a.b.mileagetracker.Model.EditHistoryEvent;
 import com.a.b.mileagetracker.R;
 
 import java.text.ParseException;
@@ -27,31 +29,31 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import de.greenrobot.event.EventBus;
+
 /**
  * Created by Andrew on 10/20/2015.
  */
 public class EditHistoryEntryFragment extends DialogFragment implements View.OnClickListener{
 
-    // Use this instance of the interface to deliver action events
     DialogInterfaces.DialogInterface mListener;
-    //    SQLDao mSqlDao = new DataDAOImplementation();
-//    SQLDao mMySQLiteHelper;
     private MySQLiteHelper dbHelper;
     private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
     private EditText dateView;
+    private EditText location;
+    private EditText mileage;
+    private EditText gallons;
+    private EditText price;
+    private Button deleteButton;
+    private long mId;
 
-//    public interface DialogInterface{
-//        void onDialogAddEntryDismiss();
-//        void onEditDate();
-//        void selectCurrentCar(String make, String model, int year);
-//    }
-
-    public EditHistoryEntryFragment(){}
-
-    public static EditHistoryEntryFragment newInstance(){
-        return new EditHistoryEntryFragment();
+    public EditHistoryEntryFragment(){
     }
+
+//    public static EditHistoryEntryFragment newInstance(){
+//        return new EditHistoryEntryFragment();
+//    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -60,41 +62,36 @@ public class EditHistoryEntryFragment extends DialogFragment implements View.OnC
         LayoutInflater inflater=getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.edit_record, null);
 
-        final EditText location= (EditText) view.findViewById(R.id.station_location);
-        final EditText mileage = (EditText) view.findViewById(R.id.mileage);
-        final EditText gallons = (EditText) view.findViewById(R.id.gallons);
-        final EditText price = (EditText) view.findViewById(R.id.price);
+        location= (EditText) view.findViewById(R.id.edit_station_location);
+        mileage = (EditText) view.findViewById(R.id.edit_mileage);
+        gallons = (EditText) view.findViewById(R.id.edit_gallons);
+        price = (EditText) view.findViewById(R.id.edit_price);
+        dateView = (EditText) view.findViewById(R.id.edit_date);
 
         SharedPreferences sharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        final TextView vehicle = (TextView) view.findViewById(R.id.current_vehicle_add_record_frag);
-//        String currentVehicle=sharedPrefs.getString("currentVehicleGUI", "car");
+        final TextView vehicle = (TextView) view.findViewById(R.id.current_vehicle_edit_record_frag);
         vehicle.setText(sharedPrefs.getString("currentVehicleGUI", "car"));
 
-        dateView = (EditText) view.findViewById(R.id.date);
         dateView.setInputType(InputType.TYPE_NULL);
         dateView.setOnClickListener(this);
 
         dateFormatter=new SimpleDateFormat("MMM-dd-yyyy", Locale.US);
-        dateView.setText(dateFormatter.format(new Date()));
 
         setDateField();
 
-        Button bt=(Button) view.findViewById(R.id.edit_details_submit_button);
-        bt.setOnClickListener(new View.OnClickListener() {
+        Button editButton=(Button) view.findViewById(R.id.edit_details_submit_button);
+        editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                convertDateFieldToInt();
-
+//                convertDateFieldToInt();
                 try {
-//                    String carSelectorString= ((Cursor)carSelector.getSelectedItem()).getString(c.getColumnIndex("key_table"));
-//                    Log.e("carselector spinner","csst: "+carSelectorString);
                     dbHelper.addEntry(
                             Integer.parseInt(mileage.getText().toString()),
                             Double.parseDouble(gallons.getText().toString()),
                             Double.parseDouble(price.getText().toString()),
                             convertDateFieldToInt(),
                             location.getText().toString());
-                    mListener.onDialogAddEntryDismiss();  //close dialog from Activity
+                    mListener.dismissDialogFragment(getTag());
                 } catch (NumberFormatException e) {
                     Toast.makeText(getActivity(),"wrong number format",Toast.LENGTH_LONG).show();
                     e.printStackTrace();
@@ -102,10 +99,58 @@ public class EditHistoryEntryFragment extends DialogFragment implements View.OnC
             }
         });
 
+        deleteButton=(Button) view.findViewById(R.id.delete_details_button);
+        deleteButton.setOnClickListener(this);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
         return builder.create();
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().registerSticky(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    public void onEvent(EditHistoryEvent editHistoryEvent){
+        Cursor c=editHistoryEvent.mC;
+        int position=editHistoryEvent.mPosition;
+        mId = editHistoryEvent.mId;
+        Log.e("event clicked"," clickedclickedclicked position==> "+editHistoryEvent.mPosition);
+        c.moveToPosition(position);
+
+        location.setText(c.getString(c.getColumnIndex("location")));
+        mileage.setText(c.getString(c.getColumnIndex("mileage")));
+        gallons.setText(c.getString(c.getColumnIndex("quantity")));
+        price.setText(c.getString(c.getColumnIndex("price")));
+//        dateView.setText(c.getString(c.getColumnIndex("date")));
+        dateView.setText(convertTime(c.getInt(c.getColumnIndex("date"))));
+    }
+    private String convertTime(long l){
+        Date dateInSeconds=new Date(l*1000);
+        Log.e("date", "date: " + dateInSeconds + " seconds: " + l * 1000);
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM-dd-yyyy");
+//        sdf.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
+        String formatted = sdf.format(dateInSeconds);
+        return formatted;
+    }
+
+//    public void setFieldsWithData(Cursor c, int position){
+//        c.moveToPosition(position);
+//        location.setText(c.getString(c.getColumnIndex("location")));
+//        mileage.setText(c.getString(c.getColumnIndex("mileage")));
+//        gallons.setText(c.getString(c.getColumnIndex("quantity")));
+//        price.setText(c.getString(c.getColumnIndex("price")));
+//        dateView.setText(c.getString(c.getColumnIndex("date")));
+//    }
+
     private void setDateField(){
         Calendar newCalendar = Calendar.getInstance();
         fromDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
@@ -117,7 +162,7 @@ public class EditHistoryEntryFragment extends DialogFragment implements View.OnC
                 dateView.setText(dateFormatter.format(newDate.getTime()));
             }
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-        convertDateFieldToInt();
+//        convertDateFieldToInt();
     }
     private long convertDateFieldToInt(){
         String dateString= dateView.getText().toString();
@@ -149,14 +194,14 @@ public class EditHistoryEntryFragment extends DialogFragment implements View.OnC
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-    @Override
     public void onClick(View v) {
         if (v == dateView) {
             Log.e("clicked dateview", "clicked dateview");
             fromDatePickerDialog.show();
+        }
+        if(v==deleteButton){
+            dbHelper.deleteEntry(mId);
+            mListener.dismissDialogFragment(getTag());
         }
     }
 }

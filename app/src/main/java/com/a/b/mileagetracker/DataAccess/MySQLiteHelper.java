@@ -161,6 +161,17 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     }
 
     @Override
+    public void deleteEntry(long position) {
+        String pos=Long.toString(position);
+        currentVehicle=mSharedPrefs.getString("currentVehicle","null");
+        db=getWritableDatabase();
+        int result=db.delete(currentVehicle,"_id = ?", new String[] {pos});
+        Log.e("result","delete entry results ==> "+result+" for: "+currentVehicle+" at position: "+pos);
+        getAllData(); //<--for testing only
+
+    }
+
+    @Override
     public Cursor getAllData() {
         db=getReadableDatabase();
         try {

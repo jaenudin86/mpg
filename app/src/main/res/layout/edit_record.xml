@@ -28,7 +28,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/current_vehicle_add_record_frag"
+            android:id="@+id/current_vehicle_edit_record_frag"
             android:textSize="20dp"/>
 
     </LinearLayout>
@@ -45,7 +45,7 @@
             android:text="Station: "/>
 
         <EditText
-            android:id="@+id/station_location"
+            android:id="@+id/edit_station_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Chevron"
@@ -66,7 +66,7 @@
             android:text="Car Mileage:"/>
 
         <EditText
-            android:id="@+id/mileage"
+            android:id="@+id/edit_mileage"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:hint="89045"
@@ -93,7 +93,7 @@
             android:text="Gallons added:"/>
 
         <EditText
-            android:id="@+id/gallons"
+            android:id="@+id/edit_gallons"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:hint="14.56"
@@ -120,7 +120,7 @@
             android:text="Price:"/>
 
         <EditText
-            android:id="@+id/price"
+            android:id="@+id/edit_price"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:hint="36.59"
@@ -145,7 +145,7 @@
             android:layout_weight="2"/>
 
         <EditText
-            android:id="@+id/date"
+            android:id="@+id/edit_date"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:hint="10/1/15"
@@ -159,22 +159,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp">
         <Button
             android:id="@+id/delete_details_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Delete Record"
-            android:layout_margin="50dp"
+            android:singleLine="true"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
             android:background="@color/deleteButton"/>
 
         <Button
             android:id="@+id/edit_details_submit_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Edit Record"
             android:singleLine="true"
-            android:layout_margin="50dp"
+            android:layout_margin="10dp"
             android:background="@color/colorPrimary"/>
     </LinearLayout>
 

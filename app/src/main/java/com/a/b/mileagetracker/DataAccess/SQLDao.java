@@ -15,6 +15,7 @@ import java.sql.Time;
 public interface SQLDao {
     void createVehicleTable(int year, String make, String model, String vehicleKey);
     void addEntry(int miles, double gallons, double price, long date, String location);
+    void deleteEntry(long position);
     Cursor getAllData();
     void changeRecord(int id, String vehicle, int miles, double gallons, double price, int date);
     Cursor getMilesColumn();

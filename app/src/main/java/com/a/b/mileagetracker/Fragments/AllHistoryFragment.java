@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
 import com.a.b.mileagetracker.DataAccess.HistoryCursorAdapter;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
+import com.a.b.mileagetracker.Model.EditHistoryEvent;
 import com.a.b.mileagetracker.R;
 import com.a.b.mileagetracker.Model.MessageEvent;
 
@@ -73,7 +74,7 @@ public class AllHistoryFragment extends Fragment {
 //        carSpinner.setOnItemSelectedListener(dropDownAdapt);
 
         mDBHelper = MySQLiteHelper.getInstance(getActivity().getApplicationContext());
-        Cursor cursor=mDBHelper.getAllData();
+        final Cursor cursor=mDBHelper.getAllData();
         cursor.moveToFirst();
 
         mListView=(ListView) view.findViewById(R.id.listview);
@@ -82,26 +83,16 @@ public class AllHistoryFragment extends Fragment {
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Cursor c=mDBHelper.getAllData();
                 mListener.openEditVehicleEntryFragment();
+                EventBus.getDefault().postSticky(new EditHistoryEvent(c, position, id));
 
                 Log.e("long click", "long clicked: " + view + ", " + position + ", " + id);
                 return true;
             }
         });
-
-/**
- * SimpleCursorAdapter method of creating view
- */
-//        listview=(ListView) view.findViewById(R.id.listview);
-//        String[] columns={cursor.getColumnName(1)};
-//        int[] displayViews = {R.id.list_text};
-//        cursorAdapter=new SimpleCursorAdapter(getActivity(),R.layout.list_item,cursor,columns,displayViews,0);
-//        listview.setAdapter(cursorAdapter);
-////        listview.setOnItemClickListener();
         return view;
     }
-
 
     public void onEvent(MessageEvent event){
 

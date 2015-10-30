@@ -104,7 +104,8 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
                             Double.parseDouble(price.getText().toString()),
                             convertDateFieldToInt(),
                             location.getText().toString());
-                        mListener.onDialogAddEntryDismiss();  //close dialog from Activity
+//                        mListener.onDialogAddEntryDismiss();  //close dialog from Activity
+                    mListener.dismissDialogFragment(getTag());
                 } catch (NumberFormatException e) {
                     Toast.makeText(getActivity(),"wrong number format",Toast.LENGTH_LONG).show();
                     e.printStackTrace();

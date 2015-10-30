@@ -66,6 +66,7 @@ public class AddVehicleDialogFrag extends DialogFragment {
                         addModel.getText().toString(),
                         currentVehicle);
                 mListener.onDialogAddVehicleDismiss();
+//                mListener.dismissDialogFragment(getTag());
 
             }
         });
