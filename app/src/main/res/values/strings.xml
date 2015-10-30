@@ -9,13 +9,12 @@
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
 
-    <string-array name="sports_array">
-        <item>Shuttle Badminton</item>
-        <item>Tennis</item>
-        <item>FootBall</item>
-        <item>Basket Ball</item>
-        <item>Table Tennis</item>
-        <item>Chess</item>
-        <item>Hockey</item>
+    <string-array name="default_history_array">
+        <item>please add</item>
+        <item>mileage information</item>
+        <item>to vehicle</item>
+        <item>Press  </item>
+        <item>"Add Record"</item>
+        <item>to begin</item>
     </string-array>
 </resources>

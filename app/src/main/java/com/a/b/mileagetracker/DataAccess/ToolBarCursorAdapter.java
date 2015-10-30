@@ -38,11 +38,15 @@ public class ToolBarCursorAdapter extends CursorAdapter implements AdapterView.O
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView vehicle=(TextView) view.findViewById(R.id.drop_text_view);
-        vehicle.setText(
-                cursor.getString(cursor.getColumnIndex("key_year"))+" "+
-                cursor.getString(cursor.getColumnIndex("key_make"))+" "+
-                cursor.getString(cursor.getColumnIndex("key_model")));
+        TextView vehicle = (TextView) view.findViewById(R.id.drop_text_view);
+        if(cursor.getCount()>0) {
+            vehicle.setText(
+                    cursor.getString(cursor.getColumnIndex("key_year")) + " " +
+                            cursor.getString(cursor.getColumnIndex("key_make")) + " " +
+                            cursor.getString(cursor.getColumnIndex("key_model")));
+        }else{
+            vehicle.setText("No Vehicle");
+        }
     }
 
     @Override

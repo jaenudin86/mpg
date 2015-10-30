@@ -37,7 +37,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_LOCATION = "location";
     private static final String DATABASE_NAME = "GasAppDB";
-    private static final int DATABASE_VERSION = 30;
+    private static final int DATABASE_VERSION = 36;
     private static final String KEY_DB_CREATE="create table "
             + KEY_TABLE_NAME +" ("
             +"_id INTEGER "+
@@ -104,11 +104,16 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Cursor cd=db.rawQuery("SELECT "+KEY_COLUMN_TABLE+"  FROM " + KEY_TABLE_NAME, null);
+        while(cd.moveToNext()) {
+            Log.e("dropping table", "dropped table " + cd.getString(0));
+            db.execSQL("DROP TABLE IF EXISTS " + cd.getString(0));
+        }cd.close();
+
         Log.w(MySQLiteHelper.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
         db.execSQL("DROP TABLE IF EXISTS " + KEY_TABLE_NAME);
-//        db.execSQL("DROP TABLE IF EXISTS " + "fillupTable");
         onCreate(db);
     }
 

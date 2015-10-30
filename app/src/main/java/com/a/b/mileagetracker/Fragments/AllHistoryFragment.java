@@ -75,22 +75,24 @@ public class AllHistoryFragment extends Fragment {
 
         mDBHelper = MySQLiteHelper.getInstance(getActivity().getApplicationContext());
         final Cursor cursor=mDBHelper.getAllData();
-        cursor.moveToFirst();
+        if(cursor!=null) {
+            cursor.moveToFirst();
 
-        mListView=(ListView) view.findViewById(R.id.listview);
-        mHistoryCursorAdapter = new HistoryCursorAdapter(getActivity(), cursor,0);
-        mListView.setAdapter(mHistoryCursorAdapter);
-        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Cursor c=mDBHelper.getAllData();
-                mListener.openEditVehicleEntryFragment();
-                EventBus.getDefault().postSticky(new EditHistoryEvent(c, position, id));
+            mListView = (ListView) view.findViewById(R.id.listview);
+            mHistoryCursorAdapter = new HistoryCursorAdapter(getActivity(), cursor, 0);
+            mListView.setAdapter(mHistoryCursorAdapter);
+            mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    Cursor c = mDBHelper.getAllData();
+                    mListener.openEditVehicleEntryFragment();
+                    EventBus.getDefault().postSticky(new EditHistoryEvent(c, position, id));
 
-                Log.e("long click", "long clicked: " + view + ", " + position + ", " + id);
-                return true;
-            }
-        });
+                    Log.e("long click", "long clicked: " + view + ", " + position + ", " + id);
+                    return true;
+                }
+            });
+        }
         return view;
     }
 
@@ -101,7 +103,7 @@ public class AllHistoryFragment extends Fragment {
         mHistoryCursorAdapter.changeCursor(cursor);
         mHistoryCursorAdapter.notifyDataSetChanged();
 
-        header.setText("All entries for: "+event);
+        header.setText("All entries for: " + event);
         Log.e("onEvent", "onEvent received");
 
 //        String insert_query="INSERT INTO fillupTable (location) "+"VALUES ('bp')";

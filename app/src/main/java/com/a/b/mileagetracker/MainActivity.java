@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
@@ -67,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 Log.e("clicked??", "clicked maybe yes??");
                 toolbar.setTitle("clicked");
-
             }
         });
 
@@ -109,29 +109,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            }
 //        });
 
-        mSharedPrefs=getSharedPreferences("prefs",0);
-        getSupportActionBar().setTitle(mSharedPrefs.getString("currentVehicleGUI", "defValue"));
+//        Does nothing???
+//        mSharedPrefs=getSharedPreferences("prefs",0);
+//        String title=mSharedPrefs.getString("currentVehicleGUI", null);
+//        Log.e("title","title: "+title+", ");
+////        getSupportActionBar().setTitle(title!=null?title:"No Record");
+//        getSupportActionBar().setTitle("hello");
 
         View spinnerContainer = LayoutInflater.from(this).inflate(R.layout.toolbar_spinner, toolbar,false);
         ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         toolbar.addView(spinnerContainer, lp);
 
-//        ToolbarSpinnerAdapter spinnerAdapter = new ToolbarSpinnerAdapter(getApplicationContext());//
-//        TestObject testObj1=new TestObject();
-//        TestObject testObj2=new TestObject();
-//        testObj1.setName("97 Honda Accord");
-//        testObj2.setName("2008 Ferrari Murciélago");
-//        List to = new ArrayList<TestObject>();
-//        to.add(testObj1);
-//        to.add(testObj2);//
-//        spinnerAdapter.addItems(to);
-//        Spinner spinner =(Spinner) spinnerContainer.findViewById(R.id.toolbar_spinner);
-//        spinner.setAdapter(spinnerAdapter);
-
         mDBHelper = MySQLiteHelper.getInstance(getApplicationContext());
         final Cursor c=mDBHelper.getAllDataFromKeyTable();
-        c.moveToFirst();
-        Log.e("cursor", "cursor: " + c);
+//        c.moveToFirst();
 
         toolBarAdapter = new ToolBarCursorAdapter(getApplicationContext(), c,0);
         Spinner spinner =(Spinner) spinnerContainer.findViewById(R.id.toolbar_spinner);
@@ -139,15 +130,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         spinner.setOnItemSelectedListener(toolBarAdapter);
     }
 
-    public void showCarSelectorDialog(){
-        Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.add_record);
-        dialog.show();
-
-        LayoutInflater factory=LayoutInflater.from(this);
-        View textEntry= factory.inflate(R.layout.add_record, null);
-    }
-
+//    public void showCarSelectorDialog(){
+//        Dialog dialog = new Dialog(this);
+//        dialog.setContentView(R.layout.add_record);
+//        dialog.show();
+//
+//        LayoutInflater factory=LayoutInflater.from(this);
+//        View textEntry= factory.inflate(R.layout.add_record, null);
+//    }
 
     @Override
     public void onBackPressed() {
@@ -197,8 +187,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_add_record) {
             if(mDBHelper.keyTableHasData()==false){
-                AddVehicleDialogFrag addVehicle=new AddVehicleDialogFrag().newInstance();
-                addVehicle.show(fragmentManager,"addVehicle");
+                addVehicleDialogFrag =new AddVehicleDialogFrag().newInstance();
+                addVehicleDialogFrag.show(fragmentManager,"addVehicle");
             }else {
 
                 android.support.v4.app.FragmentTransaction ftDialog = getSupportFragmentManager().beginTransaction();
@@ -229,12 +219,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_graph) {
             GraphFragment graphFrag= GraphFragment.newInstance("sending message");
             ft.replace(R.id.fragment_holder, graphFrag).commit();
-            mDBHelper.getAllData();
         } else if (id == R.id.nav_settings) {
 
             addVehicleDialogFrag=new AddVehicleDialogFrag().newInstance();
             addVehicleDialogFrag.show(fragmentManager,"addVehicle");
-
 
         } else if (id == R.id.nav_send) {
 
@@ -257,8 +245,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onDialogAddVehicleDismiss(String tag) {
         addVehicleDialogFrag.dismiss();
-//        dismissDialogFragment(tag);
-
         mDBHelper = MySQLiteHelper.getInstance(getApplicationContext());
         Cursor cursor=mDBHelper.getAllDataFromKeyTable();
         toolBarAdapter.changeCursor(cursor);
