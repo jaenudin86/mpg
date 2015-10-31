@@ -75,6 +75,7 @@ public class OverallStatsFragment extends Fragment {
     }
 
     private void displayResults(){
+        DecimalFormat decim=new DecimalFormat("0.00");
         mMilesRecent = getMilesSinceLast();
         mMilesTotal = getMilesTotal();
         mpgRecent=getMpgRecent();
@@ -84,7 +85,7 @@ public class OverallStatsFragment extends Fragment {
         mpgTotalView.setText((mpgTotal>0?"Total: "+mpgTotal+" mpg":"Need 2 or more data points to calculate MPG. Please Add another record"));
         milesTravelled.setText((mpgRecent>0?"Miles since last record: " + mpgRecent:null));
         totalMilesTravelled.setText((mMilesTotal>0?"Total miles tracked: " + mMilesTotal:null));
-        totalAmountSpent.setText("$ " + dbHelper.getTotalAmountSpent() + " since "+getLastDate());
+        totalAmountSpent.setText("$ " + decim.format(dbHelper.getTotalAmountSpent()) + " since "+getLastDate());
     }
     private void noRecordForCurrentVehicle(){
         milesTravelled.setText("No data collected for selected vehicle!");
@@ -140,9 +141,10 @@ public class OverallStatsFragment extends Fragment {
         }
     }
     private String getLastDate(){
-//        int intDate=dbHelper.getLastDate();
-        Date date=new Date(dbHelper.getLastDate()*1000);
-        java.text.DateFormat format=new SimpleDateFormat("MM/dd/yyyy");
+        long l=dbHelper.getLastDate();
+        Date date=new Date(l*1000);
+        SimpleDateFormat format=new SimpleDateFormat("MMM/dd/yyyy");
+//        sdf.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
         String formatted = format.format(date);
         return formatted;
     }

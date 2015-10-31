@@ -8,11 +8,12 @@
 
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
+    <string name="add_edit_vehicles">Add/Edit Vehicles</string>
 
     <string-array name="default_history_array">
         <item>please add</item>
-        <item>mileage information</item>
-        <item>to vehicle</item>
+        <item>a vehicle</item>
+        <item></item>
         <item>Press  </item>
         <item>"Add Record"</item>
         <item>to begin</item>

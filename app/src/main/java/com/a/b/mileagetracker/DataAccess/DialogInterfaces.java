@@ -7,6 +7,7 @@ import android.database.Cursor;
  */
 public class DialogInterfaces {
     public interface DialogInterface{
+        void onDialogAddVehicle();
         void onDialogAddVehicleDismiss(String tag);
         void openEditVehicleEntryFragment();
         void onEditDate();

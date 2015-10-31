@@ -38,6 +38,7 @@ import com.a.b.mileagetracker.Fragments.DatePicker;
 import com.a.b.mileagetracker.Fragments.AddRecordDialogFrag;
 import com.a.b.mileagetracker.Fragments.EditHistoryFragment;
 import com.a.b.mileagetracker.Fragments.GraphFragment;
+import com.a.b.mileagetracker.Fragments.SettingsFragment;
 import com.a.b.mileagetracker.testStuffs.ExportDatabase;
 import com.a.b.mileagetracker.Events.RefreshHistoryListViewEvent;
 import com.a.b.mileagetracker.Fragments.AllHistoryFragment;
@@ -187,8 +188,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_add_record) {
             if(mDBHelper.keyTableHasData()==false){
-                addVehicleDialogFrag =new AddVehicleDialogFrag().newInstance();
-                addVehicleDialogFrag.show(fragmentManager,"addVehicle");
+                onDialogAddVehicle();
             }else {
 
                 android.support.v4.app.FragmentTransaction ftDialog = getSupportFragmentManager().beginTransaction();
@@ -219,10 +219,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_graph) {
             GraphFragment graphFrag= GraphFragment.newInstance("sending message");
             ft.replace(R.id.fragment_holder, graphFrag).commit();
-        } else if (id == R.id.nav_settings) {
 
-            addVehicleDialogFrag=new AddVehicleDialogFrag().newInstance();
-            addVehicleDialogFrag.show(fragmentManager,"addVehicle");
+        } else if (id == R.id.nav_settings) {
+            SettingsFragment settingsFragment=SettingsFragment.newInstance();
+            ft.replace(R.id.fragment_holder, settingsFragment).commit();
 
         } else if (id == R.id.nav_send) {
 
@@ -241,6 +241,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //    public void onDialogAddEntryDismiss() {
 //        dialogFragment.dismiss();
 //    }
+
+    @Override
+    public void onDialogAddVehicle() {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        addVehicleDialogFrag =new AddVehicleDialogFrag().newInstance();
+        addVehicleDialogFrag.show(fragmentManager,"addVehicle");
+    }
 
     @Override
     public void onDialogAddVehicleDismiss(String tag) {

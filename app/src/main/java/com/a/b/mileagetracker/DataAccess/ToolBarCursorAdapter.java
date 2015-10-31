@@ -66,7 +66,6 @@ public class ToolBarCursorAdapter extends CursorAdapter implements AdapterView.O
         editor.putString("currentVehicle",currentVehicle).commit();
         EventBus.getDefault().post(new RefreshHistoryListViewEvent(currentVehicle));
 
-
 //        mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
 //        SharedPreferences.Editor editPrefs=mSharedPrefs.edit();
 //        editPrefs.putString("currentVehicle",currentVehicle);

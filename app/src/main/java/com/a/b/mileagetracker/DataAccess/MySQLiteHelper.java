@@ -268,8 +268,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     @Override
     public int getLastDate() {
         currentVehicle=mSharedPrefs.getString("currentVehicle","null");
-        Cursor c=mDb.rawQuery("SELECT MAX("+COLUMN_DATE+") FROM "+ currentVehicle,null);
+        Cursor c=mDb.rawQuery("SELECT MIN("+COLUMN_DATE+") FROM "+ currentVehicle,null);
         c.moveToFirst();
+        Log.e("date from last date: ","date from last date: " + (Integer.parseInt(c.getString(0))));
         return Integer.parseInt(c.getString(0));
     }
 
