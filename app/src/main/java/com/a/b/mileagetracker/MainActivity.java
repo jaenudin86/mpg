@@ -4,6 +4,7 @@ import android.app.Dialog;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -64,13 +65,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("clicked??", "clicked maybe yes??");
-                toolbar.setTitle("clicked");
-            }
-        });
+//        toolbar.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.e("clicked??", "clicked maybe yes??");
+//                toolbar.setTitle("clicked");
+//            }
+//        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -226,8 +227,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         } else if (id == R.id.nav_send) {
 
-            ExportDatabase exportDb=new ExportDatabase(getApplicationContext());
-            exportDb.execute();
+//            ExportDatabase exportDb=new ExportDatabase(getApplicationContext());
+//            exportDb.execute();
+
+            Intent emailIntent=new Intent(MainActivity.this,SendEmailActivity.class);
+            emailIntent.putExtra("attachent","testStringAttachment");
+            MainActivity.this.startActivity(emailIntent);
+
 
             Toast.makeText(this,"pressed export button",Toast.LENGTH_LONG).show();
         }
