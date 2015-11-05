@@ -1,10 +1,7 @@
 package com.a.b.mileagetracker;
 
-import android.app.Dialog;
-
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -28,7 +25,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
@@ -38,9 +34,9 @@ import com.a.b.mileagetracker.Fragments.AddVehicleDialogFrag;
 import com.a.b.mileagetracker.Fragments.DatePicker;
 import com.a.b.mileagetracker.Fragments.AddRecordDialogFrag;
 import com.a.b.mileagetracker.Fragments.EditHistoryFragment;
+import com.a.b.mileagetracker.Fragments.EmailFragment;
 import com.a.b.mileagetracker.Fragments.GraphFragment;
 import com.a.b.mileagetracker.Fragments.SettingsFragment;
-import com.a.b.mileagetracker.testStuffs.ExportDatabase;
 import com.a.b.mileagetracker.Events.RefreshHistoryListViewEvent;
 import com.a.b.mileagetracker.Fragments.AllHistoryFragment;
 import com.a.b.mileagetracker.Fragments.OverallStatsFragment;
@@ -226,16 +222,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.replace(R.id.fragment_holder, settingsFragment).commit();
 
         } else if (id == R.id.nav_send) {
-
-//            ExportDatabase exportDb=new ExportDatabase(getApplicationContext());
+//            ExportDatabaseAsyncTask exportDb=new ExportDatabaseAsyncTask(getApplicationContext());
 //            exportDb.execute();
 
-            Intent emailIntent=new Intent(MainActivity.this,SendEmailActivity.class);
-            emailIntent.putExtra("attachent","testStringAttachment");
-            MainActivity.this.startActivity(emailIntent);
-
-
-            Toast.makeText(this,"pressed export button",Toast.LENGTH_LONG).show();
+//            Intent emailIntent=new Intent(MainActivity.this,SendEmailActivity.class);
+//            emailIntent.putExtra("attachent","testStringAttachment");
+//            MainActivity.this.startActivity(emailIntent);
+            EmailFragment emailFragment =new EmailFragment();
+            ft.add(emailFragment,"emailFragment");
+            ft.commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
