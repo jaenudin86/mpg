@@ -58,6 +58,7 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
         dbHelper=MySQLiteHelper.getInstance(getActivity().getApplicationContext());
 
         LayoutInflater inflater=getActivity().getLayoutInflater();

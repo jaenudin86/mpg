@@ -72,6 +72,7 @@ public class AllHistoryFragment extends Fragment {
 //        });
 //        carSpinner.setOnItemSelectedListener(dropDownAdapt);
 
+
         mDBHelper = MySQLiteHelper.getInstance(getActivity().getApplicationContext());
         final Cursor cursor=mDBHelper.getAllData();
         if(cursor!=null) {

@@ -10,7 +10,7 @@
         android:text="Add Record"
         android:textSize="@dimen/dialog_header_text_size"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="28dp"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -44,7 +44,7 @@
             <!--android:background="@color/entryTextBoxColor"/>-->
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -52,17 +52,29 @@
         android:layout_marginTop="20dp">
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Station: "/>
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:textSize="24sp"
+            android:gravity="bottom"
+            android:text="Gas Station:  "
+            android:layout_marginLeft="15dp"
+            android:layout_alignBottom="@+id/station_location"
+            android:id="@+id/textView" />
 
         <EditText
             android:id="@+id/station_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Chevron"
+            android:layout_marginRight="15dp"
+            android:textColorHint="@color/verylightgrey"
             android:textSize="@dimen/entry_text_size"
-            android:background="@color/entryTextBoxColor"/>
-    </LinearLayout>
+            android:background="@color/entryTextBoxColor"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@+id/textView"
+            android:layout_toEndOf="@+id/textView" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -74,11 +86,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Car Mileage:"/>
+            android:textSize="24sp"
+            android:text="Car Mileage: "/>
 
         <EditText
             android:id="@+id/mileage"
-            android:layout_width="150dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:hint="89045"
             android:gravity="right"
@@ -88,7 +101,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="mi"/>
+            android:textSize="28sp"
+            android:text=" mi"/>
     </LinearLayout>
 
     <LinearLayout
@@ -101,11 +115,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gallons added:"/>
+            android:textSize="24sp"
+            android:text="Gallons added: "/>
 
         <EditText
             android:id="@+id/gallons"
-            android:layout_width="100dp"
+            android:layout_width="85dp"
             android:layout_height="wrap_content"
             android:hint="14.56"
             android:gravity="right"
@@ -115,7 +130,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="gal"/>
+            android:textSize="28sp"
+            android:text=" gal"/>
     </LinearLayout>
 
     <LinearLayout
@@ -128,7 +144,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Price:"/>
+            android:textSize="28sp"
+            android:text="$"/>
 
         <EditText
             android:id="@+id/price"
@@ -143,7 +160,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="15dp"
@@ -152,16 +169,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date:"
-            android:layout_weight="2"/>
+            android:text="Date: "
+            android:textSize="24sp"/>
 
         <EditText
             android:id="@+id/date"
-            android:layout_width="120dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="10/1/15"
-            android:gravity="center"
-            android:layout_weight="1"
+            android:gravity="right"
             android:inputType="date"
             android:textSize="@dimen/entry_text_size"
             android:background="@color/entryTextBoxColor"/>
