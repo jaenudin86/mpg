@@ -15,13 +15,23 @@ import com.a.b.mileagetracker.DataAccess.DataProvider;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
 import com.opencsv.CSVWriter;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.NPOIFSFileSystem;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.WorkbookUtil;
+
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Andrew on 11/4/2015.
@@ -105,7 +115,7 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
             if (!exportDir.exists()) {
                 exportDir.mkdirs();
             }
-            File file;
+            File file, file2;
 
             try {
                 file =new File(exportDir, "tracker" + ".csv");
@@ -113,25 +123,57 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
                     Boolean result =file.createNewFile();
                     Log.e("bool","bool createFile: "+result);
                 }
-                CSVWriter csvWrite = new CSVWriter(new FileWriter(file));
 
-//                String arrStr1[] = { "SR.No", "CUTSOMER NAME", "PROSPECT", "PORT OF LOAD", "PORT OF DISCHARGE" };
-//                String[] record = "4,cows,moo,sheeps".split(",");
-                data.moveToFirst();
+//                CSVWriter csvWrite = new CSVWriter(new FileWriter(file));
+////                String arrStr1[] = { "SR.No", "CUTSOMER NAME", "PROSPECT", "PORT OF LOAD", "PORT OF DISCHARGE" };
+////                String[] record = "4,cows,moo,sheeps".split(",");
+//                data.moveToFirst();
+//
+//                List<String> list=new ArrayList<String>();
+//                for(String c:data.getColumnNames()){
+//                    list.add(c);
+//                }
+//
+//                String[] names=list.toArray(new String[list.size()]);
+//
+////                String arrStr1[]={"columns in cursor: ",data.getString(0),data.getString(2),data.getString(3)};
+////                Log.e(TAG, "columns in cursor: "+data.getString(0)+", "+data.getString(1)+", "+data.getString(2)+", "+data.getString(3));
+//
+//                csvWrite.writeNext(names);
+//                csvWrite.close();
 
-                List<String> list=new ArrayList<String>();
-                for(String c:data.getColumnNames()){
-                    list.add(c);
-                }
 
-                String[] names=list.toArray(new String[list.size()]);
+//                NPOIFSFileSystem fs=new NPOIFSFileSystem(new File(exportDir, "AdobeTracker" + ".csv"));
+//                HSSFWorkbook workBook=new HSSFWorkbook(fs.getRoot(),true);
+                Workbook workBook=new HSSFWorkbook();
 
-//                String arrStr1[]={"columns in cursor: ",data.getString(0),data.getString(2),data.getString(3)};
-//                Log.e(TAG, "columns in cursor: "+data.getString(0)+", "+data.getString(1)+", "+data.getString(2)+", "+data.getString(3));
+                CreationHelper createHelper=workBook.getCreationHelper();
+                String safeName= WorkbookUtil.createSafeSheetName("car name");
+                Sheet sheet=workBook.createSheet(safeName);
+                Row row = sheet.createRow((short) 0);
+                row.createCell(0).setCellValue(12.95);
+                row.createCell(2).setCellValue(createHelper.createRichTextString("This is a string"));
+                row.createCell(3).setCellValue(true);
+                row.createCell(4).setCellValue(new Date());
 
-                csvWrite.writeNext(names);
-                csvWrite.close();
+                CellStyle cellStyle=workBook.createCellStyle();
+                cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("m/d/yy h:mm"));
 
+                Cell cell = row.createCell(5);
+                cell.setCellValue(new Date());
+                cell.setCellStyle(cellStyle);
+
+                row=sheet.createRow((short)1);
+                row.createCell(0).setCellValue(12.95);
+                row.createCell(2).setCellValue(createHelper.createRichTextString("This is a string"));
+                row.createCell(3).setCellValue(true);
+                row.createCell(4).setCellValue(new Date());
+
+
+                FileOutputStream fileOut = new FileOutputStream(exportDir+"/AdobeXLS.xls");
+                workBook.write(fileOut);
+                fileOut.close();
+//                fs.close();
 
 //                CSVReader read = new CSVReader(new FileReader(exportDir+"/hello1" + ".csv"),',','"',1);
 //                String location=exportDir+File.separator+"hello1" + ".csv";
@@ -150,7 +192,6 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 //                for(String[] row:allRows){
 //                    Log.e(TAG,"results all: "+Arrays.toString(row)+", "+row.toString());
 //                }
-
 
 
 //                // this is the Column of the table and same for Header of CSV
@@ -183,13 +224,13 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 //                }
 //                csvWrite.close();
 
+                File f=new File(exportDir,"AdobeXLS.xls");
 
                 Intent email = new Intent(Intent.ACTION_SEND);
 //                  email.putExtra(Intent.EXTRA_EMAIL, new String[] { to });
 //                  email.putExtra(Intent.EXTRA_SUBJECT, "test");
 //                  email.putExtra(Intent.EXTRA_TEXT, message);
-                email.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-
+                email.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(f));
                 // need this to prompts email client only
                 email.setType("message/rfc822");
 
