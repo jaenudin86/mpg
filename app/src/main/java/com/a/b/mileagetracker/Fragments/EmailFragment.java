@@ -32,6 +32,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Andrew on 11/4/2015.
@@ -39,6 +41,11 @@ import java.util.List;
 public class EmailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private MySQLiteHelper mDBHelper;
     String TAG="EmailFragment";
+    Workbook workBook;
+    Sheet sheet;
+    CreationHelper createHelper;
+    FileOutputStream fileOut;
+    File exportDir;
 
     public EmailFragment() {
         super();
@@ -48,61 +55,22 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        mDBHelper=MySQLiteHelper.getInstance(getActivity().getApplicationContext());
+        workBook=new HSSFWorkbook();
+        createHelper=workBook.getCreationHelper();
 
-//        Cursor c=mDBHelper.getAllData();
+        Log.e(TAG, "processors available: "+Runtime.getRuntime().availableProcessors());
+//        ExecutorService executor= Executors.newSingleThreadExecutor()
+//        getLoaderManager().initLoader(0, null, (LoaderManager.LoaderCallbacks) this);
+//        getLoaderManager().initLoader(1, null, (LoaderManager.LoaderCallbacks) this);
+        for(int i=0;i<5;i++){
+            getLoaderManager().initLoader(i, null, (LoaderManager.LoaderCallbacks) this);
+        }
 
-        DataProvider dp=new DataProvider();
-        Cursor c=dp.query(Uri.parse("content://com.a.b.mileagetracker/vehicle_key_table"),null,null,null,null);
-//        Cursor c=dp.query(Uri.parse("content://"),null,null,null,null);
-        Log.e(TAG,"cursor: "+c);
-
-//        ExportDatabaseAsyncTask exportDb=new ExportDatabaseAsyncTask(getActivity().getApplicationContext(), new ExportDatabaseAsyncTask.AsyncResponse() {
-//            @Override
-//            public void processFinish() {
-//                String uriLocation= Environment.getExternalStorageDirectory()+ File.separator + "exportFillupTable"+File.separator +"hello1" + ".csv";
-//                File file=new File(uriLocation);
-//                Log.e("uriLocation", "URILocation: " + file.getAbsolutePath());
-//
-//                Intent email = new Intent(Intent.ACTION_SEND);
-////                  email.putExtra(Intent.EXTRA_EMAIL, new String[] { to });
-////                  email.putExtra(Intent.EXTRA_SUBJECT, "test");
-////                  email.putExtra(Intent.EXTRA_TEXT, message);
-//                email.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-//
-//                // need this to prompts email client only
-//                email.setType("message/rfc822");
-//
-//                startActivity(Intent.createChooser(email, "Choose an Email client"));
-//            }
-//        });
-//        exportDb.execute(c);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(0, null, (LoaderManager.LoaderCallbacks) this);
-        Log.e(TAG, TAG + " Loader thread1: " + Thread.currentThread().getName());
-    }
-
-    @Override
-    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.e(TAG,TAG+" Loader thread2: "+Thread.currentThread().getName());
-        CursorLoader CL= new CursorLoader(getActivity().getApplicationContext(),Uri.parse("content://com.a.b.mileagetracker/vehicle_key_table"),null,null,null,null);
-        return CL;
-    }
-
-    @Override
-    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
-        Log.e(TAG, TAG + " loader: " + loader.toString() + ", Cursor data: " + data);
-
-//        DateFormat currentDateString =DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
-//        Log.e("export data", "current date string: " + currentDateString);
+        Log.e(TAG,"loop ended, all 5 loaders sent, in onCreate. Creating File now");
 
         File dbFile = getActivity().getApplicationContext().getDatabasePath(MySQLiteHelper.getInstance(getActivity().getApplicationContext()).getDatabaseName());
         Log.e(TAG, "DbFile path is: " + dbFile); // get the path of db
-        File exportDir = new File(Environment.getExternalStorageDirectory() + File.separator + "exportFillupTable");
+        exportDir = new File(Environment.getExternalStorageDirectory() + File.separator + "exportFillupTable");
         Log.e(TAG, "exportDB path is: " + exportDir.getAbsolutePath()); // get the path of db
 
         long freeBytesInternal = new File(getActivity().getApplicationContext().getFilesDir().getAbsoluteFile().toString()).getFreeSpace();
@@ -115,7 +83,7 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
             if (!exportDir.exists()) {
                 exportDir.mkdirs();
             }
-            File file, file2;
+            File file;
 
             try {
                 file =new File(exportDir, "tracker" + ".csv");
@@ -123,7 +91,6 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
                     Boolean result =file.createNewFile();
                     Log.e("bool","bool createFile: "+result);
                 }
-
 //                CSVWriter csvWrite = new CSVWriter(new FileWriter(file));
 ////                String arrStr1[] = { "SR.No", "CUTSOMER NAME", "PROSPECT", "PORT OF LOAD", "PORT OF DISCHARGE" };
 ////                String[] record = "4,cows,moo,sheeps".split(",");
@@ -145,32 +112,9 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 
 //                NPOIFSFileSystem fs=new NPOIFSFileSystem(new File(exportDir, "AdobeTracker" + ".csv"));
 //                HSSFWorkbook workBook=new HSSFWorkbook(fs.getRoot(),true);
-                Workbook workBook=new HSSFWorkbook();
-
-                CreationHelper createHelper=workBook.getCreationHelper();
-                String safeName= WorkbookUtil.createSafeSheetName("car name");
-                Sheet sheet=workBook.createSheet(safeName);
-                Row row = sheet.createRow((short) 0);
-                row.createCell(0).setCellValue(12.95);
-                row.createCell(2).setCellValue(createHelper.createRichTextString("This is a string"));
-                row.createCell(3).setCellValue(true);
-                row.createCell(4).setCellValue(new Date());
-
-                CellStyle cellStyle=workBook.createCellStyle();
-                cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("m/d/yy h:mm"));
-
-                Cell cell = row.createCell(5);
-                cell.setCellValue(new Date());
-                cell.setCellStyle(cellStyle);
-
-                row=sheet.createRow((short)1);
-                row.createCell(0).setCellValue(12.95);
-                row.createCell(2).setCellValue(createHelper.createRichTextString("This is a string"));
-                row.createCell(3).setCellValue(true);
-                row.createCell(4).setCellValue(new Date());
 
 
-                FileOutputStream fileOut = new FileOutputStream(exportDir+"/AdobeXLS.xls");
+                fileOut = new FileOutputStream(exportDir+"/AdobeXLS.xls");
                 workBook.write(fileOut);
                 fileOut.close();
 //                fs.close();
@@ -223,7 +167,6 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 //                    success = true;
 //                }
 //                csvWrite.close();
-
                 File f=new File(exportDir,"AdobeXLS.xls");
 
                 Intent email = new Intent(Intent.ACTION_SEND);
@@ -240,10 +183,174 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
                 Log.e("SearchResultActivity", e.getMessage(), e);
             }
         }
+
+//        mDBHelper=MySQLiteHelper.getInstance(getActivity().getApplicationContext());
+
+//        Cursor c=mDBHelper.getAllData();
+
+//        DataProvider dp=new DataProvider();
+//        Cursor c=dp.query(Uri.parse("content://com.a.b.mileagetracker/vehicle_key_table"),null,null,null,null);
+////        Cursor c=dp.query(Uri.parse("content://"),null,null,null,null);
+//        Log.e(TAG,"cursor: "+c);
+
+//        ExportDatabaseAsyncTask exportDb=new ExportDatabaseAsyncTask(getActivity().getApplicationContext(), new ExportDatabaseAsyncTask.AsyncResponse() {
+//            @Override
+//            public void processFinish() {
+//                String uriLocation= Environment.getExternalStorageDirectory()+ File.separator + "exportFillupTable"+File.separator +"hello1" + ".csv";
+//                File file=new File(uriLocation);
+//                Log.e("uriLocation", "URILocation: " + file.getAbsolutePath());
+//
+//                Intent email = new Intent(Intent.ACTION_SEND);
+////                  email.putExtra(Intent.EXTRA_EMAIL, new String[] { to });
+////                  email.putExtra(Intent.EXTRA_SUBJECT, "test");
+////                  email.putExtra(Intent.EXTRA_TEXT, message);
+//                email.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+//
+//                // need this to prompts email client only
+//                email.setType("message/rfc822");
+//
+//                startActivity(Intent.createChooser(email, "Choose an Email client"));
+//            }
+//        });
+//        exportDb.execute(c);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.e(TAG,"onActivityCreated thread1: " + Thread.currentThread().getName());
+    }
+
+    @Override
+    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        CursorLoader CL=null;
+        switch (id){
+            case 0:
+                CL= new CursorLoader(getActivity().getApplicationContext(),Uri.parse("content://com.a.b.mileagetracker/vehicle_data"),null,null,null,null);
+                Log.e(TAG,"onCreateLoader 0:");
+            break;
+            case 1:
+                CL= new CursorLoader(getActivity().getApplicationContext(),Uri.parse("content://com.a.b.mileagetracker/key_table"),null,null,null,null);
+                Log.e(TAG,"onCreateLoader 1:");
+            break;
+            case 2:
+            Log.e(TAG,"onCreateLoader 2:");
+            break;
+            case 3:
+            Log.e(TAG,"onCreateLoader 3:");
+            break;
+            case 4:
+            Log.e(TAG,"onCreateLoader 4:");
+            break;
+            default:
+            break;
+        }
+        return CL;
+    }
+
+    @Override
+    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor c) {
+        Row row;
+        switch (loader.getId()) {
+            case 0:
+                try {
+                    String safeName= WorkbookUtil.createSafeSheetName("car name");
+                    sheet=workBook.createSheet(safeName);
+
+                    row= sheet.createRow((short) 0);
+                    row.createCell(0).setCellValue(12.95);
+                    row.createCell(2).setCellValue(createHelper.createRichTextString("This is a string"));
+                    row.createCell(3).setCellValue(true);
+                    row.createCell(4).setCellValue(new Date());
+
+                    CellStyle cellStyle=workBook.createCellStyle();
+                    cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("m/d/yy h:mm"));
+
+                    Cell cell = row.createCell(5);
+                    cell.setCellValue(new Date());
+                    cell.setCellStyle(cellStyle);
+
+                    row=sheet.createRow((short)1);
+                    row.createCell(0).setCellValue(12.95);
+                    row.createCell(2).setCellValue(createHelper.createRichTextString("This is a string"));
+                    row.createCell(3).setCellValue(true);
+                    row.createCell(4).setCellValue(new Date());
+
+                    int rowNumber=5;
+                    row=sheet.createRow(rowNumber-2);
+                    c.moveToFirst();
+                    for(int i=1; i<c.getColumnCount();i++) {
+                        row.createCell(i).setCellValue(c.getColumnName(i));
+                    }
+                    c.moveToFirst();
+                    do{
+                        row=sheet.createRow(rowNumber);
+                        for(int i=0; i<c.getColumnCount();i++) {
+                            row.createCell(i).setCellValue(c.getString(i));
+                        }
+                        rowNumber++;
+                    }while(c.moveToNext());
+                    c.close();
+
+                    fileOut = new FileOutputStream(exportDir+"/AdobeXLS.xls");
+                    workBook.write(fileOut);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Log.e(TAG,"onloadFinished 0: ");
+                break;
+            case 1:
+                try {
+                    String sheetName=WorkbookUtil.createSafeSheetName("other car");
+                    sheet= workBook.createSheet(sheetName);
+                    row=sheet.createRow(0);
+                    row.createCell(0).setCellValue("hello");
+                    row.createCell(1).setCellValue(c.getColumnName(2));
+
+                    int rowNumber=5;
+                    row=sheet.createRow(rowNumber-2);
+                    c.moveToFirst();
+                    for(int i=1; i<c.getColumnCount();i++) {
+                        row.createCell(i).setCellValue(c.getColumnName(i));
+                    }
+                    c.moveToFirst();
+                    do{
+                        row=sheet.createRow(rowNumber);
+                        for(int i=0; i<c.getColumnCount();i++) {
+                            row.createCell(i).setCellValue(c.getString(i));
+                        }
+                        rowNumber++;
+                   }while(c.moveToNext());
+                    c.close();
+
+                    fileOut = new FileOutputStream(exportDir+"/AdobeXLS.xls");
+                    workBook.write(fileOut);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Log.e(TAG,"onloadFinished 1: ");
+                break;
+            case 2:
+                Log.e(TAG,"onloadFinished 2: ");
+                break;
+            case 3:
+                Log.e(TAG,"onloadFinished 3:");
+                break;
+            case 4:
+                Log.e(TAG,"onloadFinished 4:");
+                break;
+            default:
+                break;
+        }
+
+    Log.e(TAG,"onLoadFinished loader: " + loader.toString() + ", Cursor data: " + c);
+
+//        DateFormat currentDateString =DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
+//        Log.e("export data", "current date string: " + currentDateString);
     }
 
     @Override
     public void onLoaderReset(android.content.Loader<Cursor> loader) {
-        Log.e(TAG,TAG+" Loader thread4: "+Thread.currentThread().getName());
     }
 }
