@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -25,7 +26,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
@@ -40,6 +40,8 @@ import com.a.b.mileagetracker.Fragments.SettingsFragment;
 import com.a.b.mileagetracker.Events.RefreshHistoryListViewEvent;
 import com.a.b.mileagetracker.Fragments.AllHistoryFragment;
 import com.a.b.mileagetracker.Fragments.OverallStatsFragment;
+
+import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
 
@@ -126,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Spinner spinner =(Spinner) spinnerContainer.findViewById(R.id.toolbar_spinner);
         spinner.setAdapter(toolBarAdapter);
         spinner.setOnItemSelectedListener(toolBarAdapter);
+        updateSharedPrefsVehicles();
     }
 
 //    public void showCarSelectorDialog(){
@@ -136,6 +139,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        LayoutInflater factory=LayoutInflater.from(this);
 //        View textEntry= factory.inflate(R.layout.add_record, null);
 //    }
+    public void updateSharedPrefsVehicles(){
+        mDBHelper = MySQLiteHelper.getInstance(getApplicationContext());
+        Cursor cursor=mDBHelper.getAllDataFromKeyTable();
+
+        mSharedPrefs=getSharedPreferences("prefs",0);
+        SharedPreferences.Editor editor=mSharedPrefs.edit();
+
+        cursor.moveToFirst();
+        ArrayList<String> vehicles=new ArrayList<>();
+        do{
+//            vehicles.add("puppies");
+            vehicles.add(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
+        }while (cursor.moveToNext());
+
+        String[] myStringList = vehicles.toArray(new String[vehicles.size()]);
+        editor.putString("vehicle_list", TextUtils.join("‚‗‚", myStringList)).apply();
+
+    }
 
     @Override
     public void onBackPressed() {

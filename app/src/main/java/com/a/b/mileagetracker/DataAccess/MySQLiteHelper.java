@@ -224,12 +224,47 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         return null;
     }
 
+    @Override
+    public Cursor getAllData(String vehicle) {
+        mDb=getReadableDatabase();
+        try {
+            if(vehicle!=null){
+                Cursor c=mDb.rawQuery("SELECT * FROM "+ vehicle +" ORDER BY "+COLUMN_DATE+" DESC", null);
+                String names="";
+                for(String s: c.getColumnNames()){
+                    names=names+s+", ";
+                }
+//                if(c.moveToFirst()){
+//                    String record="";
+//                    do{
+//                        record= String.format("%d _id , vehicle: %s, %d miles, %.3f gallons, %.2f dollars, date: %d, location %s",
+//                                c.getInt(0),
+//                                c.getString(1),
+//                                c.getInt(2),
+//                                c.getFloat(3),
+//                                c.getFloat(4),
+//                                c.getInt(5),
+//                                c.getString(6));
+//
+//                        Log.e("record", "record: "+record);
+//
+//                    }while(c.moveToNext());
+//                    logger("getAllData() method in MySqlHelper: ---end---");
+//                }
+                return c;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     @Override
     public Cursor getMilesColumn() {
         currentVehicle=mSharedPrefs.getString("currentVehicle","null");
         Cursor c=mDb.query(currentVehicle, new String[] {COLUMN_MILEAGE}, null, null, null, null, null, null);
-
         return c;
     }
 

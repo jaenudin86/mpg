@@ -25,8 +25,9 @@ public class DataProvider extends ContentProvider {
 
     private static UriMatcher sUriMatcher=new UriMatcher(UriMatcher.NO_MATCH);
     static {
-        sUriMatcher.addURI("com.a.b.mileagetracker", "vehicle_data", 1);
+        sUriMatcher.addURI("com.a.b.mileagetracker", "key_table", 1);
         sUriMatcher.addURI("com.a.b.mileagetracker", "*", 2);
+        sUriMatcher.addURI("com.a.b.mileagetracker", "vehicle", 3);
     }
 
     @Override
@@ -53,11 +54,14 @@ public class DataProvider extends ContentProvider {
         switch(sUriMatcher.match(uri)){
             case 1:
                 Log.e(TAG,TAG+" case 1");
-                c= mDBHelper.getAllData();
+                c=mDBHelper.getAllDataFromKeyTable();
                 break;
             case 2:
+                c= mDBHelper.getAllData();
                 Log.e(TAG,TAG+" case 2");
-                c=mDBHelper.getAllDataFromKeyTable();
+                break;
+            case 3:
+                c=mDBHelper.getAllData(selection);
                 break;
             default:
                 Log.e(TAG,TAG+" case default");

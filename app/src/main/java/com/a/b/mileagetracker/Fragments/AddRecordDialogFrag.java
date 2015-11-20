@@ -77,7 +77,6 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
 
         SharedPreferences sharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
         final TextView vehicle = (TextView) view.findViewById(R.id.current_vehicle_add_record_frag);
-//        String currentVehicle=sharedPrefs.getString("currentVehicleGUI", "car");
         vehicle.setText(sharedPrefs.getString("currentVehicleGUI", "car"));
 
         dateView = (EditText) view.findViewById(R.id.date);

@@ -2,32 +2,11 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\Andrew\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
-        <dex dex="C:\Users\Andrew\MileageTracker\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.1-3f72b6db6e6b47d430bb700ea9cbbdde1af54051.jar" />
-    </item>
-    <item
         jar="C:\Users\Andrew\.gradle\caches\modules-2\files-2.1\org.apache.commons\commons-lang3\3.0\8873bd0bb5cb9ee37f1b04578eb7e26fcdd44cb0\commons-lang3-3.0.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="8873bd0bb5cb9ee37f1b04578eb7e26fcdd44cb0">
         <dex dex="C:\Users\Andrew\MileageTracker\app\build\intermediates\pre-dexed\debug\commons-lang3-3.0-a22ff9a6d709f30cd67a40d87c909079c877e9da.jar" />
-    </item>
-    <item
-        jar="C:\Users\Andrew\MileageTracker\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
-        <dex dex="C:\Users\Andrew\MileageTracker\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-d4c90b81f08a696056219629852df044845ae6b0.jar" />
-    </item>
-    <item
-        jar="C:\Users\Andrew\MileageTracker\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
-        <dex dex="C:\Users\Andrew\MileageTracker\app\build\intermediates\pre-dexed\debug\classes-83241434d5535306ae3abefa7de2d156769f2135.jar" />
     </item>
     <item
         jar="C:\Users\Andrew\.gradle\caches\modules-2\files-2.1\org.apache.poi\poi\3.12\8be19a6a1fa08e934a497929f360111a4d2e5115\poi-3.12.jar"
@@ -37,18 +16,18 @@
         <dex dex="C:\Users\Andrew\MileageTracker\app\build\intermediates\pre-dexed\debug\poi-3.12-5cec1bd68e269be5155dbba3f55d10cd200a0dd8.jar" />
     </item>
     <item
+        jar="C:\Users\Andrew\MileageTracker\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="C:\Users\Andrew\MileageTracker\app\build\intermediates\pre-dexed\debug\classes-83241434d5535306ae3abefa7de2d156769f2135.jar" />
+    </item>
+    <item
         jar="C:\Users\Andrew\.gradle\caches\modules-2\files-2.1\de.greenrobot\eventbus\2.4.0\ddd166d01b3158d1c00576d29f7ed15c030df719\eventbus-2.4.0.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="ddd166d01b3158d1c00576d29f7ed15c030df719">
         <dex dex="C:\Users\Andrew\MileageTracker\app\build\intermediates\pre-dexed\debug\eventbus-2.4.0-8070cb02040433cdc6b88a5caf2b3930d5184ecb.jar" />
-    </item>
-    <item
-        jar="C:\Users\Andrew\MileageTracker\app\libs\opencsv-3.5.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="2e88bd2818506573280599398f4198a04b2b2c8c">
-        <dex dex="C:\Users\Andrew\MileageTracker\app\build\intermediates\pre-dexed\debug\opencsv-3.5-20332d019b74bafcce6d9b676245cd08fa63b488.jar" />
     </item>
     <item
         jar="C:\Users\Andrew\MileageTracker\app\build\intermediates\exploded-aar\com.android.support\design\23.0.1\jars\classes.jar"
@@ -58,11 +37,11 @@
         <dex dex="C:\Users\Andrew\MileageTracker\app\build\intermediates\pre-dexed\debug\classes-043e7c21cada115d0bea063fa4ea4772782c75cd.jar" />
     </item>
     <item
-        jar="C:\Users\Andrew\.gradle\caches\modules-2\files-2.1\commons-codec\commons-codec\1.9\9ce04e34240f674bc72680f8b843b1457383161a\commons-codec-1.9.jar"
+        jar="C:\Users\Andrew\MileageTracker\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="9ce04e34240f674bc72680f8b843b1457383161a">
-        <dex dex="C:\Users\Andrew\MileageTracker\app\build\intermediates\pre-dexed\debug\commons-codec-1.9-51424e14a6d476f13e4c95ad87dc781d68f5aeba.jar" />
+        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
+        <dex dex="C:\Users\Andrew\MileageTracker\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-d4c90b81f08a696056219629852df044845ae6b0.jar" />
     </item>
     <item
         jar="C:\Users\Andrew\MileageTracker\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\jars\classes.jar"
@@ -70,6 +49,27 @@
         revision="23.0.1"
         sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
         <dex dex="C:\Users\Andrew\MileageTracker\app\build\intermediates\pre-dexed\debug\classes-67e3289bade9fd8a027c73c6e5aa2bbee250a861.jar" />
+    </item>
+    <item
+        jar="C:\Users\Andrew\.gradle\caches\modules-2\files-2.1\commons-codec\commons-codec\1.9\9ce04e34240f674bc72680f8b843b1457383161a\commons-codec-1.9.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="9ce04e34240f674bc72680f8b843b1457383161a">
+        <dex dex="C:\Users\Andrew\MileageTracker\app\build\intermediates\pre-dexed\debug\commons-codec-1.9-51424e14a6d476f13e4c95ad87dc781d68f5aeba.jar" />
+    </item>
+    <item
+        jar="C:\Users\Andrew\MileageTracker\app\libs\opencsv-3.5.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="2e88bd2818506573280599398f4198a04b2b2c8c">
+        <dex dex="C:\Users\Andrew\MileageTracker\app\build\intermediates\pre-dexed\debug\opencsv-3.5-20332d019b74bafcce6d9b676245cd08fa63b488.jar" />
+    </item>
+    <item
+        jar="C:\Users\Andrew\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
+        <dex dex="C:\Users\Andrew\MileageTracker\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.1-3f72b6db6e6b47d430bb700ea9cbbdde1af54051.jar" />
     </item>
 
 </items>

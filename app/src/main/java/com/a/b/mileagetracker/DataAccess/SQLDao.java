@@ -17,6 +17,7 @@ public interface SQLDao {
     void addEntry(int miles, double gallons, double price, long date, String location);
     void deleteEntry(long position);
     Cursor getAllData();
+    Cursor getAllData(String vehicle);
     void changeRecord(int id, String vehicle, int miles, double gallons, double price, int date);
     Cursor getMilesColumn();
     Cursor getSumGallons();
