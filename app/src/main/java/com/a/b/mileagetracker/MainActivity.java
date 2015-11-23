@@ -71,14 +71,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            }
 //        });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -147,15 +147,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences.Editor editor=mSharedPrefs.edit();
 
         cursor.moveToFirst();
-        ArrayList<String> vehicles=new ArrayList<>();
-        do{
-//            vehicles.add("puppies");
-            vehicles.add(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
-        }while (cursor.moveToNext());
-
-        String[] myStringList = vehicles.toArray(new String[vehicles.size()]);
-        editor.putString("vehicle_list", TextUtils.join("‚‗‚", myStringList)).apply();
-
+        if(cursor.getCount()>0) {
+            ArrayList<String> vehicles = new ArrayList<>();
+            do {
+                vehicles.add(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
+            } while (cursor.moveToNext());
+            String[] myStringList = vehicles.toArray(new String[vehicles.size()]);
+            editor.putString("vehicle_list", TextUtils.join("‚‗‚", myStringList)).apply();
+        }
     }
 
     @Override
@@ -279,6 +278,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Cursor cursor=mDBHelper.getAllDataFromKeyTable();
         toolBarAdapter.changeCursor(cursor);
         toolBarAdapter.notifyDataSetChanged();
+        updateSharedPrefsVehicles();
     }
 
     @Override

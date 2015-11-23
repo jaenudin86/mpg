@@ -65,7 +65,6 @@
             android:id="@+id/station_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Chevron"
             android:layout_marginRight="15dp"
             android:textColorHint="@color/verylightgrey"
             android:textSize="@dimen/entry_text_size"
@@ -74,6 +73,7 @@
             android:layout_alignParentRight="true"
             android:layout_toRightOf="@+id/textView"
             android:layout_toEndOf="@+id/textView" />
+            <!--android:hint="Chevron"-->
     </RelativeLayout>
 
     <LinearLayout
@@ -93,11 +93,11 @@
             android:id="@+id/mileage"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:hint="89045"
             android:gravity="right"
             android:inputType="numberDecimal|numberSigned"
             android:textSize="@dimen/entry_text_size"
             android:background="@color/entryTextBoxColor"/>
+        <!--android:hint="89045"-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -122,11 +122,11 @@
             android:id="@+id/gallons"
             android:layout_width="85dp"
             android:layout_height="wrap_content"
-            android:hint="14.56"
             android:gravity="right"
             android:inputType="numberDecimal|numberSigned"
             android:textSize="@dimen/entry_text_size"
             android:background="@color/entryTextBoxColor"/>
+            <!--android:hint="14.56"-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -151,11 +151,11 @@
             android:id="@+id/price"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:hint="36.59"
             android:gravity="right"
             android:inputType="numberDecimal|numberSigned"
             android:textSize="@dimen/entry_text_size"
             android:background="@color/entryTextBoxColor"/>
+        <!--android:hint="36.59"-->
 
     </LinearLayout>
 
@@ -189,6 +189,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add Record"
+        android:textColor="#fff"
         android:layout_margin="50dp"
         android:layout_gravity="center"
         android:paddingLeft="20dp"

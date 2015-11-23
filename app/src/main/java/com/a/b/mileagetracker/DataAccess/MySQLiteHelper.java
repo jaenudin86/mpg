@@ -159,6 +159,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         logger("MySQLiteHelper.java addEntry: miles: " + miles + ", gals: " + gallons + ", $" + price + ", date: " + date + ", location: " + location);
 
         ContentValues values = new ContentValues();
+        values.put(COLUMN_VEHICLE, currentVehicle);
         values.put(COLUMN_MILEAGE, miles);
         values.put(COLUMN_QUANTITY, gallons);
         values.put(COLUMN_PRICE, price);
@@ -180,7 +181,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         int result=mDb.delete(currentVehicle,"_id = ?", new String[] {pos});
         Log.e("result","delete entry results ==> "+result+" for: "+currentVehicle+" at position: "+pos);
         getAllData(); //<--for testing only
-
     }
 
     @Override

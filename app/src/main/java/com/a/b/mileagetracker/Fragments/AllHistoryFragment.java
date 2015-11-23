@@ -50,11 +50,11 @@ public class AllHistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mDBHelper=MySQLiteHelper.getInstance(getActivity().getApplicationContext());
         View view = inflater.inflate(R.layout.all_data_listview_fragment, container, false);
-        header=(TextView) view.findViewById(R.id.all_data_listview_title);
+//        header=(TextView) view.findViewById(R.id.all_data_listview_title);
+//        header.setText("All entries for: "+(mSharedPrefs.getString("currentVehicle","not found")));
 //        Spinner carSpinner=(Spinner) view.findViewById(R.id.dropdown_spinner_all_data_frag);
 
         SharedPreferences mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        header.setText("All entries for: "+(mSharedPrefs.getString("currentVehicle","not found")));
 
 //        final Cursor c=mDBHelper.getAllDataFromKeyTable();
 //        DropDownCursorAdapter dropDownAdapt = new DropDownCursorAdapter(getActivity(), c, 0);

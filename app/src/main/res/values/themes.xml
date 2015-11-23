@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="PerfmTextField" parent="@style/AppTheme.NoActionBar">
+    <style name="perfm_text_field" parent="@style/AppTheme.NoActionBar">
         <item name="android:textSize">@dimen/perfm_list_item_size</item>
-        <item name="android:color">#afafaf</item>
+        <item name="android:textColor">#4f4f4f</item>
         <item name="android:gravity">center</item>
     </style>
 

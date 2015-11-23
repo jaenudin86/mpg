@@ -2,13 +2,16 @@ package com.a.b.mileagetracker.Fragments;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.content.Loader;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.a.b.mileagetracker.DataAccess.DataProvider;
@@ -20,6 +23,7 @@ import org.apache.poi.poifs.filesystem.NPOIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -30,6 +34,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -57,12 +62,18 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        SharedPreferences sharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        ArrayList<String> vehicles=new ArrayList<String>(Arrays.asList(TextUtils.split(sharedPrefs.getString("vehicle_list", ""), "‚‗‚")));
+        for(String v:vehicles){
+            Log.e(TAG,"vehicles in shared prefs: "+v);
+        }
+
+
         workBook=new HSSFWorkbook();
         createHelper=workBook.getCreationHelper();
 
         Log.e(TAG, "processors available: " + Runtime.getRuntime().availableProcessors());
-        ExecutorService executor= Executors.newSingleThreadExecutor();
-
+//        ExecutorService executor= Executors.newSingleThreadExecutor();
 //        executor.execute(new Runnable() {
 //            @Override
 //            public void run() {
@@ -70,9 +81,13 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 //            }
 //        });
 
-
-        getLoaderManager().initLoader(0,null,(LoaderManager.LoaderCallbacks) this);
-
+        int num=1;
+        for(String v:vehicles) {
+            Bundle extra=new Bundle();
+            extra.putString("vehicle",v);
+            getLoaderManager().initLoader(num, extra, (LoaderManager.LoaderCallbacks) this);
+            num++;
+        }
 
 //        for(int i=1;i<5;i++){
 //            getLoaderManager().initLoader(i, null, (LoaderManager.LoaderCallbacks) this);
@@ -234,36 +249,50 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
         getLoaderManager().initLoader(1, null, (LoaderManager.LoaderCallbacks) this);
     }
 
+//    @Override
+//    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+//        CursorLoader CL=null;
+//        switch (id){
+//            case 0:
+//                CL= new CursorLoader(getActivity().getApplicationContext(),Uri.parse("content://com.a.b.mileagetracker/key_table"),null,null,null,null);
+//                Log.e(TAG,"onCreateLoader 0:");
+//            break;
+//            case 1:
+//                for(int i=0;i<vehicles.size();i++) {
+//                    CL = new CursorLoader(getActivity().getApplicationContext(), Uri.parse("content://com.a.b.mileagetracker/vehicle"), null, vehicles.get(i), null, null);
+//                }
+//                Log.e(TAG,"onCreateLoader 1:");
+//            break;
+//            case 2:
+//                CL= new CursorLoader(getActivity().getApplicationContext(),Uri.parse("content://com.a.b.mileagetracker/vehicle"),null,"HondaAccord2008",null,null);
+//                Log.e(TAG,"onCreateLoader 2:");
+//            break;
+//            case 3:
+//            Log.e(TAG,"onCreateLoader 3:");
+//            break;
+//            case 4:
+//            Log.e(TAG,"onCreateLoader 4:");
+//            break;
+//            default:
+//            break;
+//        }
+//        return CL;
+//    }
+
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
         CursorLoader CL=null;
-        switch (id){
+        switch (id) {
             case 0:
-                CL= new CursorLoader(getActivity().getApplicationContext(),Uri.parse("content://com.a.b.mileagetracker/key_table"),null,null,null,null);
-                Log.e(TAG,"onCreateLoader 0:");
-            break;
-            case 1:
-                for(int i=0;i<vehicles.size();i++) {
-                    CL = new CursorLoader(getActivity().getApplicationContext(), Uri.parse("content://com.a.b.mileagetracker/vehicle"), null, vehicles.get(i), null, null);
-                }
-                Log.e(TAG,"onCreateLoader 1:");
-            break;
-            case 2:
-                CL= new CursorLoader(getActivity().getApplicationContext(),Uri.parse("content://com.a.b.mileagetracker/vehicle"),null,"HondaAccord2008",null,null);
-                Log.e(TAG,"onCreateLoader 2:");
-            break;
-            case 3:
-            Log.e(TAG,"onCreateLoader 3:");
-            break;
-            case 4:
-            Log.e(TAG,"onCreateLoader 4:");
-            break;
+                CL = new CursorLoader(getActivity().getApplicationContext(), Uri.parse("content://com.a.b.mileagetracker/key_table"), null, null, null, null);
+                Log.e(TAG, "onCreateLoader 0:");
+                break;
             default:
-            break;
+                CL= new CursorLoader(getActivity().getApplicationContext(),Uri.parse("content://com.a.b.mileagetracker/vehicle"),null,args.getString("vehicle"),null,null);
+                break;
         }
         return CL;
     }
-
     @Override
     public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor c) {
         Row row;
@@ -276,129 +305,208 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 
                 Log.e(TAG,"onloadFinished 0: ");
                 break;
-            case 1:
-                try {
-                    String sheetName=WorkbookUtil.createSafeSheetName("other car");
-                    sheet= workBook.createSheet(sheetName);
-                    row=sheet.createRow(0);
-                    row.createCell(0).setCellValue("hello");
-                    row.createCell(1).setCellValue(c.getColumnName(2));
-
-                    int rowNumber=5;
-                    row=sheet.createRow(rowNumber-2);
-                    c.moveToFirst();
-                    for(int i=1; i<c.getColumnCount();i++) {
-                        row.createCell(i).setCellValue(c.getColumnName(i));
-                    }
-                    c.moveToFirst();
-                    do{
-                        row=sheet.createRow(rowNumber);
-                        for(int i=0; i<c.getColumnCount();i++) {
-                            row.createCell(i).setCellValue(c.getString(i));
-                        }
-                        rowNumber++;
-                   }while(c.moveToNext());
-                    c.close();
-
-                    fileOut = new FileOutputStream(exportDir+"/AdobeXLS.xls");
-                    workBook.write(fileOut);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Log.e(TAG,"onloadFinished 1: ");
-                break;
-            case 2:
-                try {
-                    String sheetName=WorkbookUtil.createSafeSheetName("HondaAccord2008");
-                    sheet= workBook.createSheet(sheetName);
-                    row=sheet.createRow(0);
-                    row.createCell(0).setCellValue("hello");
-                    row.createCell(1).setCellValue(c.getColumnName(2));
-
-                    int rowNumber=5;
-                    row=sheet.createRow(rowNumber-2);
-                    c.moveToFirst();
-                    for(int i=1; i<c.getColumnCount();i++) {
-                        row.createCell(i).setCellValue(c.getColumnName(i));
-                    }
-                    c.moveToFirst();
-                    do{
-                        row=sheet.createRow(rowNumber);
-                        for(int i=0; i<c.getColumnCount();i++) {
-                            row.createCell(i).setCellValue(c.getString(i));
-                        }
-                        rowNumber++;
-                    }while(c.moveToNext());
-                    c.close();
-
-                    fileOut = new FileOutputStream(exportDir+"/AdobeXLS.xls");
-                    workBook.write(fileOut);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                Log.e(TAG,"onloadFinished 2: ");
-                break;
-            case 3:
-                try {
-                    String safeName= WorkbookUtil.createSafeSheetName("car name");
-                    sheet=workBook.createSheet(safeName);
-
-                    row= sheet.createRow((short) 0);
-                    row.createCell(0).setCellValue(12.95);
-                    row.createCell(2).setCellValue(createHelper.createRichTextString("This is a string"));
-                    row.createCell(3).setCellValue(true);
-                    row.createCell(4).setCellValue(new Date());
-
-                    CellStyle cellStyle=workBook.createCellStyle();
-                    cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("m/d/yy h:mm"));
-
-                    Cell cell = row.createCell(5);
-                    cell.setCellValue(new Date());
-                    cell.setCellStyle(cellStyle);
-
-                    row=sheet.createRow((short)1);
-                    row.createCell(0).setCellValue(12.95);
-                    row.createCell(2).setCellValue(createHelper.createRichTextString("This is a string"));
-                    row.createCell(3).setCellValue(true);
-                    row.createCell(4).setCellValue(new Date());
-
-                    int rowNumber=5;
-                    row=sheet.createRow(rowNumber-2);
-                    c.moveToFirst();
-                    //TODO create bold column headings
-                    for(int i=1; i<c.getColumnCount();i++) {
-                        row.createCell(i).setCellValue(c.getColumnName(i));
-                    }
-                    c.moveToFirst();
-                    do{
-                        row=sheet.createRow(rowNumber);
-                        //TODO format $X.XX, quantity X.XXX, and date 11/29/15
-                        for(int i=0; i<c.getColumnCount();i++) {
-                            row.createCell(i).setCellValue(c.getString(i));
-                        }
-                        rowNumber++;
-                    }while(c.moveToNext());
-                    c.close();
-
-                    fileOut = new FileOutputStream(exportDir+"/AdobeXLS.xls");
-                    workBook.write(fileOut);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Log.e(TAG,"onloadFinished 3:");
-                break;
-            case 4:
-                Log.e(TAG,"onloadFinished 4:");
-                break;
             default:
-                break;
-        }
+                try {
+                    c.moveToFirst();
+                    if(c.getCount()>0) {
+                        do {
+                            for (int i = 0; i < c.getColumnCount(); i++) {
+                                Log.e(TAG, "values: " + c.getString(i));
+                            }
+                        } while (c.moveToNext());
 
-    Log.e(TAG,"onLoadFinished loader: " + loader.toString() + ", Cursor data: " + c);
+                        c.moveToFirst();
+                        String vehicle = c.getString(c.getColumnIndex(MySQLiteHelper.COLUMN_VEHICLE));
+                        String sheetName = WorkbookUtil.createSafeSheetName(vehicle);
 
-//        DateFormat currentDateString =DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
-//        Log.e("export data", "current date string: " + currentDateString);
+                        CellStyle styleBold = workBook.createCellStyle();
+                        Font font = workBook.createFont();
+                        font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+                        styleBold.setFont(font);
+
+                        sheet = workBook.createSheet(sheetName);
+                        row = sheet.createRow(0);
+                        Cell titleCell=row.createCell(0);
+                        titleCell.setCellValue("Data for "+vehicle);
+                        titleCell.setCellStyle(styleBold);
+
+                        int rowNumber = 5;
+                        row = sheet.createRow(rowNumber - 2);
+
+                        c.moveToFirst();
+                        for (int i = 2; i < c.getColumnCount(); i++) {
+                            Cell cell = row.createCell(i - 2);
+                            cell.setCellValue(c.getColumnName(i));
+                            cell.setCellStyle(styleBold);
+                        }
+                        c.moveToFirst();
+                        if (c.getCount() > 0) {
+                            do {
+                                row = sheet.createRow(rowNumber);
+                                for (int i = 2; i < c.getColumnCount(); i++) {
+                                    row.createCell(i - 2).setCellValue(c.getString(i));
+                                    switch (i) {
+                                        case 3: //quantity column
+
+                                            break;
+                                        case 4: //price column
+
+                                            break;
+                                        case 5: //date column
+
+                                            break;
+
+                                    }
+                                }
+                                rowNumber++;
+                            } while (c.moveToNext());
+                        }
+
+                        fileOut = new FileOutputStream(exportDir + "/AdobeXLS.xls");
+                        workBook.write(fileOut);
+                    }
+                    c.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            break;
+    }
+
+//    @Override
+//    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor c) {
+//        Row row;
+//        switch (loader.getId()) {
+//            case 0:
+//                c.moveToFirst();
+//                do{
+//                    vehicles.add(c.getString(c.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
+//                }while(c.moveToNext());
+//
+//                Log.e(TAG,"onloadFinished 0: ");
+//                break;
+//            case 1:
+//                try {
+//                    String sheetName=WorkbookUtil.createSafeSheetName("other car");
+//                    sheet= workBook.createSheet(sheetName);
+//                    row=sheet.createRow(0);
+//                    row.createCell(0).setCellValue("hello");
+//                    row.createCell(1).setCellValue(c.getColumnName(2));
+//
+//                    int rowNumber=5;
+//                    row=sheet.createRow(rowNumber-2);
+//                    c.moveToFirst();
+//                    for(int i=1; i<c.getColumnCount();i++) {
+//                        row.createCell(i).setCellValue(c.getColumnName(i));
+//                    }
+//                    c.moveToFirst();
+//                    do{
+//                        row=sheet.createRow(rowNumber);
+//                        for(int i=0; i<c.getColumnCount();i++) {
+//                            row.createCell(i).setCellValue(c.getString(i));
+//                        }
+//                        rowNumber++;
+//                   }while(c.moveToNext());
+//                    c.close();
+//
+//                    fileOut = new FileOutputStream(exportDir+"/AdobeXLS.xls");
+//                    workBook.write(fileOut);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                Log.e(TAG,"onloadFinished 1: ");
+//                break;
+//            case 2:
+//                try {
+//                    String sheetName=WorkbookUtil.createSafeSheetName("HondaAccord2008");
+//                    sheet= workBook.createSheet(sheetName);
+//                    row=sheet.createRow(0);
+//                    row.createCell(0).setCellValue("hello");
+//                    row.createCell(1).setCellValue(c.getColumnName(2));
+//
+//                    int rowNumber=5;
+//                    row=sheet.createRow(rowNumber-2);
+//                    c.moveToFirst();
+//                    for(int i=1; i<c.getColumnCount();i++) {
+//                        row.createCell(i).setCellValue(c.getColumnName(i));
+//                    }
+//                    c.moveToFirst();
+//                    do{
+//                        row=sheet.createRow(rowNumber);
+//                        for(int i=0; i<c.getColumnCount();i++) {
+//                            row.createCell(i).setCellValue(c.getString(i));
+//                        }
+//                        rowNumber++;
+//                    }while(c.moveToNext());
+//                    c.close();
+//
+//                    fileOut = new FileOutputStream(exportDir+"/AdobeXLS.xls");
+//                    workBook.write(fileOut);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                Log.e(TAG,"onloadFinished 2: ");
+//                break;
+//            case 3:
+//                try {
+//                    String safeName= WorkbookUtil.createSafeSheetName("car name");
+//                    sheet=workBook.createSheet(safeName);
+//
+//                    row= sheet.createRow((short) 0);
+//                    row.createCell(0).setCellValue(12.95);
+//                    row.createCell(2).setCellValue(createHelper.createRichTextString("This is a string"));
+//                    row.createCell(3).setCellValue(true);
+//                    row.createCell(4).setCellValue(new Date());
+//
+//                    CellStyle cellStyle=workBook.createCellStyle();
+//                    cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("m/d/yy h:mm"));
+//
+//                    Cell cell = row.createCell(5);
+//                    cell.setCellValue(new Date());
+//                    cell.setCellStyle(cellStyle);
+//
+//                    row=sheet.createRow((short)1);
+//                    row.createCell(0).setCellValue(12.95);
+//                    row.createCell(2).setCellValue(createHelper.createRichTextString("This is a string"));
+//                    row.createCell(3).setCellValue(true);
+//                    row.createCell(4).setCellValue(new Date());
+//
+//                    int rowNumber=5;
+//                    row=sheet.createRow(rowNumber-2);
+//                    c.moveToFirst();
+//                    //TODO create bold column headings
+//                    for(int i=1; i<c.getColumnCount();i++) {
+//                        row.createCell(i).setCellValue(c.getColumnName(i));
+//                    }
+//                    c.moveToFirst();
+//                    do{
+//                        row=sheet.createRow(rowNumber);
+//                        //TODO format $X.XX, quantity X.XXX, and date 11/29/15
+//                        for(int i=0; i<c.getColumnCount();i++) {
+//                            row.createCell(i).setCellValue(c.getString(i));
+//                        }
+//                        rowNumber++;
+//                    }while(c.moveToNext());
+//                    c.close();
+//
+//                    fileOut = new FileOutputStream(exportDir+"/AdobeXLS.xls");
+//                    workBook.write(fileOut);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                Log.e(TAG,"onloadFinished 3:");
+//                break;
+//            case 4:
+//                Log.e(TAG,"onloadFinished 4:");
+//                break;
+//            default:
+//                break;
+//        }
+//
+//    Log.e(TAG,"onLoadFinished loader: " + loader.toString() + ", Cursor data: " + c);
+//
+////        DateFormat currentDateString =DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
+////        Log.e("export data", "current date string: " + currentDateString);
     }
 
     @Override
