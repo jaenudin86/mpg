@@ -29,6 +29,7 @@ import android.widget.Spinner;
 
 import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
+import com.a.b.mileagetracker.DataAccess.SQLDao;
 import com.a.b.mileagetracker.DataAccess.ToolBarCursorAdapter;
 import com.a.b.mileagetracker.Fragments.AddVehicleDialogFrag;
 import com.a.b.mileagetracker.Fragments.DatePicker;
@@ -286,6 +287,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DialogFragment dF=(DialogFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if(dF!=null){
             dF.dismiss();
+            mDBHelper.calculateMpgColumn();
         }
     }
 

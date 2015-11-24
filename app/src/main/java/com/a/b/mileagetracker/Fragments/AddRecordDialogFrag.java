@@ -22,6 +22,10 @@ import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
 import com.a.b.mileagetracker.Events.RefreshHistoryListViewEvent;
 import com.a.b.mileagetracker.R;
 
+import org.apache.commons.lang3.text.WordUtils;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -96,12 +100,15 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
                 try {
 //                    String carSelectorString= ((Cursor)carSelector.getSelectedItem()).getString(c.getColumnIndex("key_table"));
 //                    Log.e("carselector spinner","csst: "+carSelectorString);
+                    DecimalFormat df3=new DecimalFormat("0.000");
+                    DecimalFormat df2=new DecimalFormat("0.00");
+
                     dbHelper.addEntry(
                             Integer.parseInt(mileage.getText().toString()),
-                            Double.parseDouble(gallons.getText().toString()),
-                            Double.parseDouble(price.getText().toString()),
+                            Double.valueOf(df3.format(Double.parseDouble(gallons.getText().toString()))),
+                            Double.valueOf(df2.format(Double.parseDouble(price.getText().toString()))),
                             convertDateFieldToInt(),
-                            location.getText().toString());
+                            WordUtils.capitalizeFully(location.getText().toString()));
 //                        mListener.onDialogAddEntryDismiss();  //close dialog from Activity
                     mListener.dismissDialogFragment(getTag());
                     EventBus.getDefault().post(new RefreshHistoryListViewEvent("refreshing"));

@@ -30,14 +30,16 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     public static final String KEY_TABLE_NAME = "vehicle_key_table";
 //    public static final String KEY_TABLE_NAME = "fillupTable";
-    public static final String COLUMN_VEHICLE ="vehicle";
+    public static final String COLUMN_ID="_id";
+    public static final String COLUMN_VEHICLE ="Vehicle";
     public static final String COLUMN_MILEAGE = "mileage";
     public static final String COLUMN_QUANTITY= "quantity";
     public static final String COLUMN_PRICE = "price";
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_LOCATION = "location";
+    public static final String COLUMN_MPG="MPG";
     private static final String DATABASE_NAME = "GasAppDB";
-    private static final int DATABASE_VERSION = 36;
+    private static final int DATABASE_VERSION = 37;
     private static final String KEY_DB_CREATE="create table "
             + KEY_TABLE_NAME +" ("
             +"_id INTEGER "+
@@ -63,6 +65,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 //                    "VALUES "+
 //                    "(12.4,174015,'Chevron'), "+
 //                    "(17.4,174529,'Texaco')";
+    String TAG="MySQLHelper";
 
     public static synchronized MySQLiteHelper getInstance(Context context){
         if(singleton==null){
@@ -88,25 +91,20 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 //            db = getWritableDatabase();
 //        }
         mDb=database;
-        Log.e("MySQLiteHelper called", "MySQLiteHelper called onCreate()");
+        Log.e(TAG, "MySQLiteHelper called onCreate()");
         try {
             database.execSQL(KEY_DB_CREATE);
-//            database.execSQL(DATABASE_CREATE);
-//            addEntry("test Vehicle", 8500, 12.546, 34.56, 1443111100, "Chevron");
-//            addEntry("test Vehicle2", 8600, 2.546, 6.56, 1443715900, "Texaco");
-//            addEntry("test Vehicle3", 8600, 2.546, 7.56, 1444579900, "Exxon Mobil");
-            Log.e("Created db", "Created db");
+            Log.e(TAG, "Created db");
         } catch (SQLException e) {
-            Log.e("failed to creat db", "failed to create db");
+            Log.e(TAG, "failed to create db");
         }
-        Log.e("created db sucessfully", "created db sucessfully!!!!");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Cursor cd=db.rawQuery("SELECT "+KEY_COLUMN_TABLE+"  FROM " + KEY_TABLE_NAME, null);
         while(cd.moveToNext()) {
-            Log.e("dropping table", "dropped table " + cd.getString(0));
+            Log.e(TAG, "dropped table " + cd.getString(0));
             db.execSQL("DROP TABLE IF EXISTS " + cd.getString(0));
         }cd.close();
 
@@ -126,14 +124,15 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         try {
             mDb.execSQL("create table "
                     +vehicleKey+"("
-                    +"_id INTEGER "+
+                    +COLUMN_ID+" INTEGER "+
                     "PRIMARY KEY AUTOINCREMENT, "
                     +COLUMN_VEHICLE+" TEXT, "
                     +COLUMN_MILEAGE+" INTEGER, "
                     +COLUMN_QUANTITY+" FLOAT, "
                     +COLUMN_PRICE+" FLOAT, "
                     +COLUMN_DATE+" INTEGER, "
-                    +COLUMN_LOCATION+" TEXT )");
+                    +COLUMN_LOCATION+" TEXT, "
+                    +COLUMN_MPG+" FLOAT )");
             addVehicleToKeyTable(year, make, model, vehicleKey);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -169,7 +168,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         if(currentVehicle!=null){
             mDb.insert(currentVehicle, COLUMN_LOCATION, values);
         }else{
-            Log.e("SP","Shared preferences doesn't have current vehicle selected");
+            Log.e(TAG,"Shared preferences doesn't have current vehicle selected");
         }
     }
 
@@ -179,7 +178,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         currentVehicle=mSharedPrefs.getString("currentVehicle","null");
         mDb=getWritableDatabase();
         int result=mDb.delete(currentVehicle,"_id = ?", new String[] {pos});
-        Log.e("result","delete entry results ==> "+result+" for: "+currentVehicle+" at position: "+pos);
+        Log.e(TAG,"delete entry results ==> "+result+" for: "+currentVehicle+" at position: "+pos);
         getAllData(); //<--for testing only
     }
 
@@ -189,28 +188,29 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         try {
             currentVehicle=mSharedPrefs.getString("currentVehicle",null);
             if(currentVehicle!=null){
-                Log.e("cv", "current vehicle: "+currentVehicle);
+                Log.e(TAG, "current vehicle: "+currentVehicle);
                 Cursor c=mDb.rawQuery("SELECT * FROM "+ currentVehicle +" ORDER BY "+COLUMN_DATE+" DESC", null);
                 String names="";
                 for(String s: c.getColumnNames()){
                     names=names+s+", ";
                 }
                 logger("getAllData() method in MySqlHelper: ---start---");
-                Log.e("names", "column names: " + names);
+                Log.e(TAG, "column names: " + names);
 
                 if(c.moveToFirst()){
                     String record="";
                     do{
-                        record= String.format("%d _id , vehicle: %s, %d miles, %.3f gallons, %.2f dollars, date: %d, location %s",
+                        record= String.format("%d _id , vehicle: %s, %d miles, %.3f gallons, %.2f dollars, date: %d, location %s, MPG %.3f",
                                 c.getInt(0),
                                 c.getString(1),
                                 c.getInt(2),
                                 c.getFloat(3),
                                 c.getFloat(4),
                                 c.getInt(5),
-                                c.getString(6));
+                                c.getString(6),
+                                c.getFloat(7));
 
-                        Log.e("record", "record: "+record);
+                        Log.e(TAG, "record: "+record);
 
                     }while(c.moveToNext());
                     logger("getAllData() method in MySqlHelper: ---end---");
@@ -260,6 +260,39 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         return null;
     }
 
+    @Override
+    public void calculateMpgColumn() {
+        currentVehicle=mSharedPrefs.getString("currentVehicle","null");
+        String[] columns={COLUMN_ID,COLUMN_MILEAGE, COLUMN_QUANTITY};
+        Cursor c=mDb.query(currentVehicle,columns,null,null,null,null,COLUMN_DATE+" DESC");
+        c.moveToFirst();
+        do{
+            Log.e(TAG, "Cursor from calculateMgpColumn: " + c.getString(0) + ", " + c.getString(1) + ", " + c.getString(2) + ", ");
+
+            String id=c.getString(c.getColumnIndex(COLUMN_ID));
+            int currentMiles=c.getInt(c.getColumnIndex(COLUMN_MILEAGE));
+            Double currentGallons=c.getDouble(c.getColumnIndex(COLUMN_QUANTITY));
+            int previousMiles= 0;
+            try {
+                c.moveToNext();
+                previousMiles = c.getInt(c.getColumnIndex(COLUMN_MILEAGE));
+                Double currentMpg=(currentMiles-previousMiles)/currentGallons;
+                Log.e(TAG, "MPG= " + currentMpg);
+
+                DecimalFormat df3=new DecimalFormat("0.000");
+
+                ContentValues cv=new ContentValues();
+                cv.put(COLUMN_MPG, Double.valueOf(df3.format(currentMpg)));
+                String [] args={id};
+                mDb.update(currentVehicle,cv,"_id=?",args);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            c.moveToPrevious();
+        }while(c.moveToNext());
+    }
+
 
     @Override
     public Cursor getMilesColumn() {
@@ -305,13 +338,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         currentVehicle=mSharedPrefs.getString("currentVehicle","null");
         Cursor c=mDb.rawQuery("SELECT MIN("+COLUMN_DATE+") FROM "+ currentVehicle,null);
         c.moveToFirst();
-        Log.e("date from last date: ","date from last date: " + (Integer.parseInt(c.getString(0))));
         return Integer.parseInt(c.getString(0));
     }
 
     @Override
     public boolean keyTableHasData() {
-        Cursor c=mDb.rawQuery("SELECT * FROM "+KEY_TABLE_NAME,null);
+        Cursor c=mDb.rawQuery("SELECT * FROM " + KEY_TABLE_NAME, null);
         return c.getCount()>0? true:false;
     }
 
@@ -320,6 +352,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         mDb = getWritableDatabase();
         Cursor c=mDb.rawQuery("SELECT * FROM "+KEY_TABLE_NAME,null);
         return c;
+    }
+
+    @Override
+    public Cursor getMpgColumn() {
+        currentVehicle=mSharedPrefs.getString("currentVehicle","null");
+        return mDb.query(currentVehicle,new String[]{COLUMN_MPG},null,null,null,null,null);
     }
 
     @Override

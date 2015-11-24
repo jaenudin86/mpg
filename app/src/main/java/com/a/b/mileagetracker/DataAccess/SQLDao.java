@@ -18,6 +18,7 @@ public interface SQLDao {
     void deleteEntry(long position);
     Cursor getAllData();
     Cursor getAllData(String vehicle);
+    void calculateMpgColumn();
     void changeRecord(int id, String vehicle, int miles, double gallons, double price, int date);
     Cursor getMilesColumn();
     Cursor getSumGallons();
@@ -26,4 +27,5 @@ public interface SQLDao {
     int getLastDate();
     boolean keyTableHasData();
     Cursor getAllDataFromKeyTable();
+    Cursor getMpgColumn();
 }

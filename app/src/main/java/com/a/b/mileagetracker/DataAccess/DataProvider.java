@@ -28,6 +28,7 @@ public class DataProvider extends ContentProvider {
         sUriMatcher.addURI("com.a.b.mileagetracker", "key_table", 1);
 //        sUriMatcher.addURI("com.a.b.mileagetracker", "*", 2);
         sUriMatcher.addURI("com.a.b.mileagetracker", "vehicle", 3);
+        sUriMatcher.addURI("com.a.b.mileagetracker","mpg_data", 4);
     }
 
     @Override
@@ -53,16 +54,19 @@ public class DataProvider extends ContentProvider {
         mDBHelper=MySQLiteHelper.getInstance(getContext());
         switch(sUriMatcher.match(uri)){
             case 1:
-                Log.e(TAG,TAG+" case 1");
+                Log.e(TAG,"query case 1");
                 c=mDBHelper.getAllDataFromKeyTable();
                 break;
             case 2:
                 c= mDBHelper.getAllData();
-                Log.e(TAG,TAG+" case 2");
+                Log.e(TAG,"query case 2");
                 break;
             case 3:
                 c=mDBHelper.getAllData(selection);
                 Log.e(TAG,"getalldata from: "+selection);
+                break;
+            case 4:
+                c=mDBHelper.getMpgColumn();
                 break;
             default:
                 Log.e(TAG,TAG+" case default");

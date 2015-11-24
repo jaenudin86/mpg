@@ -15,8 +15,10 @@ import com.a.b.mileagetracker.Events.RefreshHistoryListViewEvent;
 import com.a.b.mileagetracker.R;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import de.greenrobot.event.EventBus;
 
@@ -84,8 +86,9 @@ public class OverallStatsFragment extends Fragment {
         mpgSinceLast.setText((mpgRecent>0?"Most recent: "+mpgRecent+" mpg": null));
         mpgTotalView.setText((mpgTotal>0?"Total: "+mpgTotal+" mpg":"Need 2 or more data points to calculate MPG. Please Add another record"));
         milesTravelled.setText((mpgRecent>0?"Miles since last record: " + mpgRecent:null));
-        totalMilesTravelled.setText((mMilesTotal>0?"Total miles tracked: " + mMilesTotal:null));
-        totalAmountSpent.setText("$ " + decim.format(dbHelper.getTotalAmountSpent()) + " since "+getLastDate());
+        totalMilesTravelled.setText((mMilesTotal>0?"Total miles tracked: " + NumberFormat.getNumberInstance(Locale.US).format(mMilesTotal):null));
+        totalAmountSpent.setText(NumberFormat.getCurrencyInstance().format(dbHelper.getTotalAmountSpent())+ " since "+getLastDate());
+//        totalAmountSpent.setText("$ " + decim.format(dbHelper.getTotalAmountSpent()) + " since "+getLastDate());
     }
     private void noRecordForCurrentVehicle(){
         milesTravelled.setText("No data collected for selected vehicle!");
@@ -145,8 +148,7 @@ public class OverallStatsFragment extends Fragment {
         Date date=new Date(l*1000);
         SimpleDateFormat format=new SimpleDateFormat("MMM/dd/yyyy");
 //        sdf.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
-        String formatted = format.format(date);
-        return formatted;
+        return format.format(date);
     }
 //    private int getMilesTotal(Cursor c){
 //        int last=0,first = 0;

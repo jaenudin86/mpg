@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.a.b.mileagetracker.R;
 
 import java.text.Format;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,16 +48,18 @@ public class HistoryCursorAdapter extends CursorAdapter{
         TextView price=(TextView) view.findViewById(R.id.price_list_item);
         TextView date=(TextView) view.findViewById(R.id.date_list_item);
         TextView location= (TextView) view.findViewById(R.id.location_list_item);
+        TextView mpg=(TextView) view.findViewById(R.id.mpg_list_item);
 
-        mileage.setText("Mileage: "+cursor.getString(cursor.getColumnIndex("mileage")));
+        NumberFormat money=NumberFormat.getCurrencyInstance();
+
+        mileage.setText("Mileage: "+NumberFormat.getIntegerInstance().format(cursor.getInt(cursor.getColumnIndex("mileage"))));
         gallons.setText("Quantity added: "+cursor.getString(cursor.getColumnIndex("quantity"))+" gallons");
-        price.setText("Price: $"+cursor.getString(cursor.getColumnIndex("price")));
+        price.setText("Price: "+money.format(Double.parseDouble(cursor.getString(cursor.getColumnIndex("price")))));
 
-//        date.setText(cursor.getString(cursor.getColumnIndex("date")));
         date.setText(convertTime(cursor.getInt(cursor.getColumnIndex("date"))));
 
-//        date.setText("test");
         location.setText("Station: "+cursor.getString(cursor.getColumnIndex("location")));
+        mpg.setText("MPG: "+ cursor.getDouble(cursor.getColumnIndex(MySQLiteHelper.COLUMN_MPG)));
     }
     @Override
     public void changeCursor(Cursor c) {

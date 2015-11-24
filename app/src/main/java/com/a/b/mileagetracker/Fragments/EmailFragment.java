@@ -18,6 +18,7 @@ import com.a.b.mileagetracker.DataAccess.DataProvider;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
 import com.opencsv.CSVWriter;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.NPOIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
@@ -33,6 +34,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -336,7 +339,7 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
                         c.moveToFirst();
                         for (int i = 2; i < c.getColumnCount(); i++) {
                             Cell cell = row.createCell(i - 2);
-                            cell.setCellValue(c.getColumnName(i));
+                            cell.setCellValue(WordUtils.capitalizeFully(c.getColumnName(i)));
                             cell.setCellStyle(styleBold);
                         }
                         c.moveToFirst();
@@ -344,18 +347,30 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
                             do {
                                 row = sheet.createRow(rowNumber);
                                 for (int i = 2; i < c.getColumnCount(); i++) {
-                                    row.createCell(i - 2).setCellValue(c.getString(i));
+//                                    row.createCell(i - 2).setCellValue(c.getString(i));
                                     switch (i) {
+                                        case 2: //mileage column
+//                                            NumberFormat.getIntegerInstance().format(
+                                            row.createCell(0).setCellValue(c.getInt(2));
+                                            break;
                                         case 3: //quantity column
-
+                                            row.createCell(1).setCellValue(c.getDouble(3));
                                             break;
                                         case 4: //price column
-
+                                            row.createCell(2).setCellValue(NumberFormat.getCurrencyInstance().format(Double.parseDouble(c.getString(4))));
                                             break;
                                         case 5: //date column
-
+                                            long l=c.getLong(5);
+                                            Date date=new Date(l*1000);
+                                            SimpleDateFormat sdfFormat=new SimpleDateFormat("MMM/dd/yyyy");
+                                            row.createCell(3).setCellValue(sdfFormat.format(date));
                                             break;
-
+                                        case 6: //location column
+                                            row.createCell(4).setCellValue(c.getString(6));
+                                            break;
+                                        case 7: //mpg column
+                                            row.createCell(5).setCellValue(c.getDouble(7));
+                                            break;
                                     }
                                 }
                                 rowNumber++;
@@ -371,6 +386,7 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
                 }
             break;
     }
+
 
 //    @Override
 //    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor c) {
