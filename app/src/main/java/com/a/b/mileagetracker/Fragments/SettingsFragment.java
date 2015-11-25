@@ -28,7 +28,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Nullable
@@ -38,18 +37,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         Button addEditVehicle=(Button) view.findViewById(R.id.add_edit_vehicle);
         addEditVehicle.setOnClickListener(this);
         return view;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.e("paused", "paused");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.e("stap","spopped");
     }
 
     @Override

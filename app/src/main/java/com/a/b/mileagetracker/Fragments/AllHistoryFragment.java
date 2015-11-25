@@ -103,7 +103,6 @@ public class AllHistoryFragment extends Fragment {
         mHistoryCursorAdapter.changeCursor(cursor);
         mHistoryCursorAdapter.notifyDataSetChanged();
 
-        header.setText("All entries for: " + event);
         Log.e("onEvent", "onEvent received");
 
 //        String insert_query="INSERT INTO fillupTable (location) "+"VALUES ('bp')";

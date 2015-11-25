@@ -91,12 +91,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
 //        receiverTest = new AllHistoryFragment();
-        overallStatsFragment = new OverallStatsFragment();
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.add(R.id.fragment_holder, overallStatsFragment);
-        ft.addToBackStack("stats");
-        ft.commit();
+        if(savedInstanceState==null) {
+            OverallStatsFragment overallStatsFragment =OverallStatsFragment.newInstance();
+//            overallStatsFragment = new OverallStatsFragment();
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.add(R.id.fragment_holder, overallStatsFragment);
+            ft.addToBackStack("stats");
+            ft.commit();
+        }
 
 //        'getApplicationContext' to help with garbage collection
 //        dbHelper = new MySQLiteHelper(getApplicationContext());
@@ -229,10 +232,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             EventBus.getDefault().post(new RefreshHistoryListViewEvent("hello test from Activity"));
 
         } else if (id == R.id.nav_stats) {
-
 //            if(!overallStatsFragment.isAdded()) {
-                ft.replace(R.id.fragment_holder, overallStatsFragment);
-                ft.commit();
+            OverallStatsFragment overallStatsFragment =OverallStatsFragment.newInstance();
+            ft.replace(R.id.fragment_holder, overallStatsFragment).commit();
 
         } else if (id == R.id.nav_graph) {
             GraphFragment graphFrag= GraphFragment.newInstance("sending message");

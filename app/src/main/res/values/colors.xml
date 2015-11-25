@@ -7,6 +7,7 @@
     <color name="entryTextBoxColor">#FFFFFF</color>
     <color name="lightgray">#CFCFCF</color>
     <color name="verylightgrey">#dfdfdf</color>
+    <color name="extremelightgrey">#f1f1f1</color>
     <color name="deleteButton">#F00</color>
     <color name="toolbarColor">#000</color>
 </resources>

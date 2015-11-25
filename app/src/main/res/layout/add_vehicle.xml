@@ -1,91 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <!--<ProgressBar-->
-        <!--style="?android:attr/progressBarStyleSmall"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/progressBar"-->
-        <!--android:layout_gravity="right" />-->
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Vehicle"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:textSize="@dimen/dialog_header_text_size"/>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Make: "/>
+            android:text="Add Vehicle"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textSize="@dimen/dialog_header_text_size"/>
 
-        <EditText
-            android:id="@+id/add_make"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Honda"
-            android:textSize="@dimen/entry_text_size"
-            android:background="@color/entryTextBoxColor"/>
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Make: "/>
+
+            <EditText
+                android:id="@+id/add_make"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Honda"
+                android:textSize="@dimen/entry_text_size"
+                android:background="@color/entryTextBoxColor"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Model: "/>
+
+            <EditText
+                android:id="@+id/add_model"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Accord"
+                android:textSize="@dimen/entry_text_size"
+                android:background="@color/entryTextBoxColor"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Year: "/>
+
+            <EditText
+                android:id="@+id/add_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="2009"
+                android:inputType="date"
+                android:textSize="@dimen/entry_text_size"
+                android:background="@color/entryTextBoxColor"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/add_new_car_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Vehicle"
+            android:layout_margin="50dp"
+            android:layout_gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:background="@color/colorPrimary"
+            android:elevation="40dp"/>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Model: "/>
-
-        <EditText
-            android:id="@+id/add_model"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Accord"
-            android:textSize="@dimen/entry_text_size"
-            android:background="@color/entryTextBoxColor"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Year: "/>
-
-        <EditText
-            android:id="@+id/add_year"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="2009"
-            android:inputType="date"
-            android:textSize="@dimen/entry_text_size"
-            android:background="@color/entryTextBoxColor"/>
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/add_new_car_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Vehicle"
-        android:layout_margin="50dp"
-        android:layout_gravity="center"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:background="@color/colorPrimary"
-        android:elevation="40dp"/>
-</LinearLayout>
+</ScrollView>

@@ -29,6 +29,7 @@ public class DataProvider extends ContentProvider {
 //        sUriMatcher.addURI("com.a.b.mileagetracker", "*", 2);
         sUriMatcher.addURI("com.a.b.mileagetracker", "vehicle", 3);
         sUriMatcher.addURI("com.a.b.mileagetracker","mpg_data", 4);
+        sUriMatcher.addURI("com.a.b.mileagetracker","sum_gals", 5);
     }
 
     @Override
@@ -67,6 +68,9 @@ public class DataProvider extends ContentProvider {
                 break;
             case 4:
                 c=mDBHelper.getMpgColumn();
+                break;
+            case 5:
+                c=mDBHelper.getSumGallons();
                 break;
             default:
                 Log.e(TAG,TAG+" case default");

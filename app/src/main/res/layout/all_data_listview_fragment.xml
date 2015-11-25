@@ -15,7 +15,7 @@
         android:id="@+id/listview"
         android:entries="@array/default_history_array"
         android:layout_margin="10dp"
-        android:background="@color/verylightgrey">
+        android:background="@color/extremelightgrey">
         </ListView>
 
 </LinearLayout>

@@ -1,200 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/testGray">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Record"
-        android:textSize="@dimen/dialog_header_text_size"
-        android:layout_gravity="center"
-        android:layout_marginTop="28dp"/>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="Vehicle: "
-            android:layout_marginLeft="30dp"/>
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/testGray">
 
-        <!--<Spinner-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/vehicle_dropdown_spinner"></Spinner>-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/current_vehicle_add_record_frag"
-            android:textSize="20dp"/>
+            android:text="Add Record"
+            android:textSize="@dimen/dialog_header_text_size"
+            android:layout_gravity="center"
+            android:layout_marginTop="28dp"/>
 
-        <!--<EditText-->
-            <!--android:id="@+id/vehicle"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:hint="97 Honda Accord"-->
-            <!--android:textSize="@dimen/entry_text_size"-->
-            <!--android:background="@color/entryTextBoxColor"/>-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="Vehicle: "
+                android:layout_marginLeft="30dp"/>
+
+            <!--<Spinner-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/vehicle_dropdown_spinner"></Spinner>-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/current_vehicle_add_record_frag"
+                android:textSize="20dp"/>
+
+            <!--<EditText-->
+                <!--android:id="@+id/vehicle"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:hint="97 Honda Accord"-->
+                <!--android:textSize="@dimen/entry_text_size"-->
+                <!--android:background="@color/entryTextBoxColor"/>-->
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_alignParentLeft="true"
+                android:textSize="24sp"
+                android:gravity="bottom"
+                android:text="Gas Station:  "
+                android:layout_marginLeft="15dp"
+                android:layout_alignBottom="@+id/station_location"
+                android:id="@+id/textView" />
+
+            <EditText
+                android:id="@+id/station_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:textColorHint="@color/verylightgrey"
+                android:textSize="@dimen/entry_text_size"
+                android:background="@color/entryTextBoxColor"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@+id/textView"
+                android:layout_toEndOf="@+id/textView" />
+                <!--android:hint="Chevron"-->
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:text="Car Mileage: "/>
+
+            <EditText
+                android:id="@+id/mileage"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:inputType="numberDecimal|numberSigned"
+                android:textSize="@dimen/entry_text_size"
+                android:background="@color/entryTextBoxColor"/>
+            <!--android:hint="89045"-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="28sp"
+                android:text=" mi"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:text="Gallons added: "/>
+
+            <EditText
+                android:id="@+id/gallons"
+                android:layout_width="85dp"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:inputType="numberDecimal|numberSigned"
+                android:textSize="@dimen/entry_text_size"
+                android:background="@color/entryTextBoxColor"/>
+                <!--android:hint="14.56"-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="28sp"
+                android:text=" gal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:text="Cost $"/>
+
+            <EditText
+                android:id="@+id/price"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:inputType="numberDecimal|numberSigned"
+                android:textSize="@dimen/entry_text_size"
+                android:background="@color/entryTextBoxColor"/>
+            <!--android:hint="36.59"-->
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date: "
+                android:textSize="24sp"/>
+
+            <EditText
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="10/1/15"
+                android:gravity="right"
+                android:inputType="date"
+                android:textSize="@dimen/entry_text_size"
+                android:background="@color/entryTextBoxColor"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/add_new_car_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Record"
+            android:textColor="#fff"
+            android:layout_margin="50dp"
+            android:layout_gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:background="@color/colorPrimary"
+            android:elevation="40dp"/>
+
     </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_alignParentLeft="true"
-            android:textSize="24sp"
-            android:gravity="bottom"
-            android:text="Gas Station:  "
-            android:layout_marginLeft="15dp"
-            android:layout_alignBottom="@+id/station_location"
-            android:id="@+id/textView" />
-
-        <EditText
-            android:id="@+id/station_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
-            android:textColorHint="@color/verylightgrey"
-            android:textSize="@dimen/entry_text_size"
-            android:background="@color/entryTextBoxColor"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_toRightOf="@+id/textView"
-            android:layout_toEndOf="@+id/textView" />
-            <!--android:hint="Chevron"-->
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:text="Car Mileage: "/>
-
-        <EditText
-            android:id="@+id/mileage"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:inputType="numberDecimal|numberSigned"
-            android:textSize="@dimen/entry_text_size"
-            android:background="@color/entryTextBoxColor"/>
-        <!--android:hint="89045"-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="28sp"
-            android:text=" mi"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:text="Gallons added: "/>
-
-        <EditText
-            android:id="@+id/gallons"
-            android:layout_width="85dp"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:inputType="numberDecimal|numberSigned"
-            android:textSize="@dimen/entry_text_size"
-            android:background="@color/entryTextBoxColor"/>
-            <!--android:hint="14.56"-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="28sp"
-            android:text=" gal"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:text="Cost $"/>
-
-        <EditText
-            android:id="@+id/price"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:inputType="numberDecimal|numberSigned"
-            android:textSize="@dimen/entry_text_size"
-            android:background="@color/entryTextBoxColor"/>
-        <!--android:hint="36.59"-->
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date: "
-            android:textSize="24sp"/>
-
-        <EditText
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="10/1/15"
-            android:gravity="right"
-            android:inputType="date"
-            android:textSize="@dimen/entry_text_size"
-            android:background="@color/entryTextBoxColor"/>
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/add_new_car_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Record"
-        android:textColor="#fff"
-        android:layout_margin="50dp"
-        android:layout_gravity="center"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:background="@color/colorPrimary"
-        android:elevation="40dp"/>
-
-</LinearLayout>
+</ScrollView>

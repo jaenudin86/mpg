@@ -304,13 +304,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     @Override
     public Cursor getSumGallons() {
         currentVehicle=mSharedPrefs.getString("currentVehicle","null");
-        Cursor c = mDb.rawQuery("SELECT SUM (" + COLUMN_QUANTITY + ") FROM " + currentVehicle, null);
-        c.moveToFirst();
-        if(c.getDouble(0)>0) {
-            return c;
-        }else{
-            return null;
-        }
+        return mDb.rawQuery("SELECT SUM (" + COLUMN_QUANTITY + ") FROM " + currentVehicle, null);
+//        c.moveToFirst();
+//        if(c.getDouble(0)>0) {
+//            return c;
+//        }else{
+//            return null;
+//        }
     }
 
     @Override
@@ -357,7 +357,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     @Override
     public Cursor getMpgColumn() {
         currentVehicle=mSharedPrefs.getString("currentVehicle","null");
-        return mDb.query(currentVehicle,new String[]{COLUMN_MPG},null,null,null,null,null);
+        return mDb.query(currentVehicle,new String[]{COLUMN_MPG},null,null,null,null,COLUMN_DATE+" DESC");
     }
 
     @Override
