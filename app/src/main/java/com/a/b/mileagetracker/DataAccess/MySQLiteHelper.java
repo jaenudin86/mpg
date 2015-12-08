@@ -262,7 +262,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     @Override
     public void calculateMpgColumn() {
-        currentVehicle=mSharedPrefs.getString("currentVehicle","null");
+        currentVehicle=mSharedPrefs.getString("currentVehicle", "null");
         String[] columns={COLUMN_ID,COLUMN_MILEAGE, COLUMN_QUANTITY};
         Cursor c=mDb.query(currentVehicle,columns,null,null,null,null,COLUMN_DATE+" DESC");
         c.moveToFirst();
@@ -296,7 +296,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     @Override
     public Cursor getMilesColumn() {
-        currentVehicle=mSharedPrefs.getString("currentVehicle","null");
+        currentVehicle=mSharedPrefs.getString("currentVehicle", "null");
         Cursor c=mDb.query(currentVehicle, new String[] {COLUMN_MILEAGE}, null, null, null, null, null, null);
         return c;
     }
@@ -336,7 +336,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     @Override
     public int getLastDate() {
         currentVehicle=mSharedPrefs.getString("currentVehicle","null");
-        Cursor c=mDb.rawQuery("SELECT MIN("+COLUMN_DATE+") FROM "+ currentVehicle,null);
+        Cursor c=mDb.rawQuery("SELECT MIN(" + COLUMN_DATE + ") FROM " + currentVehicle, null);
         c.moveToFirst();
         return Integer.parseInt(c.getString(0));
     }
@@ -357,7 +357,11 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     @Override
     public Cursor getMpgColumn() {
         currentVehicle=mSharedPrefs.getString("currentVehicle","null");
-        return mDb.query(currentVehicle,new String[]{COLUMN_MPG},null,null,null,null,COLUMN_DATE+" DESC");
+        if (currentVehicle.compareToIgnoreCase("null")!=0) {
+            return mDb.query(currentVehicle, new String[]{COLUMN_MPG}, null, null, null, null, COLUMN_DATE + " DESC");
+        }else{
+            return null;
+        }
     }
 
     @Override

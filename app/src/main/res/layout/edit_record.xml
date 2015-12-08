@@ -1,188 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/testGray">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Edit Record"
-        android:textSize="@dimen/dialog_header_text_size"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"/>
-
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="Vehicle: "
-            android:layout_marginLeft="30dp"/>
+        android:orientation="vertical"
+        android:elevation="4dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Edit Record"
+            android:textSize="@dimen/dialog_header_text_size"
+            android:layout_gravity="top|center"
+            android:layout_marginTop="15dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center"
+            android:hint="vehicle text"
             android:id="@+id/current_vehicle_edit_record_frag"
             android:textSize="20dp"/>
-
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp">
-        <TextView
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true"
+        android:layout_marginTop="85dp"
+        android:layout_gravity="center_horizontal|top">
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Station: "/>
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/edit_station_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Chevron"
-            android:textSize="@dimen/entry_text_size"
-            android:background="@color/entryTextBoxColor"/>
-    </LinearLayout>
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:rowCount="6"
+                android:layout_marginLeft="15dp">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center">
+                <TextView
+                    android:textSize="24sp"
+                    android:text="Gas Station: " />
+                <EditText
+                    android:id="@+id/edit_station_location"
+                    android:hint="none"
+                    android:ems="5"
+                    android:textColorHint="@color/verylightgrey"
+                    android:textSize="@dimen/entry_text_size"
+                    android:background="@color/entryTextBoxColor"
+                    android:layout_marginBottom="10dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Car Mileage:"/>
+                <TextView
+                    android:textSize="24sp"
+                    android:text="Odometer: "/>
 
-        <EditText
-            android:id="@+id/edit_mileage"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:hint="89045"
-            android:gravity="right"
-            android:inputType="numberDecimal|numberSigned"
-            android:textSize="@dimen/entry_text_size"
-            android:background="@color/entryTextBoxColor"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="mi"/>
-    </LinearLayout>
+                <EditText
+                    android:id="@+id/edit_mileage"
+                    android:hint="89045"
+                    android:ems="4"
+                    android:gravity="right"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:textSize="@dimen/entry_text_size"
+                    android:background="@color/entryTextBoxColor"
+                    android:layout_marginBottom="10dp"/>
+                <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textSize="24sp"-->
+                <!--android:text="mi"/>-->
+                <TextView
+                    android:textSize="24sp"
+                    android:text="Gallons: "/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center">
+                <EditText
+                    android:id="@+id/edit_gallons"
+                    android:gravity="right"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:textSize="@dimen/entry_text_size"
+                    android:background="@color/entryTextBoxColor"
+                    android:layout_marginBottom="10dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Gallons added:"/>
+                <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textSize="24sp"-->
+                <!--android:text="gal"/>-->
 
-        <EditText
-            android:id="@+id/edit_gallons"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:hint="14.56"
-            android:gravity="right"
-            android:inputType="numberDecimal|numberSigned"
-            android:textSize="@dimen/entry_text_size"
-            android:background="@color/entryTextBoxColor"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="gal"/>
-    </LinearLayout>
+                <TextView
+                    android:textSize="24sp"
+                    android:text="Price: "/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center">
+                <EditText
+                    android:id="@+id/edit_price"
+                    android:gravity="right"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:textSize="@dimen/entry_text_size"
+                    android:background="@color/entryTextBoxColor"
+                    android:layout_marginBottom="10dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Price:"/>
+                <TextView
+                    android:textSize="24sp"
+                    android:text="Date: "/>
 
-        <EditText
-            android:id="@+id/edit_price"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:hint="36.59"
-            android:gravity="right"
-            android:inputType="numberDecimal|numberSigned"
-            android:textSize="@dimen/entry_text_size"
-            android:background="@color/entryTextBoxColor"/>
+                <EditText
+                    android:id="@+id/edit_date"
+                    android:inputType="date"
+                    android:hint="Jan-1-2016"
+                    android:gravity="right"
+                    android:textSize="@dimen/entry_text_size"
+                    android:background="@color/entryTextBoxColor"
+                    android:layout_marginBottom="10dp"/>
 
-    </LinearLayout>
+            </GridLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp">
+                <Button
+                    android:id="@+id/delete_details_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Delete Record"
+                    android:singleLine="true"
+                    android:layout_weight="1"
+                    android:layout_margin="10dp"
+                    android:background="@color/deleteButton"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center">
+                <Button
+                    android:id="@+id/edit_details_submit_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Edit Record"
+                    android:singleLine="true"
+                    android:layout_margin="10dp"
+                    android:background="@color/colorPrimary"/>
+            </LinearLayout>
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date:"
-            android:layout_weight="2"/>
-
-        <EditText
-            android:id="@+id/edit_date"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:hint="10/1/15"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:inputType="date"
-            android:textSize="@dimen/entry_text_size"
-            android:background="@color/entryTextBoxColor"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp">
-        <Button
-            android:id="@+id/delete_details_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Delete Record"
-            android:singleLine="true"
-            android:layout_weight="1"
-            android:layout_margin="10dp"
-            android:background="@color/deleteButton"/>
-
-        <Button
-            android:id="@+id/edit_details_submit_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Edit Record"
-            android:singleLine="true"
-            android:layout_margin="10dp"
-            android:background="@color/colorPrimary"/>
-    </LinearLayout>
-
-
-
-</LinearLayout>
+    </ScrollView>
+</FrameLayout>

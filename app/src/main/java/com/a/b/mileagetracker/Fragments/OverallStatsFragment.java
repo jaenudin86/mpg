@@ -71,9 +71,9 @@ public class OverallStatsFragment extends Fragment implements LoaderManager.Load
         totalAmountSpent = (TextView) view.findViewById(R.id.perfm_spent_total);
         conclusion = (TextView) view.findViewById(R.id.perfm_conclusion);
 
-        if(savedInstanceState==null){
-            displayCurrentVehicleStats();
-        }
+//        if(savedInstanceState==null){
+//            displayCurrentVehicleStats();
+//        }
 
         return view;
     }
@@ -86,7 +86,7 @@ public class OverallStatsFragment extends Fragment implements LoaderManager.Load
             displayResults();
 //            logData();
         }else{
-            noRecordForCurrentVehicle();
+//            noRecordForCurrentVehicle();
         }
     }
 
@@ -101,14 +101,14 @@ public class OverallStatsFragment extends Fragment implements LoaderManager.Load
 //        mpgSinceLast.setText((mpgRecent>0?"Most recent: "+mpgRecent+" mpg": null));
 //        mpgTotalView.setText((mpgTotal>0?"Total: "+mpgTotal+" mpg":"Need 2 or more data points to calculate MPG. Please Add another record"));
 //        milesTravelled.setText((mpgRecent>0?"Miles since last record: " + mpgRecent:null));
-        totalMilesTravelled.setText((mMilesTotal>0?"Total miles tracked: " + NumberFormat.getNumberInstance(Locale.US).format(mMilesTotal):null));
-        totalAmountSpent.setText(NumberFormat.getCurrencyInstance().format(dbHelper.getTotalAmountSpent())+ " since "+getLastDate());
+//        totalMilesTravelled.setText((mMilesTotal>0?"Total miles tracked: " + NumberFormat.getNumberInstance(Locale.US).format(mMilesTotal):null));
+//        totalAmountSpent.setText(NumberFormat.getCurrencyInstance().format(dbHelper.getTotalAmountSpent())+ " since "+getLastDate());
 //        totalAmountSpent.setText("$ " + decim.format(dbHelper.getTotalAmountSpent()) + " since "+getLastDate());
     }
-    private void noRecordForCurrentVehicle(){
-        milesTravelled.setText("No data collected for selected vehicle!");
-        totalAmountSpent.setText("Click \"Add Record\" to get started");
-    }
+//    private void noRecordForCurrentVehicle(){
+//        milesTravelled.setText("No data collected for selected vehicle!");
+//        totalAmountSpent.setText("Click \"Add Record\" to get started");
+//    }
 
 //    private Double getMpgRecent(){
 //        Double gallons;
@@ -230,7 +230,9 @@ public class OverallStatsFragment extends Fragment implements LoaderManager.Load
 ////        c.close();
 //    }
     public void onEvent(RefreshHistoryListViewEvent event){
-        displayCurrentVehicleStats();
+//        displayCurrentVehicleStats();
+        getLoaderManager().restartLoader(0, null, (LoaderManager.LoaderCallbacks) this);
+        getLoaderManager().restartLoader(1, null, (LoaderManager.LoaderCallbacks) this);
     }
     @Override
     public void onStart() {
@@ -264,37 +266,48 @@ public class OverallStatsFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
-        switch (loader.getId()) {
-            case 0: //pull last known MPG record
-                if(data.getCount()>1) {
-                    data.moveToFirst();
-                    Double mpg = data.getDouble(0);
-                    Log.e(TAG,"onLoadFInished mpg: "+mpg);
-                    mpgSinceLast.setText(mpg > 0 ? "Most Recent: " + mpg + " mpg" : null);
-                }
-            break;
-            case 1: //calculate and display aggregate MPG since first record
-                if(data.getCount()>1) {
-                    data.moveToFirst();
-                    int maxMiles = data.getInt(data.getColumnIndex(MySQLiteHelper.COLUMN_MILEAGE));
-                    data.moveToLast();
-                    int minMiles = data.getInt(data.getColumnIndex(MySQLiteHelper.COLUMN_MILEAGE));
+        if (data != null) {
+            switch (loader.getId()) {
+                case 0: //pull last known MPG record
+                    if (data.getCount() > 1) {
+                        data.moveToFirst();
+                        Double mpg = data.getDouble(0);
+                        Log.e(TAG, "onLoadFInished mpg: " + mpg);
+                        mpgSinceLast.setText(mpg > 0 ? "Most Recent: " + mpg + " mpg" : null);
+                    } else {
+                        mpgSinceLast.setText("Need two or more entries to compute MPG");
+                    }
+                    break;
+                case 1: //calculate and display aggregate MPG since first record
+                    if (data.getCount() > 1) {
+                        data.moveToFirst();
+                        int maxMiles = data.getInt(data.getColumnIndex(MySQLiteHelper.COLUMN_MILEAGE));
+                        data.moveToLast();
+                        int minMiles = data.getInt(data.getColumnIndex(MySQLiteHelper.COLUMN_MILEAGE));
+                        int totalMiles = maxMiles - minMiles;
 
-                    data.moveToFirst();
-                    Double galsTotal = 0.0;
-                    do {
-                        galsTotal += data.getDouble(data.getColumnIndex(MySQLiteHelper.COLUMN_QUANTITY));
-                    } while (data.moveToNext());
+                        data.moveToFirst();
+                        Double galsTotal = 0.0;
+                        Double priceTotal = 0.0;
+                        do {
+                            galsTotal += data.getDouble(data.getColumnIndex(MySQLiteHelper.COLUMN_QUANTITY));
+                            priceTotal += data.getDouble(data.getColumnIndex(MySQLiteHelper.COLUMN_PRICE));
+                        } while (data.moveToNext());
 
-                    mpgTotalView.setText("Total Average: " + String.valueOf(NumberFormat.getNumberInstance(Locale.US).format((maxMiles - minMiles) / galsTotal)) + " mpg");
-                }
-            break;
-
+                        mpgTotalView.setText("Total Average: " + String.valueOf(NumberFormat.getNumberInstance(Locale.US).format(totalMiles / galsTotal)) + " mpg");
+                        totalMilesTravelled.setText("Total miles tracked: " + NumberFormat.getNumberInstance(Locale.US).format(totalMiles));
+                        totalAmountSpent.setText(NumberFormat.getCurrencyInstance().format(priceTotal) + " since " + getLastDate());
+                    } else {
+                        mpgTotalView.setText("");
+                        totalMilesTravelled.setText("");
+                        totalAmountSpent.setText(data.getCount() == 1 ? "First record created on: " + getLastDate() : "");
+                    }
+                    break;
+            }
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
     }
 }
