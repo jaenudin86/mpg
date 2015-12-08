@@ -100,11 +100,12 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
                 try {
 //                    String carSelectorString= ((Cursor)carSelector.getSelectedItem()).getString(c.getColumnIndex("key_table"));
 //                    Log.e("carselector spinner","csst: "+carSelectorString);
-                    DecimalFormat df3=new DecimalFormat("0.000");
+                    DecimalFormat df3=new DecimalFormat("#.###");
                     DecimalFormat df2=new DecimalFormat("0.00");
 
                     dbHelper.addEntry(
-                            Integer.parseInt(mileage.getText().toString()),
+//                            Integer.parseInt(mileage.getText().toString()),
+                            (int) Math.round(Double.parseDouble(mileage.getText().toString())),
                             Double.valueOf(df3.format(Double.parseDouble(gallons.getText().toString()))),
                             Double.valueOf(df2.format(Double.parseDouble(price.getText().toString()))),
                             convertDateFieldToInt(),

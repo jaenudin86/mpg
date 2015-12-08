@@ -52,7 +52,7 @@ public class HistoryCursorAdapter extends CursorAdapter{
 
         NumberFormat money=NumberFormat.getCurrencyInstance();
 
-        mileage.setText("Mileage: "+NumberFormat.getIntegerInstance().format(cursor.getInt(cursor.getColumnIndex("mileage"))));
+        mileage.setText("Odometer: "+NumberFormat.getIntegerInstance().format(cursor.getInt(cursor.getColumnIndex("mileage"))));
         gallons.setText("Quantity added: "+cursor.getString(cursor.getColumnIndex("quantity"))+" gallons");
         price.setText("Price: "+money.format(Double.parseDouble(cursor.getString(cursor.getColumnIndex("price")))));
 

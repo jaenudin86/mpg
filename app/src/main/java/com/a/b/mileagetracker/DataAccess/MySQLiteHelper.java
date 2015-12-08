@@ -279,7 +279,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
                 Double currentMpg=(currentMiles-previousMiles)/currentGallons;
                 Log.e(TAG, "MPG= " + currentMpg);
 
-                DecimalFormat df3=new DecimalFormat("0.000");
+                DecimalFormat df3=new DecimalFormat("#.###");
 
                 ContentValues cv=new ContentValues();
                 cv.put(COLUMN_MPG, Double.valueOf(df3.format(currentMpg)));

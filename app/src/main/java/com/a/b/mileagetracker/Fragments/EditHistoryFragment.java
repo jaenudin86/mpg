@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -27,6 +28,7 @@ import com.a.b.mileagetracker.Events.EditHistoryEvent;
 import com.a.b.mileagetracker.Events.RefreshHistoryListViewEvent;
 import com.a.b.mileagetracker.R;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -255,12 +257,11 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
             try{
                 NumberFormat formatNumber=NumberFormat.getCurrencyInstance();
                 Number pNumber=formatNumber.parse(price.getText().toString());
+                DecimalFormat df3=new DecimalFormat("#.###");
 
-                    dbHelper.addEntry(
-//                        Integer.parseInt(mOdometer.getText().toString()),
-                            (int) Math.round(Double.parseDouble(mOdometer.getText().toString())),
-
-                        Double.parseDouble(gallons.getText().toString()),
+                dbHelper.addEntry(
+                        (int) Math.round(Double.parseDouble(mOdometer.getText().toString())),
+                        Double.parseDouble(df3.format(Double.parseDouble(gallons.getText().toString()))),
                         Double.parseDouble(pNumber.toString()),
                         convertDateFieldToInt(),
                         location.getText().toString());

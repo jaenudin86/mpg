@@ -92,6 +92,8 @@ public class AllHistoryFragment extends Fragment {
                     return true;
                 }
             });
+            mListView.setDivider(null);
+            mListView.setDividerHeight(0);
         }
         return view;
     }
