@@ -43,7 +43,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         int id=v.getId();
         if(id==R.id.add_edit_vehicle){
-            mListener.onDialogAddVehicle();
+//            mListener.onDialogAddVehicle();
+            mListener.openVehicleListFragment();
             Log.e("button pushed","button pushed");
         }
     }

@@ -81,6 +81,7 @@
                     android:gravity="right"
                     android:inputType="numberDecimal|numberSigned"
                     android:textSize="@dimen/entry_text_size"
+                    android:ems="3"
                     android:background="@color/entryTextBoxColor"
                     android:layout_marginBottom="10dp"/>
 
@@ -99,6 +100,7 @@
                     android:gravity="right"
                     android:inputType="numberDecimal|numberSigned"
                     android:textSize="@dimen/entry_text_size"
+                    android:ems="3"
                     android:background="@color/entryTextBoxColor"
                     android:layout_marginBottom="10dp"/>
 
