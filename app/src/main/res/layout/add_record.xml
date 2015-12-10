@@ -136,8 +136,9 @@
                 android:layout_gravity="center"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/custom_button"
                 android:elevation="40dp"/>
+            <!--android:background="@color/colorPrimary"-->
         </LinearLayout>
 
     </ScrollView>
