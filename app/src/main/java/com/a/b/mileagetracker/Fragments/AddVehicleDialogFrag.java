@@ -16,9 +16,12 @@ import android.widget.Toast;
 
 import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
+import com.a.b.mileagetracker.Events.RefreshVehiclesEvent;
 import com.a.b.mileagetracker.R;
 
 import org.apache.commons.lang3.text.WordUtils;
+
+import de.greenrobot.event.EventBus;
 
 
 /**
@@ -69,6 +72,7 @@ public class AddVehicleDialogFrag extends DialogFragment {
                         String cv=currentVehicle;
                         dbHelper.createVehicleTable(year,make,model,cv);
                         mListener.onDialogAddVehicleDismiss(getTag());
+                        EventBus.getDefault().post(new RefreshVehiclesEvent());
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
                         Toast.makeText(getActivity(),"Invalid Car",Toast.LENGTH_LONG).show();

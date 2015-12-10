@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private EditHistoryFragment mEditEntryData;
     private SharedPreferences mSharedPrefs;
     public static ToolBarCursorAdapter toolBarAdapter;
+    FragmentManager fragmentManager = getFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,6 +169,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            popBackStack();
+        }
+    }
+
+    public void popBackStack() {
+        if(fragmentManager.getBackStackEntryCount() != 0) {
+            fragmentManager.popBackStack();
+        } else {
             super.onBackPressed();
         }
     }
@@ -202,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        FragmentManager fragmentManager = getFragmentManager();
+//        FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
         // Handle navigation view item clicks here.
@@ -212,7 +221,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (mDBHelper.keyTableHasData() == false) {
                 onDialogAddVehicle();
             } else {
-
                 android.support.v4.app.FragmentTransaction ftDialog = getSupportFragmentManager().beginTransaction();
                 android.support.v4.app.Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
                 if (prev != null) {
@@ -270,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onDialogAddVehicle() {
-        FragmentManager fragmentManager = getFragmentManager();
+//        FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         addVehicleDialogFrag = new AddVehicleDialogFrag().newInstance();
         addVehicleDialogFrag.show(fragmentManager, "addVehicle");
@@ -297,12 +305,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void openVehicleListFragment() {
-        FragmentManager fragmentManager = getFragmentManager();
+//        FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         VehicleListFragment vehicleListFragment = VehicleListFragment.newInstance();
+        Log.e("main", "stack: " + fragmentManager.getBackStackEntryCount());
+        ft.addToBackStack(null);
         ft.replace(R.id.fragment_holder, vehicleListFragment);
         ft.setTransition(ft.TRANSIT_FRAGMENT_FADE);
-        ft.addToBackStack(null);
         ft.commit();
     }
 
@@ -332,4 +341,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Log.e("shared preferences", "shared prefs: " + currentCar);
     }
+
 }

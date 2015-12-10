@@ -17,7 +17,6 @@ public class VehicleCursorAdapter extends CursorAdapter {
 
     public VehicleCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
-//        mInflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -25,12 +24,15 @@ public class VehicleCursorAdapter extends CursorAdapter {
         LayoutInflater mInflater;
         mInflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return mInflater.inflate(R.layout.single_vehicle_layout,parent,false);
-
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         TextView vehicle=(TextView) view.findViewById(R.id.vehicle);
-        vehicle.setText("vehicle: "+cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_COLUMN_YEAR)));
+        String car=
+                cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_COLUMN_YEAR))+" "+
+                cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_COLUMN_MAKE))+" "+
+                cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_COLUMN_MODEL));
+        vehicle.setText(car);
     }
 }

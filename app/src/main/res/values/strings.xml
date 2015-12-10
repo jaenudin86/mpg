@@ -8,7 +8,28 @@
 
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
+
+<!--add record-->
+    <string name="add_record_title">Add Record</string>
+    <string name="gas_station">Gas Station:</string>
+    <string name="gas_station_blank_name">none</string>
+    <string name="odometer">Odometer:</string>
+    <string name="odometer_blank_text">odometer</string>
+    <string name="price">Price:</string>
+    <string name="price_blank_text">price</string>
+    <string name="date">Date:</string>
+    <string name="date_blank_text">Jan-1-2016</string>
+
+
+<!--edit vehicle-->
     <string name="add_edit_vehicles">Add/Edit Vehicles</string>
+    <string name="delete_record">Delete Record</string>
+    <string name="edit_record">Edit Record</string>
+
+<!--vehicle list-->
+    <string name="current_vehicle_list">Current Vehicles</string>
+    <string name="notify_long_press">Long press on item to edit or delete vehicle</string>
+    <string name="add_new_vehicle">Add New Vehicle</string>
 
     <string-array name="default_history_array">
         <item>please add</item>

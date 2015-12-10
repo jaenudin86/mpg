@@ -91,24 +91,6 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
 
         editButton=(Button) view.findViewById(R.id.edit_details_submit_button);
         editButton.setOnClickListener(this);
-//        editButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                convertDateFieldToInt();
-//                try {
-//                    dbHelper.addEntry(
-//                            Integer.parseInt(mOdometer.getText().toString()),
-//                            Double.parseDouble(gallons.getText().toString()),
-//                            Double.parseDouble(price.getText().toString()),
-//                            convertDateFieldToInt(),
-//                            location.getText().toString());
-//                    mListener.dismissDialogFragment(getTag());
-//                } catch (NumberFormatException e) {
-//                    Toast.makeText(getActivity(),"wrong number format",Toast.LENGTH_LONG).show();
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
 
         deleteButton=(Button) view.findViewById(R.id.delete_details_button);
         deleteButton.setOnClickListener(this);
@@ -177,7 +159,6 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
                 Selection.setSelection(price.getText(), cashAmountBuilder.toString().length() + 1);
 
                 price.addTextChangedListener(this);
-
             }
         }
     };
@@ -190,15 +171,6 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
         String formatted = sdf.format(dateInSeconds);
         return formatted;
     }
-
-//    public void setFieldsWithData(Cursor c, int position){
-//        c.moveToPosition(position);
-//        location.setText(c.getString(c.getColumnIndex("location")));
-//        mOdometer.setText(c.getString(c.getColumnIndex("mOdometer")));
-//        gallons.setText(c.getString(c.getColumnIndex("quantity")));
-//        price.setText(c.getString(c.getColumnIndex("price")));
-//        dateView.setText(c.getString(c.getColumnIndex("date")));
-//    }
 
     private void setDateField(){
         Calendar newCalendar = Calendar.getInstance();

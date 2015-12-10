@@ -11,7 +11,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Record"
+            android:text="@string/add_record_title"
             android:textSize="@dimen/dialog_header_text_size"
             android:layout_gravity="top|center"
             android:layout_marginTop="15dp"/>
@@ -44,10 +44,10 @@
 
                 <TextView
                     android:textSize="24sp"
-                    android:text="Gas Station: " />
+                    android:text="@string/gas_station" />
                 <EditText
                     android:id="@+id/station_location"
-                    android:hint="none"
+                    android:hint="@string/gas_station_blank_name"
                     android:gravity="left|center_vertical"
                     android:textColorHint="@color/verylightgrey"
                     android:textSize="@dimen/entry_text_size"
@@ -58,11 +58,11 @@
 
                 <TextView
                     android:textSize="24sp"
-                    android:text="Odometer: "/>
+                    android:text="@string/odometer"/>
 
                 <EditText
                     android:id="@+id/mileage"
-                    android:hint="odometer "
+                    android:hint="@string/odometer_blank_text"
                     android:textColorHint="@color/verylightgrey"
                     android:ems="4"
                     android:gravity="left|center_vertical"
@@ -98,12 +98,12 @@
 
                 <TextView
                     android:textSize="24sp"
-                    android:text="Price: "/>
+                    android:text="@string/price"/>
 
                 <EditText
                     android:id="@+id/price"
                     android:gravity="left|center_vertical"
-                    android:hint="price"
+                    android:hint="@string/price_blank_text"
                     android:textColorHint="@color/verylightgrey"
                     android:inputType="numberDecimal|numberSigned"
                     android:textSize="@dimen/entry_text_size"
@@ -113,12 +113,12 @@
 
                 <TextView
                     android:textSize="24sp"
-                    android:text="Date: "/>
+                    android:text="@string/date"/>
 
                 <EditText
                     android:id="@+id/date"
                     android:inputType="date"
-                    android:hint="Jan-1-2016"
+                    android:hint="@string/date_blank_text"
                     android:gravity="right"
                     android:textSize="@dimen/entry_text_size"
                     android:background="@color/entryTextBoxColor"
@@ -129,7 +129,8 @@
                 android:id="@+id/add_new_car_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add Record"
+                android:text="@string/add_record_title"
+                android:textAllCaps="false"
                 android:textColor="#fff"
                 android:layout_margin="50dp"
                 android:layout_gravity="center"
