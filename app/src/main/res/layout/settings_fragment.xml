@@ -45,14 +45,15 @@
                 android:layout_gravity="center_horizontal" />
             <Button
                 android:id="@+id/add_edit_vehicle"
-                android:textAllCaps="false"
+                style="@style/button_style"
+                android:background="@drawable/custom_button"
+                android:text="@string/add_edit_vehicles"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/add_edit_vehicles"
-                android:textSize="@dimen/dialog_header_text_size"
                 android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"/>
+                android:layout_marginTop="30dp"
+                android:elevation="6dp"/>
     </LinearLayout>
 </ScrollView>
 <!--</LinearLayout>-->

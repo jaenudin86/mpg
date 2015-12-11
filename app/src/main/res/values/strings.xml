@@ -20,6 +20,13 @@
     <string name="date">Date:</string>
     <string name="date_blank_text">Jan-1-2016</string>
 
+<!-- add vehicle-->
+    <string name="add_vehicle">Add Vehicle</string>
+    <string name="make">Make:</string>
+    <string name="model">Model:</string>
+    <string name="year">Year:</string>
+    <string name="year_hint">2015</string>
+
 
 <!--edit vehicle-->
     <string name="add_edit_vehicles">Add/Edit Vehicles</string>

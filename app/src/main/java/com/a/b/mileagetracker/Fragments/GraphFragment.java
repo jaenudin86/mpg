@@ -202,22 +202,24 @@ public class GraphFragment extends Fragment implements LoaderManager.LoaderCallb
 
 //        feedMultiple();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        data.moveToFirst();
-                        do {
-                            Double value=data.getDouble(0);
-                            if(value!=0)
-                                addEntry(value);
-                        }while (data.moveToNext());
-                    }
-                });
-            }
-        }).start();
+        if(data!=null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            data.moveToFirst();
+                            do {
+                                Double value = data.getDouble(0);
+                                if (value != 0)
+                                    addEntry(value);
+                            } while (data.moveToNext());
+                        }
+                    });
+                }
+            }).start();
+        }
     }
 
     @Override

@@ -22,14 +22,16 @@
         android:layout_marginRight="10dp">
     </ListView>
     <Button
+        android:id="@+id/add_new_vehicle"
+        style="@style/button_style"
+        android:background="@drawable/custom_button"
+        android:text="@string/add_new_vehicle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="70dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:textAllCaps="false"
-        android:text="@string/add_new_vehicle"
-        android:id="@+id/add_new_vehicle"/>
+        android:elevation="6dp"/>
     <TextView
         android:layout_alignParentBottom="true"
         android:gravity="center"

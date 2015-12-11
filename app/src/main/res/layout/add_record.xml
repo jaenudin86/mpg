@@ -1,49 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:elevation="4dp">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/lightgray">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_record_title"
             android:textSize="@dimen/dialog_header_text_size"
-            android:layout_gravity="top|center"
+            android:layout_gravity="center"
             android:layout_marginTop="15dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|center"
+            android:layout_gravity="center"
             android:hint="vehicle text"
             android:id="@+id/current_vehicle_add_record_frag"
             android:textSize="20dp"/>
-    </LinearLayout>
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:fillViewport="true"
-        android:layout_marginTop="85dp"
-        android:layout_gravity="center_horizontal|top">
-        <LinearLayout
+        <ScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
+            android:fillViewport="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
             <GridLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:columnCount="2"
                 android:rowCount="6"
-                android:layout_marginLeft="15dp">
+                android:layout_marginLeft="15dp"
+                android:layout_gravity="center">
 
                 <TextView
-                    android:textSize="24sp"
+                    android:textSize="@dimen/add_record_text_size"
                     android:text="@string/gas_station" />
                 <EditText
                     android:id="@+id/station_location"
@@ -53,11 +49,11 @@
                     android:textSize="@dimen/entry_text_size"
                     android:ems="5"
                     android:background="@color/entryTextBoxColor"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="@dimen/space_between_entry_fields"
                     android:inputType="textCapWords"/>
 
                 <TextView
-                    android:textSize="24sp"
+                    android:textSize="@dimen/add_record_text_size"
                     android:text="@string/odometer"/>
 
                 <EditText
@@ -69,14 +65,14 @@
                     android:inputType="numberDecimal|numberSigned"
                     android:textSize="@dimen/entry_text_size"
                     android:background="@color/entryTextBoxColor"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_marginBottom="@dimen/space_between_entry_fields"/>
                 <!--<TextView-->
                 <!--android:layout_width="wrap_content"-->
                 <!--android:layout_height="wrap_content"-->
                 <!--android:textSize="24sp"-->
                 <!--android:text="mi"/>-->
                 <TextView
-                    android:textSize="24sp"
+                    android:textSize="@dimen/add_record_text_size"
                     android:text="Gallons: "/>
 
                 <EditText
@@ -88,7 +84,7 @@
                     android:textSize="@dimen/entry_text_size"
                     android:ems="3"
                     android:background="@color/entryTextBoxColor"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_marginBottom="@dimen/space_between_entry_fields"/>
 
                 <!--<TextView-->
                 <!--android:layout_width="wrap_content"-->
@@ -97,7 +93,7 @@
                 <!--android:text="gal"/>-->
 
                 <TextView
-                    android:textSize="24sp"
+                    android:textSize="@dimen/add_record_text_size"
                     android:text="@string/price"/>
 
                 <EditText
@@ -109,10 +105,10 @@
                     android:textSize="@dimen/entry_text_size"
                     android:ems="3"
                     android:background="@color/entryTextBoxColor"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_marginBottom="@dimen/space_between_entry_fields"/>
 
                 <TextView
-                    android:textSize="24sp"
+                    android:textSize="@dimen/add_record_text_size"
                     android:text="@string/date"/>
 
                 <EditText
@@ -121,25 +117,21 @@
                     android:hint="@string/date_blank_text"
                     android:gravity="right"
                     android:textSize="@dimen/entry_text_size"
-                    android:background="@color/entryTextBoxColor"
-                    android:layout_marginBottom="10dp"/>
-
+                    android:background="@color/entryTextBoxColor"/>
             </GridLayout>
+
             <Button
                 android:id="@+id/add_new_car_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/button_style"
+                android:background="@drawable/custom_button"
                 android:text="@string/add_record_title"
-                android:textAllCaps="false"
-                android:textColor="#fff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="50dp"
                 android:layout_gravity="center"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:background="@drawable/custom_button"
-                android:elevation="40dp"/>
-            <!--android:background="@color/colorPrimary"-->
-        </LinearLayout>
-
-    </ScrollView>
-</FrameLayout>
+                android:elevation="6dp"/>
+            </LinearLayout>
+        </ScrollView>
+</LinearLayout>

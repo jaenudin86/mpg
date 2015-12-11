@@ -67,10 +67,9 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 
         SharedPreferences sharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
         ArrayList<String> vehicles=new ArrayList<String>(Arrays.asList(TextUtils.split(sharedPrefs.getString("vehicle_list", ""), "‚‗‚")));
-        for(String v:vehicles){
-            Log.e(TAG,"vehicles in shared prefs: "+v);
-        }
-
+//        for(String v:vehicles){
+//            Log.e(TAG,"vehicles in shared prefs: "+v);
+//        }
 
         workBook=new HSSFWorkbook();
         createHelper=workBook.getCreationHelper();
@@ -91,12 +90,6 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
             getLoaderManager().initLoader(num, extra, (LoaderManager.LoaderCallbacks) this);
             num++;
         }
-
-//        for(int i=1;i<5;i++){
-//            getLoaderManager().initLoader(i, null, (LoaderManager.LoaderCallbacks) this);
-//        }
-
-        Log.e(TAG,"loop ended, all 5 loaders sent, in onCreate. Creating File now");
 
         File dbFile = getActivity().getApplicationContext().getDatabasePath(MySQLiteHelper.getInstance(getActivity().getApplicationContext()).getDatabaseName());
         Log.e(TAG, "DbFile path is: " + dbFile); // get the path of db
@@ -142,8 +135,6 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 
 //                NPOIFSFileSystem fs=new NPOIFSFileSystem(new File(exportDir, "AdobeTracker" + ".csv"));
 //                HSSFWorkbook workBook=new HSSFWorkbook(fs.getRoot(),true);
-
-
                 fileOut = new FileOutputStream(exportDir+"/AdobeXLS.xls");
                 workBook.write(fileOut);
                 fileOut.close();
@@ -213,7 +204,6 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
                 Log.e("SearchResultActivity", e.getMessage(), e);
             }
         }
-
 //        mDBHelper=MySQLiteHelper.getInstance(getActivity().getApplicationContext());
 
 //        Cursor c=mDBHelper.getAllData();
@@ -249,7 +239,7 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.e(TAG, "onActivityCreated thread1: " + Thread.currentThread().getName());
-        getLoaderManager().initLoader(1, null, (LoaderManager.LoaderCallbacks) this);
+        getLoaderManager().initLoader(0, null, (LoaderManager.LoaderCallbacks) this);
     }
 
 //    @Override
@@ -299,19 +289,20 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor c) {
         Row row;
+        if(c.getCount()>0){
         switch (loader.getId()) {
             case 0:
                 c.moveToFirst();
-                do{
+                do {
                     vehicles.add(c.getString(c.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
-                }while(c.moveToNext());
+                } while (c.moveToNext());
 
-                Log.e(TAG,"onloadFinished 0: ");
+                Log.e(TAG, "onloadFinished 0: ");
                 break;
             default:
                 try {
                     c.moveToFirst();
-                    if(c.getCount()>0) {
+                    if (c.getCount() > 0) {
                         do {
                             for (int i = 0; i < c.getColumnCount(); i++) {
                                 Log.e(TAG, "values: " + c.getString(i));
@@ -329,8 +320,8 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 
                         sheet = workBook.createSheet(sheetName);
                         row = sheet.createRow(0);
-                        Cell titleCell=row.createCell(0);
-                        titleCell.setCellValue("Data for "+vehicle);
+                        Cell titleCell = row.createCell(0);
+                        titleCell.setCellValue("Data for " + vehicle);
                         titleCell.setCellStyle(styleBold);
 
                         int rowNumber = 5;
@@ -360,9 +351,9 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
                                             row.createCell(2).setCellValue(NumberFormat.getCurrencyInstance().format(Double.parseDouble(c.getString(4))));
                                             break;
                                         case 5: //date column
-                                            long l=c.getLong(5);
-                                            Date date=new Date(l*1000);
-                                            SimpleDateFormat sdfFormat=new SimpleDateFormat("MMM/dd/yyyy");
+                                            long l = c.getLong(5);
+                                            Date date = new Date(l * 1000);
+                                            SimpleDateFormat sdfFormat = new SimpleDateFormat("MMM/dd/yyyy");
                                             row.createCell(3).setCellValue(sdfFormat.format(date));
                                             break;
                                         case 6: //location column
@@ -384,8 +375,9 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            break;
-    }
+                break;
+            }
+        }
 
 
 //    @Override

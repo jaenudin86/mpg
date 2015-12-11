@@ -22,7 +22,7 @@
                     android:endColor="#800"
                     android:angle="270" />
                 <corners
-                    android:radius="20dp" />
+                    android:radius="4dp" />
             </shape>
         </inset>
     </item>
