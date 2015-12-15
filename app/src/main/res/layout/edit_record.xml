@@ -1,35 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:elevation="4dp">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/lightgray">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Edit Record"
             android:textSize="@dimen/dialog_header_text_size"
-            android:layout_gravity="top|center"
+            android:layout_gravity="center"
             android:layout_marginTop="15dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|center"
+            android:layout_gravity="center"
             android:hint="vehicle text"
             android:id="@+id/current_vehicle_edit_record_frag"
             android:textSize="20dp"/>
-    </LinearLayout>
 
     <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:fillViewport="true"
-        android:layout_marginTop="85dp"
-        android:layout_gravity="center_horizontal|top">
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,7 +36,8 @@
                 android:layout_height="wrap_content"
                 android:columnCount="2"
                 android:rowCount="6"
-                android:layout_marginLeft="15dp">
+                android:layout_marginLeft="15dp"
+                android:layout_gravity="center">
 
                 <TextView
                     android:textSize="24sp"
@@ -152,4 +149,4 @@
         </LinearLayout>
 
     </ScrollView>
-</FrameLayout>
+</LinearLayout>

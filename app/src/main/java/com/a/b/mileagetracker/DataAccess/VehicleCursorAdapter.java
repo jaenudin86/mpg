@@ -2,6 +2,7 @@ package com.a.b.mileagetracker.DataAccess;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.a.b.mileagetracker.R;
  * Created by Andrew on 12/8/2015.
  */
 public class VehicleCursorAdapter extends CursorAdapter {
+    private Cursor cursor;
 
     public VehicleCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
@@ -34,5 +36,10 @@ public class VehicleCursorAdapter extends CursorAdapter {
                 cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_COLUMN_MAKE))+" "+
                 cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_COLUMN_MODEL));
         vehicle.setText(car);
+    }
+    @Override
+    public void changeCursor(Cursor c) {
+        cursor=c;
+        super.changeCursor(cursor);
     }
 }
