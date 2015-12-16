@@ -129,12 +129,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDBHelper = MySQLiteHelper.getInstance(getApplicationContext());
         final Cursor c = mDBHelper.getAllDataFromKeyTable();
 //        c.moveToFirst();
-
-        toolBarAdapter = new ToolBarCursorAdapter(getApplicationContext(), c, 0);
-        Spinner spinner = (Spinner) spinnerContainer.findViewById(R.id.toolbar_spinner);
-        spinner.setAdapter(toolBarAdapter);
-        spinner.setOnItemSelectedListener(toolBarAdapter);
-        updateSharedPrefsVehicles();
+//        if(c.getCount()>0) {
+            toolBarAdapter = new ToolBarCursorAdapter(getApplicationContext(), c, 0);
+            Spinner spinner = (Spinner) spinnerContainer.findViewById(R.id.toolbar_spinner);
+            spinner.setAdapter(toolBarAdapter);
+            spinner.setOnItemSelectedListener(toolBarAdapter);
+            updateSharedPrefsVehicles();
+//        }else{
+//            Log.e("main activity","getCount<0");
+////            toolBarAdapter = new ToolBarCursorAdapter(getApplicationContext(), c, 0);
+//        }
     }
 
     //    public void showCarSelectorDialog(){

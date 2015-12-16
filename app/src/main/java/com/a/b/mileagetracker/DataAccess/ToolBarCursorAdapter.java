@@ -23,22 +23,31 @@ public class ToolBarCursorAdapter extends CursorAdapter implements AdapterView.O
     private Context context;
     private Cursor cursor;
     private LayoutInflater mInflater;
+    String TAG="ToolBarCursorAdapter";
 
     public ToolBarCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         this.context = context;
         this.cursor=c;
         mInflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        Log.e(TAG, "constructor");
+    }
+
+    @Override
+    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+        return super.getDropDownView(position, convertView, parent);
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        Log.e(TAG,"newView");
         return mInflater.inflate(R.layout.dropdown_listitem, parent, false);
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         TextView vehicle = (TextView) view.findViewById(R.id.drop_text_view);
+        Log.e(TAG, "bindView");
         if(cursor.getCount()>0) {
             vehicle.setText(
                     cursor.getString(cursor.getColumnIndex("key_year")) + " " +

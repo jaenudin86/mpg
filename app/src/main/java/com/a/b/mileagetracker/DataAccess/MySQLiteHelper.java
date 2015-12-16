@@ -94,7 +94,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         Log.e(TAG, "MySQLiteHelper called onCreate()");
         try {
             database.execSQL(KEY_DB_CREATE);
-            Log.e(TAG, "Created db");
+//            Attempting to fill the first row in vehicle key table; hoping to create a title for spinner when first starting app
+//            ContentValues values = new ContentValues();
+//            values.put(KEY_COLUMN_MAKE, "Mileage Tracker");
+//            mDb.insert(KEY_TABLE_NAME, KEY_COLUMN_MAKE, values);
         } catch (SQLException e) {
             Log.e(TAG, "failed to create db");
         }

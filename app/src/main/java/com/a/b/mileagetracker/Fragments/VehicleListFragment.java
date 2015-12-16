@@ -43,15 +43,21 @@ public class VehicleListFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-        getLoaderManager().initLoader(0, null, (LoaderManager.LoaderCallbacks) this );
+        setRetainInstance(true);   //tends to cause problems on rotate?
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if(savedInstanceState==null) {
+            getLoaderManager().initLoader(0, null, (LoaderManager.LoaderCallbacks) this);
+        }else{
+            getLoaderManager().restartLoader(0, null, (LoaderManager.LoaderCallbacks) this);
+        }
         View view = inflater.inflate(R.layout.vehicle_listview_fragment, container, false);
         mListView=(ListView) view.findViewById(R.id.vehicle_listview);
         Button mAdd=(Button) view.findViewById(R.id.add_new_vehicle);
         mAdd.setOnClickListener(this);
+
         return view;
     }
 
@@ -62,8 +68,6 @@ public class VehicleListFragment extends Fragment implements LoaderManager.Loade
             case 0:
                 CL=new CursorLoader(getActivity().getApplicationContext(), Uri.parse("content://com.a.b.mileagetracker/key_table"), null, null, null, null);
             break;
-            case 1:
-                CL=new CursorLoader(getActivity().getApplicationContext(), Uri.parse("content://com.a.b.mileagetracker/key_table"), null, null, null, null);
         }
         return CL;
     }
@@ -77,26 +81,26 @@ public class VehicleListFragment extends Fragment implements LoaderManager.Loade
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, final long id) {
-                Log.e(TAG, "clicked position: " + position + ", long id: " + id);
-                TextView flag=(TextView) view.findViewById(R.id.text_delete_flag);
+            Log.e(TAG, "clicked position: " + position + ", long id: " + id);
+            TextView flag=(TextView) view.findViewById(R.id.text_delete_flag);
 
-                if (flag.getVisibility() == View.VISIBLE) {
-                    flag.setVisibility(View.INVISIBLE);
-                } else {
-                    flag.setVisibility(View.VISIBLE);
+            if (flag.getVisibility() == View.VISIBLE) {
+                flag.setVisibility(View.INVISIBLE);
+            } else {
+                flag.setVisibility(View.VISIBLE);
 //                    mListView.getItemAtPosition(position)
-                    flag.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            data.moveToPosition((int)id-1);
-                            Log.e(TAG, "inner click on position: " + position + ", id: " + data.getString(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_MAKE)));
-                            vehicleCurAdpt.notifyDataSetChanged();
-                            deleteVehicle((int)id);
-                        }
-                    });
-                }
+                flag.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        data.moveToPosition((int)id-1);
+                        Log.e(TAG, "inner click on position: " + position + ", id: " + data.getString(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_MAKE)));
+                        vehicleCurAdpt.notifyDataSetChanged();
+                        deleteVehicle((int)id);
+                    }
+                });
+            }
 
-                return true;
+            return true;
             }
         });
     }

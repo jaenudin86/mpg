@@ -58,6 +58,7 @@ public class GraphFragment extends Fragment implements LoaderManager.LoaderCallb
         super.onCreate(savedInstanceState);
         mPoints=new ArrayList<>();
         String s=getArguments().getString("someString", "notFound");
+        setRetainInstance(true);   //tends to cause problems on rotate
         if(savedInstanceState==null) {
             getLoaderManager().initLoader(1, null, (LoaderManager.LoaderCallbacks) this);
         }else{
