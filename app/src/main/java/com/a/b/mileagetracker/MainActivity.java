@@ -291,11 +291,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onDialogAddVehicleDismiss(String tag) {
         addVehicleDialogFrag.dismiss();
-        mDBHelper = MySQLiteHelper.getInstance(getApplicationContext());
-        Cursor cursor = mDBHelper.getAllDataFromKeyTable();
-        toolBarAdapter.changeCursor(cursor);
-        toolBarAdapter.notifyDataSetChanged();
-        updateSharedPrefsVehicles();
+        updateToolBarView();
     }
 
     @Override
@@ -317,6 +313,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ft.replace(R.id.fragment_holder, vehicleListFragment);
         ft.setTransition(ft.TRANSIT_FRAGMENT_FADE);
         ft.commit();
+    }
+
+    @Override
+    public void updateToolBarView() {
+        mDBHelper = MySQLiteHelper.getInstance(getApplicationContext());
+        Cursor cursor = mDBHelper.getAllDataFromKeyTable();
+        toolBarAdapter.changeCursor(cursor);
+        toolBarAdapter.notifyDataSetChanged();
+        updateSharedPrefsVehicles();
     }
 
     @Override

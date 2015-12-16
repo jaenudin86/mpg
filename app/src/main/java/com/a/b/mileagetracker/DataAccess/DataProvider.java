@@ -26,7 +26,7 @@ public class DataProvider extends ContentProvider {
     private static UriMatcher sUriMatcher=new UriMatcher(UriMatcher.NO_MATCH);
     static {
         sUriMatcher.addURI("com.a.b.mileagetracker", "key_table", 1);
-        sUriMatcher.addURI("com.a.b.mileagetracker", "delete_vehicle", 2);
+        sUriMatcher.addURI("com.a.b.mileagetracker", "delete_vehicle", 10);
         sUriMatcher.addURI("com.a.b.mileagetracker", "vehicle", 3);
         sUriMatcher.addURI("com.a.b.mileagetracker","mpg_data", 4);
         sUriMatcher.addURI("com.a.b.mileagetracker","sum_gals", 5);
@@ -104,6 +104,12 @@ public class DataProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
+        switch(sUriMatcher.match(uri)){
+            case 10:
+                Log.e(TAG,"deleting: "+selection);
+                mDBHelper.deleteVehicle(selection);
+                break;
+        }
         return 0;
     }
 

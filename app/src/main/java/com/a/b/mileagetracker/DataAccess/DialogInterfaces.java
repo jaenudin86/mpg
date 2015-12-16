@@ -14,5 +14,6 @@ public class DialogInterfaces {
         void selectCurrentCar(String make, String model, int year);
         void dismissDialogFragment(String tag);
         void openVehicleListFragment();
+        void updateToolBarView();
     }
 }

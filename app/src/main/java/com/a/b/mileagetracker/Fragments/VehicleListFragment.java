@@ -2,6 +2,7 @@ package com.a.b.mileagetracker.Fragments;
 
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
+import com.a.b.mileagetracker.DataAccess.SQLDao;
 import com.a.b.mileagetracker.DataAccess.VehicleCursorAdapter;
 import com.a.b.mileagetracker.Events.RefreshVehiclesEvent;
 import com.a.b.mileagetracker.R;
@@ -81,31 +83,37 @@ public class VehicleListFragment extends Fragment implements LoaderManager.Loade
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, final long id) {
-            Log.e(TAG, "clicked position: " + position + ", long id: " + id);
-            TextView flag=(TextView) view.findViewById(R.id.text_delete_flag);
+                Log.e(TAG, "clicked position: " + position + ", long id: " + id);
+                TextView flag = (TextView) view.findViewById(R.id.text_delete_flag);
 
-            if (flag.getVisibility() == View.VISIBLE) {
-                flag.setVisibility(View.INVISIBLE);
-            } else {
-                flag.setVisibility(View.VISIBLE);
+                if (flag.getVisibility() == View.VISIBLE) {
+                    flag.setVisibility(View.INVISIBLE);
+                } else {
+                    flag.setVisibility(View.VISIBLE);
 //                    mListView.getItemAtPosition(position)
-                flag.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        data.moveToPosition((int)id-1);
-                        Log.e(TAG, "inner click on position: " + position + ", id: " + data.getString(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_MAKE)));
-                        vehicleCurAdpt.notifyDataSetChanged();
-                        deleteVehicle((int)id);
-                    }
-                });
-            }
+                    flag.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+//                            data.moveToPosition((int) id - 1);
+                            data.moveToPosition(position);
+//                            Log.e(TAG, "inner click on position: " + position + ", id: " + data.getString(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
+                            Log.e(TAG,"index: "+data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE));
+                            Log.e(TAG, "data.getstring(index): " + data.getColumnName(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
 
-            return true;
+                           deleteVehicle(data.getString(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
+                        }
+                    });
+                }
+
+                return true;
             }
         });
     }
-    public void deleteVehicle(int id){
-        getLoaderManager().initLoader(1, null, (LoaderManager.LoaderCallbacks) this );
+    public void deleteVehicle(String vehicle){
+        ContentResolver cr=getActivity().getContentResolver();
+        int del=cr.delete(Uri.parse("content://com.a.b.mileagetracker/delete_vehicle"),vehicle,null);
+        getLoaderManager().restartLoader(0, null, (LoaderManager.LoaderCallbacks) this);
+        mListener.updateToolBarView();
     }
 
     @Override

@@ -40,14 +40,14 @@ public class ToolBarCursorAdapter extends CursorAdapter implements AdapterView.O
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        Log.e(TAG,"newView");
+//        Log.e(TAG,"newView");
         return mInflater.inflate(R.layout.dropdown_listitem, parent, false);
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         TextView vehicle = (TextView) view.findViewById(R.id.drop_text_view);
-        Log.e(TAG, "bindView");
+//        Log.e(TAG, "bindView");
         if(cursor.getCount()>0) {
             vehicle.setText(
                     cursor.getString(cursor.getColumnIndex("key_year")) + " " +

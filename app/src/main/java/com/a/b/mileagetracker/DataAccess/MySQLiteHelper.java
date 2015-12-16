@@ -181,8 +181,37 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         currentVehicle=mSharedPrefs.getString("currentVehicle","null");
         mDb=getWritableDatabase();
         int result=mDb.delete(currentVehicle,"_id = ?", new String[] {pos});
-        Log.e(TAG,"delete entry results ==> "+result+" for: "+currentVehicle+" at position: "+pos);
+        Log.e(TAG, "delete entry results ==> " + result + " for: " + currentVehicle + " at position: " + pos);
         getAllData(); //<--for testing only
+    }
+
+    @Override
+    public void deleteVehicle(String vehicle) {
+        Log.e(TAG, "before removing from key table------:");
+        logKeyTable();
+
+        String[] pos= new String[]{vehicle};
+        mDb.delete(KEY_TABLE_NAME, KEY_COLUMN_TABLE + " = ?", pos);
+        mDb.execSQL("DROP TABLE IF EXISTS " + vehicle);
+
+        Log.e(TAG, "after removing from key table------:");
+        logKeyTable();
+    }
+    public void logKeyTable(){
+        Cursor c=getAllDataFromKeyTable();
+        if(c.moveToFirst()) {
+            String record = "";
+            do {
+                record = String.format("%d _id , make: %s, model: %s, year: %s, associated name: %s",
+                        c.getInt(0),
+                        c.getString(1),
+                        c.getString(2),
+                        c.getString(3),
+                        c.getString(4));
+
+                Log.e(TAG, "getAllDataFromKeyTable----: " + record);
+            } while (c.moveToNext());
+        }
     }
 
     @Override

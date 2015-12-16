@@ -16,6 +16,7 @@ public interface SQLDao {
     void createVehicleTable(int year, String make, String model, String vehicleKey);
     void addEntry(int miles, double gallons, double price, long date, String location);
     void deleteEntry(long position);
+    void deleteVehicle(String vehicle);
     Cursor getAllData();
     Cursor getAllData(String vehicle);
     void calculateMpgColumn();
