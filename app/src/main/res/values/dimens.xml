@@ -9,6 +9,7 @@
     <dimen name="entry_text_size">28sp</dimen>
     <dimen name="perfm_list_item_size">24sp</dimen>
     <dimen name="dialog_header_text_size">24sp</dimen>
+    <dimen name="init_message">24sp</dimen>
 
 
     <dimen name="add_record_text_size">24sp</dimen>

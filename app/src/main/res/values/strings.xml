@@ -9,6 +9,10 @@
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
 
+<!--init message/button-->
+    <string name="init_message_no_vehicles">There are no vehicles created. Click the button below to get started!</string>
+    <string name="init_message_no_data">This vehicle needs data to create a record. Click the button below to create an entry!</string>
+    <string name="get_started">Get Started</string>
 <!--add record-->
     <string name="add_record_title">Add Record</string>
     <string name="gas_station">Gas Station:</string>
