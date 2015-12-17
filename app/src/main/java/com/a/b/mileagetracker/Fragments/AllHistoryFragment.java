@@ -29,13 +29,14 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by Andrew on 10/14/2015.
  */
-public class AllHistoryFragment extends Fragment {
+public class AllHistoryFragment extends Fragment implements View.OnClickListener{
 
     private MySQLiteHelper mDBHelper;
     private ListView mListView;
     private TextView header;
     private DialogInterfaces.DialogInterface mListener;
     public static HistoryCursorAdapter mHistoryCursorAdapter;
+    private Button mEmptyButton;
 
     public AllHistoryFragment(){
     }
@@ -51,55 +52,43 @@ public class AllHistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mDBHelper=MySQLiteHelper.getInstance(getActivity().getApplicationContext());
         View view = inflater.inflate(R.layout.all_data_listview_fragment, container, false);
-//        Button emptyButton=(Button)view.findViewById(R.id.empty_history_button);
-//        header=(TextView) view.findViewById(R.id.all_data_listview_title);
-//        header.setText("All entries for: "+(mSharedPrefs.getString("currentVehicle","not found")));
-//        Spinner carSpinner=(Spinner) view.findViewById(R.id.dropdown_spinner_all_data_frag);
+        mEmptyButton = (Button) view.findViewById(R.id.empty_history_button);
+        mEmptyButton.setOnClickListener(this);
+        mListView = (ListView) view.findViewById(R.id.listview);
 
         SharedPreferences mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
-//        final Cursor c=mDBHelper.getAllDataFromKeyTable();
-//        DropDownCursorAdapter dropDownAdapt = new DropDownCursorAdapter(getActivity(), c, 0);
-//        carSpinner.setAdapter(dropDownAdapt);
-//        carSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                Log.e("selected","selected: "+parent+", "+view+", "+position+", "+id);
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-//        carSpinner.setOnItemSelectedListener(dropDownAdapt);
-
         mDBHelper = MySQLiteHelper.getInstance(getActivity().getApplicationContext());
         final Cursor cursor=mDBHelper.getAllData();
-        if(cursor!=null) {
-//            Button emptyButton=(Button) view.findViewById(R.id.empty_history_button);
-//            if(cursor.getCount()>0){
-//                emptyButton.setVisibility(View.GONE);
-//            }
-            cursor.moveToFirst();
 
-            mListView = (ListView) view.findViewById(R.id.listview);
-            mHistoryCursorAdapter = new HistoryCursorAdapter(getActivity(), cursor, 0);
-            mListView.setAdapter(mHistoryCursorAdapter);
-            mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    Cursor c = mDBHelper.getAllData();
-                    mListener.openEditVehicleEntryFragment();
-                    EventBus.getDefault().postSticky(new EditHistoryEvent(c, position, id));
-
-                    Log.e("long click", "long clicked: " + view + ", " + position + ", " + id);
-                    return true;
-                }
-            });
-            mListView.setDivider(null);
-            mListView.setDividerHeight(0);
+        if(cursor==null){
+            mEmptyButton.setText("Get Started");
+            mEmptyButton.setVisibility(View.VISIBLE);
+        }else if (cursor.getCount()<1){
+            mEmptyButton.setText("Add Record");
+            mEmptyButton.setVisibility(View.VISIBLE);
+        }else{
+            mEmptyButton.setVisibility(View.GONE);
         }
+
+//        mEmptyButton.setVisibility(cursor!=null?View.GONE:View.VISIBLE);
+//        mEmptyButton.setText(cursor==null?"Get Started":"Add Record");
+
+        mHistoryCursorAdapter = new HistoryCursorAdapter(getActivity(), cursor, 0);
+        mListView.setAdapter(mHistoryCursorAdapter);
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Cursor c = mDBHelper.getAllData();
+                mListener.openEditVehicleEntryFragment();
+                EventBus.getDefault().postSticky(new EditHistoryEvent(c, position, id));
+
+                Log.e("long click", "long clicked: " + view + ", " + position + ", " + id);
+                return true;
+            }
+        });
+        mListView.setDivider(null);
+        mListView.setDividerHeight(0);
         return view;
     }
 
@@ -108,11 +97,17 @@ public class AllHistoryFragment extends Fragment {
         Cursor cursor=mDBHelper.getAllData();
         mHistoryCursorAdapter.changeCursor(cursor);
         mHistoryCursorAdapter.notifyDataSetChanged();
-
-//        String insert_query="INSERT INTO fillupTable (location) "+"VALUES ('bp')";
-//        db.execSQL(insert_query);
-//        Cursor c =db.rawQuery("SELECT _id, location FROM fillupTable",null);
-//        cursorAdapter.changeCursor(c);
+//        mEmptyButton.setVisibility(cursor != null ? View.GONE : View.VISIBLE);
+//        mEmptyButton.setText(cursor == null ? "Get Started" : "Add Record");
+        if(cursor==null){
+            mEmptyButton.setText("Get Started");
+            mEmptyButton.setVisibility(View.VISIBLE);
+        }else if (cursor.getCount()<1){
+            mEmptyButton.setText("Add Record");
+            mEmptyButton.setVisibility(View.VISIBLE);
+        }else{
+            mEmptyButton.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -140,5 +135,10 @@ public class AllHistoryFragment extends Fragment {
             throw new ClassCastException(activity.toString()
                     + " must implement NoticeDialogListener");
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        mListener.pressInitialButtonAction();
     }
 }

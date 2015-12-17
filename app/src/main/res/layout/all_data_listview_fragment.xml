@@ -18,6 +18,8 @@
         <!--android:background="@color/extremelightgrey">-->
         </ListView>
     <Button
+        style="@style/button_style"
+        android:background="@drawable/custom_button"
         android:id="@+id/empty_history_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -280,33 +280,33 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         currentVehicle=mSharedPrefs.getString("currentVehicle", "null");
         String[] columns={COLUMN_ID,COLUMN_MILEAGE, COLUMN_QUANTITY};
         Cursor c=mDb.query(currentVehicle,columns,null,null,null,null,COLUMN_DATE+" DESC");
-        c.moveToFirst();
-        do{
-            Log.e(TAG, "Cursor from calculateMgpColumn: " + c.getString(0) + ", " + c.getString(1) + ", " + c.getString(2) + ", ");
+        if(c.getCount()>0) {
+            c.moveToFirst();
+            do {
+                String id=c.getString(c.getColumnIndex(COLUMN_ID));
+                int currentMiles=c.getInt(c.getColumnIndex(COLUMN_MILEAGE));
+                Double currentGallons=c.getDouble(c.getColumnIndex(COLUMN_QUANTITY));
+                int previousMiles= 0;
+                c.moveToNext();
+                try {
+                    previousMiles = c.getInt(c.getColumnIndex(COLUMN_MILEAGE));
+                } catch (Exception e) {
+                    previousMiles=0;
+                    currentMiles=0;
+                }
+                c.moveToPrevious();
+                Double currentMpg=(currentMiles-previousMiles)/currentGallons;
+                Log.e(TAG, "MPG= " + currentMpg);
 
-            String id=c.getString(c.getColumnIndex(COLUMN_ID));
-            int currentMiles=c.getInt(c.getColumnIndex(COLUMN_MILEAGE));
-            Double currentGallons=c.getDouble(c.getColumnIndex(COLUMN_QUANTITY));
-            int previousMiles= 0;
-            c.moveToNext();
-            try {
-                previousMiles = c.getInt(c.getColumnIndex(COLUMN_MILEAGE));
-            } catch (Exception e) {
-                previousMiles=0;
-                currentMiles=0;
-            }
-            c.moveToPrevious();
-            Double currentMpg=(currentMiles-previousMiles)/currentGallons;
-            Log.e(TAG, "MPG= " + currentMpg);
+                DecimalFormat df3=new DecimalFormat("#.###");
 
-            DecimalFormat df3=new DecimalFormat("#.###");
+                ContentValues cv=new ContentValues();
+                cv.put(COLUMN_MPG, Double.valueOf(df3.format(currentMpg)));
+                String [] args={id};
+                mDb.update(currentVehicle,cv,"_id=?",args);
 
-            ContentValues cv=new ContentValues();
-            cv.put(COLUMN_MPG, Double.valueOf(df3.format(currentMpg)));
-            String [] args={id};
-            mDb.update(currentVehicle,cv,"_id=?",args);
-
-        }while(c.moveToNext());
+            } while (c.moveToNext());
+        }
     }
 
     @Override

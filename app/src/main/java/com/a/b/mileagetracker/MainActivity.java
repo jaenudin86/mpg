@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.internal.view.menu.MenuBuilder;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -204,17 +205,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //    }
 
     public void popBackStack() {
-        if(backPressedToExitOnce){
-            Log.e("main","end app???");
+        if (backPressedToExitOnce) {
+            Log.e("main", "end app???");
             super.onBackPressed();
         }
 
-        if(fragmentManager.getBackStackEntryCount()>1){
+        if (fragmentManager.getBackStackEntryCount() > 1) {
             fragmentManager.popBackStack();
 
-        }else{
-            Toast.makeText(this,R.string.backpress,Toast.LENGTH_SHORT).show();
-            this.backPressedToExitOnce=true;
+        } else {
+            Toast.makeText(this, R.string.backpress, Toast.LENGTH_SHORT).show();
+            this.backPressedToExitOnce = true;
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -223,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }, 2000);
         }
         Log.e("main", "backpresed boolean: " + backPressedToExitOnce + ", backstackcount: " + fragmentManager.getBackStackEntryCount());
-
+    }
 
 //
 //
@@ -243,25 +244,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                    backPressedToExitOnce = false;
 //                }
 //            }, 2000);
-
-    }
-    private void showToast(String message) {
-        if (this.toast == null) {
-            this.toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        } else if (this.toast.getView() == null) {
-            this.toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        } else {
-            this.toast.setText(message);
-        }
-        this.toast.show();
-    }
+//
+//    }
+//    private void showToast(String message) {
+//        if (this.toast == null) {
+//            this.toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+//        } else if (this.toast.getView() == null) {
+//            this.toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+//        } else {
+//            this.toast.setText(message);
+//        }
+//        this.toast.show();
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -293,21 +293,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_add_record) {
-            if (mDBHelper.keyTableHasData() == false) {
-                onDialogAddVehicle();
-            } else {
-                android.support.v4.app.FragmentTransaction ftDialog = getSupportFragmentManager().beginTransaction();
-                android.support.v4.app.Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
-                if (prev != null) {
-                    ftDialog.remove(prev);
-                }
-                ftDialog.addToBackStack(null);
-                dialogFragment = AddRecordDialogFrag.newInstance();
-                dialogFragment.show(ftDialog, "dialog");
-            }
+            pressInitialButtonAction();
 
         } else if (id == R.id.nav_history_list) {
-
             AllHistoryFragment allDataListViewFragment = new AllHistoryFragment();
             ft.replace(R.id.fragment_holder, allDataListViewFragment);
             ft.commit();
@@ -339,16 +327,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.add(emailFragment, "emailFragment");
             ft.commit();
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-//    @Override
-//    public void onDialogAddEntryDismiss() {
-//        dialogFragment.dismiss();
-//    }
+    @Override
+    public void pressInitialButtonAction() {
+        if (mDBHelper.keyTableHasData() == false) {
+            onDialogAddVehicle();
+        } else {
+            android.support.v4.app.FragmentTransaction ftDialog = getSupportFragmentManager().beginTransaction();
+            android.support.v4.app.Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
+            if (prev != null) {
+                ftDialog.remove(prev);
+            }
+            ftDialog.addToBackStack(null);
+            dialogFragment = AddRecordDialogFrag.newInstance();
+            dialogFragment.show(ftDialog, "dialog");
+        }
+    }
 
     @Override
     public void onDialogAddVehicle() {
@@ -420,5 +418,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Log.e("shared preferences", "shared prefs: " + currentCar);
     }
-
 }
