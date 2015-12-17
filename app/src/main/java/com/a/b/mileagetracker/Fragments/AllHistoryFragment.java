@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +51,7 @@ public class AllHistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mDBHelper=MySQLiteHelper.getInstance(getActivity().getApplicationContext());
         View view = inflater.inflate(R.layout.all_data_listview_fragment, container, false);
+//        Button emptyButton=(Button)view.findViewById(R.id.empty_history_button);
 //        header=(TextView) view.findViewById(R.id.all_data_listview_title);
 //        header.setText("All entries for: "+(mSharedPrefs.getString("currentVehicle","not found")));
 //        Spinner carSpinner=(Spinner) view.findViewById(R.id.dropdown_spinner_all_data_frag);
@@ -72,10 +74,13 @@ public class AllHistoryFragment extends Fragment {
 //        });
 //        carSpinner.setOnItemSelectedListener(dropDownAdapt);
 
-
         mDBHelper = MySQLiteHelper.getInstance(getActivity().getApplicationContext());
         final Cursor cursor=mDBHelper.getAllData();
         if(cursor!=null) {
+//            Button emptyButton=(Button) view.findViewById(R.id.empty_history_button);
+//            if(cursor.getCount()>0){
+//                emptyButton.setVisibility(View.GONE);
+//            }
             cursor.moveToFirst();
 
             mListView = (ListView) view.findViewById(R.id.listview);
@@ -99,13 +104,10 @@ public class AllHistoryFragment extends Fragment {
     }
 
     public void onEvent(RefreshHistoryListViewEvent event){
-
         mDBHelper = MySQLiteHelper.getInstance(getActivity().getApplicationContext());
         Cursor cursor=mDBHelper.getAllData();
         mHistoryCursorAdapter.changeCursor(cursor);
         mHistoryCursorAdapter.notifyDataSetChanged();
-
-        Log.e("onEvent", "onEvent received");
 
 //        String insert_query="INSERT INTO fillupTable (location) "+"VALUES ('bp')";
 //        db.execSQL(insert_query);
@@ -113,9 +115,6 @@ public class AllHistoryFragment extends Fragment {
 //        cursorAdapter.changeCursor(c);
     }
 
-//    public void onEvent(SomeOtherEvent event){
-//        Log.e("","something else received");
-//    }
     @Override
     public void onStart() {
         super.onStart();

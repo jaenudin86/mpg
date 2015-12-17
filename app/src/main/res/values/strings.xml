@@ -50,4 +50,11 @@
     <string-array name="default_vehicle_list">
         <item>please add a vehicle</item>
     </string-array>
+
+    <!--graph-->
+    <string name="need_more_data1">Please press "Add Record" to get started!</string>
+    <string name="need_more_data2">Need more entries to create a graph for this vehicle</string>
+
+    <!-- backpress toast-->
+    <string name="backpress">Press back again to exit</string>
 </resources>

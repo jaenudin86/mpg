@@ -2,19 +2,24 @@ package com.a.b.mileagetracker.Fragments;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.a.b.mileagetracker.Events.RefreshHistoryListViewEvent;
 import com.a.b.mileagetracker.R;
@@ -59,10 +64,19 @@ public class GraphFragment extends Fragment implements LoaderManager.LoaderCallb
         mPoints=new ArrayList<>();
         String s=getArguments().getString("someString", "notFound");
         setRetainInstance(true);   //tends to cause problems on rotate
-        if(savedInstanceState==null) {
-            getLoaderManager().initLoader(1, null, (LoaderManager.LoaderCallbacks) this);
+
+        SharedPreferences sharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        String currentVehicle=sharedPrefs.getString("currentVehicle","null");
+        if(currentVehicle.compareToIgnoreCase("null")!=0) {
+            if (savedInstanceState == null) {
+                getLoaderManager().initLoader(1, null, (LoaderManager.LoaderCallbacks) this);
+            } else {
+                getLoaderManager().restartLoader(1, null, (LoaderManager.LoaderCallbacks) this);
+            }
         }else{
-            getLoaderManager().restartLoader(1, null, (LoaderManager.LoaderCallbacks) this);
+//            Snackbar.make(R.id.fragment_holder,R.string.need_more_data1,Snackbar.LENGTH_LONG).setDuration(7000).show();
+            Toast.makeText(getActivity().getApplicationContext(),R.string.need_more_data1,Toast.LENGTH_LONG).show();
+            Log.e(TAG,"empty graph");
         }
     }
 
@@ -203,7 +217,7 @@ public class GraphFragment extends Fragment implements LoaderManager.LoaderCallb
 
 //        feedMultiple();
 
-        if(data!=null) {
+        if(data.getCount()>1) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -220,6 +234,9 @@ public class GraphFragment extends Fragment implements LoaderManager.LoaderCallb
                     });
                 }
             }).start();
+        }else{
+            Snackbar.make(mChart,R.string.need_more_data2,Snackbar.LENGTH_LONG).setDuration(5000).show();
+            Log.e(TAG,"empty graph");
         }
     }
 

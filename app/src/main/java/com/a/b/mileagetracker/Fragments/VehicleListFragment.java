@@ -3,12 +3,15 @@ package com.a.b.mileagetracker.Fragments;
 import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,10 +100,10 @@ public class VehicleListFragment extends Fragment implements LoaderManager.Loade
 //                            data.moveToPosition((int) id - 1);
                             data.moveToPosition(position);
 //                            Log.e(TAG, "inner click on position: " + position + ", id: " + data.getString(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
-                            Log.e(TAG,"index: "+data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE));
+                            Log.e(TAG, "index: " + data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE));
                             Log.e(TAG, "data.getstring(index): " + data.getColumnName(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
 
-                           deleteVehicle(data.getString(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
+                            deleteVehicle(data.getString(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
                         }
                     });
                 }
@@ -110,6 +113,14 @@ public class VehicleListFragment extends Fragment implements LoaderManager.Loade
         });
     }
     public void deleteVehicle(String vehicle){
+        SharedPreferences sharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        String currentVehicle=sharedPrefs.getString("currentVehicle", "null");
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+
+        if(currentVehicle.compareToIgnoreCase(vehicle)==0){
+            editor.putString("currentVehicle", null).apply();
+
+        }
         ContentResolver cr=getActivity().getContentResolver();
         int del=cr.delete(Uri.parse("content://com.a.b.mileagetracker/delete_vehicle"),vehicle,null);
         getLoaderManager().restartLoader(0, null, (LoaderManager.LoaderCallbacks) this);

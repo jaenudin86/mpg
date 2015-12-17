@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
@@ -43,6 +44,7 @@ public class HistoryCursorAdapter extends CursorAdapter{
     @Override
     //View returned from newView is passed as a first parameter to bindView
     public void bindView(View view, Context context, Cursor cursor) {
+
         TextView mileage=(TextView) view.findViewById(R.id.mileage_list_item);
         TextView gallons=(TextView) view.findViewById(R.id.gallons_list_item);
         TextView price=(TextView) view.findViewById(R.id.price_list_item);
@@ -59,7 +61,8 @@ public class HistoryCursorAdapter extends CursorAdapter{
         date.setText(convertTime(cursor.getInt(cursor.getColumnIndex("date"))));
 
         location.setText("Station: "+cursor.getString(cursor.getColumnIndex("location")));
-        mpg.setText("MPG: "+ cursor.getDouble(cursor.getColumnIndex(MySQLiteHelper.COLUMN_MPG)));
+        Double mpgValue=cursor.getDouble(cursor.getColumnIndex(MySQLiteHelper.COLUMN_MPG));
+        mpg.setText("MPG: "+ (mpgValue==0.0?"--":mpgValue));
     }
     @Override
     public void changeCursor(Cursor c) {

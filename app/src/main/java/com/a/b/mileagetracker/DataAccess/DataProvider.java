@@ -59,8 +59,8 @@ public class DataProvider extends ContentProvider {
                 c=mDBHelper.getAllDataFromKeyTable();
                 break;
             case 2:
-                c= mDBHelper.getAllData();
-                Log.e(TAG,"query case 2");
+//                c= mDBHelper.getAllData();
+//                Log.e(TAG,"query case 2");
                 break;
             case 3:
                 c=mDBHelper.getAllData(selection);

@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
@@ -26,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
@@ -58,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SharedPreferences mSharedPrefs;
     public static ToolBarCursorAdapter toolBarAdapter;
     FragmentManager fragmentManager = getFragmentManager();
+    private boolean backPressedToExitOnce = false;
+    private Toast toast = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,12 +181,79 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+//    @Override
+//    public void onBackPressed() {
+//        if ((backPressedToExitOnce) || (getSupportFragmentManager().getBackStackEntryCount() > 0)) {
+//            super.onBackPressed();
+//        } else {
+//            this.backPressedToExitOnce = true;
+//            showToast("Press again to exit ");
+//            new Handler().postDelayed(new Runnable() {
+//
+//                @Override
+//                public void run() {
+//                    backPressedToExitOnce = false;
+//                }
+//            }, 2000);
+//        }
+//    }
+
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//    }
+
     public void popBackStack() {
-        if(fragmentManager.getBackStackEntryCount() != 0) {
-            fragmentManager.popBackStack();
-        } else {
+        if(backPressedToExitOnce){
+            Log.e("main","end app???");
             super.onBackPressed();
         }
+
+        if(fragmentManager.getBackStackEntryCount()>1){
+            fragmentManager.popBackStack();
+
+        }else{
+            Toast.makeText(this,R.string.backpress,Toast.LENGTH_SHORT).show();
+            this.backPressedToExitOnce=true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    backPressedToExitOnce = false;
+                }
+            }, 2000);
+        }
+        Log.e("main", "backpresed boolean: " + backPressedToExitOnce + ", backstackcount: " + fragmentManager.getBackStackEntryCount());
+
+
+//
+//
+//        if((backPressedToExitOnce) || (fragmentManager.getBackStackEntryCount() != 0)) {
+//            Log.e("main", "backstack count: " + fragmentManager.getBackStackEntryCount());
+//
+////            super.onBackPressed();
+//        }
+//            Log.e("main","popbackstack else clause");
+//            this.backPressedToExitOnce = true;
+////            Toast.makeText(getApplicationContext(), "Press again to exit ", Toast.LENGTH_LONG);
+//            showToast("message");
+//            new Handler().postDelayed(new Runnable() {
+//
+//                @Override
+//                public void run() {
+//                    backPressedToExitOnce = false;
+//                }
+//            }, 2000);
+
+    }
+    private void showToast(String message) {
+        if (this.toast == null) {
+            this.toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        } else if (this.toast.getView() == null) {
+            this.toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        } else {
+            this.toast.setText(message);
+        }
+        this.toast.show();
     }
 
     @Override
@@ -235,7 +306,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 dialogFragment.show(ftDialog, "dialog");
             }
 
-            // Handle the camera action
         } else if (id == R.id.nav_history_list) {
 
             AllHistoryFragment allDataListViewFragment = new AllHistoryFragment();
@@ -256,7 +326,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_settings) {
             SettingsFragment settingsFragment = SettingsFragment.newInstance();
             ft.replace(R.id.fragment_holder, settingsFragment);
-            ft.addToBackStack(null);
+//            ft.addToBackStack(null);
             ft.commit();
         } else if (id == R.id.nav_send) {
 //            ExportDatabaseAsyncTask exportDb=new ExportDatabaseAsyncTask(getApplicationContext());

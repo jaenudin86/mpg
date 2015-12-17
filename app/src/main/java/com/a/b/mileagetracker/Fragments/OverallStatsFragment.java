@@ -255,7 +255,8 @@ public class OverallStatsFragment extends Fragment implements LoaderManager.Load
                 break;
             case 1:
                 SharedPreferences mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-                if(mSharedPrefs.getString("currentVehicle",null)!=null) {
+                String curVeh=mSharedPrefs.getString("currentVehicle",null);
+                if(curVeh!=null) {
                     CL = new CursorLoader(getActivity().getApplicationContext(), Uri.parse("content://com.a.b.mileagetracker/vehicle"), null, mSharedPrefs.getString("currentVehicle","null"), null, null);
                 }
                 break;

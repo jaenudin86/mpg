@@ -160,15 +160,15 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         currentVehicle=mSharedPrefs.getString("currentVehicle","null");
         logger("MySQLiteHelper.java addEntry: miles: " + miles + ", gals: " + gallons + ", $" + price + ", date: " + date + ", location: " + location);
 
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_VEHICLE, currentVehicle);
-        values.put(COLUMN_MILEAGE, miles);
-        values.put(COLUMN_QUANTITY, gallons);
-        values.put(COLUMN_PRICE, price);
-        values.put(COLUMN_DATE, date);
-        values.put(COLUMN_LOCATION, location);
-
         if(currentVehicle!=null){
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_VEHICLE, currentVehicle);
+            values.put(COLUMN_MILEAGE, miles);
+            values.put(COLUMN_QUANTITY, gallons);
+            values.put(COLUMN_PRICE, price);
+            values.put(COLUMN_DATE, date);
+            values.put(COLUMN_LOCATION, location);
+
             mDb.insert(currentVehicle, COLUMN_LOCATION, values);
         }else{
             Log.e(TAG,"Shared preferences doesn't have current vehicle selected");
@@ -261,31 +261,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         mDb=getReadableDatabase();
         try {
             if(vehicle!=null){
-                Cursor c=mDb.rawQuery("SELECT * FROM "+ vehicle +" ORDER BY "+COLUMN_DATE+" DESC", null);
-                String names="";
-                for(String s: c.getColumnNames()){
-                    names=names+s+", ";
+                Cursor c= null;
+                try {
+                    c = mDb.rawQuery("SELECT * FROM "+ vehicle +" ORDER BY "+COLUMN_DATE+" DESC", null);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-//                if(c.moveToFirst()){
-//                    String record="";
-//                    do{
-//                        record= String.format("%d _id , vehicle: %s, %d miles, %.3f gallons, %.2f dollars, date: %d, location %s",
-//                                c.getInt(0),
-//                                c.getString(1),
-//                                c.getInt(2),
-//                                c.getFloat(3),
-//                                c.getFloat(4),
-//                                c.getInt(5),
-//                                c.getString(6));
-//
-//                        Log.e("record", "record: "+record);
-//
-//                    }while(c.moveToNext());
-//                    logger("getAllData() method in MySqlHelper: ---end---");
-//                }
                 return c;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -305,26 +288,26 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
             int currentMiles=c.getInt(c.getColumnIndex(COLUMN_MILEAGE));
             Double currentGallons=c.getDouble(c.getColumnIndex(COLUMN_QUANTITY));
             int previousMiles= 0;
+            c.moveToNext();
             try {
-                c.moveToNext();
                 previousMiles = c.getInt(c.getColumnIndex(COLUMN_MILEAGE));
-                Double currentMpg=(currentMiles-previousMiles)/currentGallons;
-                Log.e(TAG, "MPG= " + currentMpg);
-
-                DecimalFormat df3=new DecimalFormat("#.###");
-
-                ContentValues cv=new ContentValues();
-                cv.put(COLUMN_MPG, Double.valueOf(df3.format(currentMpg)));
-                String [] args={id};
-                mDb.update(currentVehicle,cv,"_id=?",args);
-
             } catch (Exception e) {
-                e.printStackTrace();
+                previousMiles=0;
+                currentMiles=0;
             }
             c.moveToPrevious();
+            Double currentMpg=(currentMiles-previousMiles)/currentGallons;
+            Log.e(TAG, "MPG= " + currentMpg);
+
+            DecimalFormat df3=new DecimalFormat("#.###");
+
+            ContentValues cv=new ContentValues();
+            cv.put(COLUMN_MPG, Double.valueOf(df3.format(currentMpg)));
+            String [] args={id};
+            mDb.update(currentVehicle,cv,"_id=?",args);
+
         }while(c.moveToNext());
     }
-
 
     @Override
     public Cursor getMilesColumn() {
@@ -388,12 +371,17 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
     @Override
     public Cursor getMpgColumn() {
+        Cursor c=null;
         currentVehicle=mSharedPrefs.getString("currentVehicle","null");
         if (currentVehicle.compareToIgnoreCase("null")!=0) {
-            return mDb.query(currentVehicle, new String[]{COLUMN_MPG}, null, null, null, null, COLUMN_DATE + " DESC");
+            try {
+                c=mDb.query(currentVehicle, new String[]{COLUMN_MPG}, null, null, null, null, COLUMN_DATE + " DESC");
+            } catch (Exception e) {
+            }
         }else{
             return null;
         }
+        return c;
     }
 
     @Override
