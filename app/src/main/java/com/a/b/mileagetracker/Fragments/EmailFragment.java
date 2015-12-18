@@ -1,9 +1,11 @@
 package com.a.b.mileagetracker.Fragments;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -11,11 +13,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.a.b.mileagetracker.DataAccess.DataProvider;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
+import com.a.b.mileagetracker.R;
 import com.opencsv.CSVWriter;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -67,14 +71,22 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 
         SharedPreferences sharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
         ArrayList<String> vehicles=new ArrayList<String>(Arrays.asList(TextUtils.split(sharedPrefs.getString("vehicle_list", ""), "‚‗‚")));
-//        for(String v:vehicles){
-//            Log.e(TAG,"vehicles in shared prefs: "+v);
-//        }
+        for(String v:vehicles){
+            Log.e(TAG,"vehicles in shared prefs: "+v);
+        }
+        if(vehicles.size()>0) {
+            int num = 1;
+            for (String v : vehicles) {
+                Bundle extra = new Bundle();
+                extra.putString("vehicle", v);
+                getLoaderManager().initLoader(num, extra, (LoaderManager.LoaderCallbacks) this);
+                num++;
+            }
 
-        workBook=new HSSFWorkbook();
-        createHelper=workBook.getCreationHelper();
+            workBook = new HSSFWorkbook();
+            createHelper = workBook.getCreationHelper();
 
-        Log.e(TAG, "processors available: " + Runtime.getRuntime().availableProcessors());
+            Log.e(TAG, "processors available: " + Runtime.getRuntime().availableProcessors());
 //        ExecutorService executor= Executors.newSingleThreadExecutor();
 //        executor.execute(new Runnable() {
 //            @Override
@@ -83,37 +95,30 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 //            }
 //        });
 
-        int num=1;
-        for(String v:vehicles) {
-            Bundle extra=new Bundle();
-            extra.putString("vehicle",v);
-            getLoaderManager().initLoader(num, extra, (LoaderManager.LoaderCallbacks) this);
-            num++;
-        }
 
-        File dbFile = getActivity().getApplicationContext().getDatabasePath(MySQLiteHelper.getInstance(getActivity().getApplicationContext()).getDatabaseName());
-        Log.e(TAG, "DbFile path is: " + dbFile); // get the path of db
-        exportDir = new File(Environment.getExternalStorageDirectory() + File.separator + "exportFillupTable");
-        Log.e(TAG, "exportDB path is: " + exportDir.getAbsolutePath()); // get the path of db
+            File dbFile = getActivity().getApplicationContext().getDatabasePath(MySQLiteHelper.getInstance(getActivity().getApplicationContext()).getDatabaseName());
+            Log.e(TAG, "DbFile path is: " + dbFile); // get the path of db
+            exportDir = new File(Environment.getExternalStorageDirectory() + File.separator + "exportFillupTable");
+            Log.e(TAG, "exportDB path is: " + exportDir.getAbsolutePath()); // get the path of db
 
-        long freeBytesInternal = new File(getActivity().getApplicationContext().getFilesDir().getAbsoluteFile().toString()).getFreeSpace();
-        long megAvailable = freeBytesInternal / 1048576;
+            long freeBytesInternal = new File(getActivity().getApplicationContext().getFilesDir().getAbsoluteFile().toString()).getFreeSpace();
+            long megAvailable = freeBytesInternal / 1048576;
 
-        if (megAvailable < 0.1) {
-            System.out.println("Please check"+megAvailable);
+            if (megAvailable < 0.1) {
+                System.out.println("Please check" + megAvailable);
 //            memoryErr = true;
-        }else {
-            if (!exportDir.exists()) {
-                exportDir.mkdirs();
-            }
-            File file;
-
-            try {
-                file =new File(exportDir, "tracker" + ".csv");
-                if(!file.exists()){
-                    Boolean result =file.createNewFile();
-                    Log.e("bool","bool createFile: "+result);
+            } else {
+                if (!exportDir.exists()) {
+                    exportDir.mkdirs();
                 }
+                File file;
+
+                try {
+                    file = new File(exportDir, "tracker" + ".csv");
+                    if (!file.exists()) {
+                        Boolean result = file.createNewFile();
+                        Log.e("bool", "bool createFile: " + result);
+                    }
 //                CSVWriter csvWrite = new CSVWriter(new FileWriter(file));
 ////                String arrStr1[] = { "SR.No", "CUTSOMER NAME", "PROSPECT", "PORT OF LOAD", "PORT OF DISCHARGE" };
 ////                String[] record = "4,cows,moo,sheeps".split(",");
@@ -135,9 +140,9 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 
 //                NPOIFSFileSystem fs=new NPOIFSFileSystem(new File(exportDir, "AdobeTracker" + ".csv"));
 //                HSSFWorkbook workBook=new HSSFWorkbook(fs.getRoot(),true);
-                fileOut = new FileOutputStream(exportDir+"/AdobeXLS.xls");
-                workBook.write(fileOut);
-                fileOut.close();
+                    fileOut = new FileOutputStream(exportDir + "/AdobeXLS.xls");
+                    workBook.write(fileOut);
+                    fileOut.close();
 //                fs.close();
 
 //                CSVReader read = new CSVReader(new FileReader(exportDir+"/hello1" + ".csv"),',','"',1);
@@ -188,22 +193,22 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 //                    success = true;
 //                }
 //                csvWrite.close();
-                File f=new File(exportDir,"AdobeXLS.xls");
+                    File f = new File(exportDir, "AdobeXLS.xls");
 
-                Intent email = new Intent(Intent.ACTION_SEND);
+                    Intent email = new Intent(Intent.ACTION_SEND);
 //                  email.putExtra(Intent.EXTRA_EMAIL, new String[] { to });
 //                  email.putExtra(Intent.EXTRA_SUBJECT, "test");
 //                  email.putExtra(Intent.EXTRA_TEXT, message);
-                email.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(f));
-                // need this to prompts email client only
-                email.setType("message/rfc822");
+                    email.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(f));
+                    // need this to prompts email client only
+                    email.setType("message/rfc822");
 
-                startActivity(Intent.createChooser(email, "Choose an Email client"));
+                    startActivity(Intent.createChooser(email, "Choose an Email client"));
 
-            } catch (IOException e) {
-                Log.e("SearchResultActivity", e.getMessage(), e);
+                } catch (IOException e) {
+                    Log.e("SearchResultActivity", e.getMessage(), e);
+                }
             }
-        }
 //        mDBHelper=MySQLiteHelper.getInstance(getActivity().getApplicationContext());
 
 //        Cursor c=mDBHelper.getAllData();
@@ -233,14 +238,23 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 //            }
 //        });
 //        exportDb.execute(c);
+        }else{
+            Log.e(TAG, "no vehicles to export!!!!!");
+            new AlertDialog.Builder(getActivity())
+                .setTitle("No Data to Export!")
+//                .setMessage()
+                .setPositiveButton("OK",null)
+                .setIcon(R.drawable.alert_48x48)
+                .show();
+        }
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Log.e(TAG, "onActivityCreated thread1: " + Thread.currentThread().getName());
-        getLoaderManager().initLoader(0, null, (LoaderManager.LoaderCallbacks) this);
-    }
+//    @Override
+//    public void onActivityCreated(Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//        Log.e(TAG, "onActivityCreated thread1: " + Thread.currentThread().getName());
+//        getLoaderManager().initLoader(0, null, (LoaderManager.LoaderCallbacks) this);
+//    }
 
 //    @Override
 //    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -277,8 +291,8 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
         CursorLoader CL=null;
         switch (id) {
             case 0:
-                CL = new CursorLoader(getActivity().getApplicationContext(), Uri.parse("content://com.a.b.mileagetracker/key_table"), null, null, null, null);
-                Log.e(TAG, "onCreateLoader 0:");
+//                CL = new CursorLoader(getActivity().getApplicationContext(), Uri.parse("content://com.a.b.mileagetracker/key_table"), null, null, null, null);
+//                Log.e(TAG, "onCreateLoader 0:");
                 break;
             default:
                 CL= new CursorLoader(getActivity().getApplicationContext(),Uri.parse("content://com.a.b.mileagetracker/vehicle"),null,args.getString("vehicle"),null,null);
@@ -289,13 +303,13 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor c) {
         Row row;
-        if(c.getCount()>0){
+        if(c!=null){
         switch (loader.getId()) {
             case 0:
-                c.moveToFirst();
-                do {
-                    vehicles.add(c.getString(c.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
-                } while (c.moveToNext());
+//                c.moveToFirst();
+//                do {
+//                    vehicles.add(c.getString(c.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
+//                } while (c.moveToNext());
 
                 Log.e(TAG, "onloadFinished 0: ");
                 break;
@@ -367,7 +381,6 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
                                 rowNumber++;
                             } while (c.moveToNext());
                         }
-
                         fileOut = new FileOutputStream(exportDir + "/AdobeXLS.xls");
                         workBook.write(fileOut);
                     }
@@ -377,6 +390,8 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
                 }
                 break;
             }
+        }else{
+            Log.e(TAG,"nothing to export");
         }
 
 

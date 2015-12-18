@@ -16,5 +16,6 @@ public class DialogInterfaces {
         void dismissDialogFragment(String tag);
         void openVehicleListFragment();
         void updateToolBarView();
+        void updateSharedPrefsVehicles();
     }
 }

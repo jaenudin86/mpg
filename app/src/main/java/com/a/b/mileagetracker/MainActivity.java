@@ -49,6 +49,7 @@ import com.a.b.mileagetracker.Fragments.OverallStatsFragment;
 import com.a.b.mileagetracker.Fragments.VehicleListFragment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import de.greenrobot.event.EventBus;
 
@@ -156,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        LayoutInflater factory=LayoutInflater.from(this);
 //        View textEntry= factory.inflate(R.layout.add_record, null);
 //    }
+    @Override
     public void updateSharedPrefsVehicles() {
         mDBHelper = MySQLiteHelper.getInstance(getApplicationContext());
         Cursor cursor = mDBHelper.getAllDataFromKeyTable();
@@ -171,6 +173,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             } while (cursor.moveToNext());
             String[] myStringList = vehicles.toArray(new String[vehicles.size()]);
             editor.putString("vehicle_list", TextUtils.join("‚‗‚", myStringList)).apply();
+        }else{
+            editor.remove("vehicle_list").commit();
         }
     }
 
@@ -228,8 +232,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Log.e("main", "backpresed boolean: " + backPressedToExitOnce + ", backstackcount: " + fragmentManager.getBackStackEntryCount());
     }
 
-//
-//
 //        if((backPressedToExitOnce) || (fragmentManager.getBackStackEntryCount() != 0)) {
 //            Log.e("main", "backstack count: " + fragmentManager.getBackStackEntryCount());
 //

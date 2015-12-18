@@ -5,26 +5,25 @@ import android.app.LoaderManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.text.TextUtils;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
-import com.a.b.mileagetracker.DataAccess.SQLDao;
 import com.a.b.mileagetracker.DataAccess.VehicleCursorAdapter;
 import com.a.b.mileagetracker.Events.RefreshVehiclesEvent;
 import com.a.b.mileagetracker.R;
@@ -97,17 +96,23 @@ public class VehicleListFragment extends Fragment implements LoaderManager.Loade
                     flag.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-//                            data.moveToPosition((int) id - 1);
-                            data.moveToPosition(position);
-//                            Log.e(TAG, "inner click on position: " + position + ", id: " + data.getString(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
-                            Log.e(TAG, "index: " + data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE));
-                            Log.e(TAG, "data.getstring(index): " + data.getColumnName(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
-
-                            deleteVehicle(data.getString(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
+                            new AlertDialog.Builder(getActivity())
+                                .setTitle(R.string.alert_dialog_delete_vehicle_title)
+                                .setMessage(R.string.alert_dialog_delete_vehicle_message)
+                                .setPositiveButton(R.string.alert_dialog_yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        data.moveToPosition(position);
+                                        deleteVehicle(data.getString(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
+                                    }
+                                })
+                                .setNegativeButton(R.string.alert_dialog_no, null)
+//                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                .setIcon(R.drawable.alert_48x48)
+                                .show();
                         }
                     });
                 }
-
                 return true;
             }
         });
@@ -124,6 +129,7 @@ public class VehicleListFragment extends Fragment implements LoaderManager.Loade
         ContentResolver cr=getActivity().getContentResolver();
         int del=cr.delete(Uri.parse("content://com.a.b.mileagetracker/delete_vehicle"),vehicle,null);
         getLoaderManager().restartLoader(0, null, (LoaderManager.LoaderCallbacks) this);
+//        mListener.updateSharedPrefsVehicles();
         mListener.updateToolBarView();
     }
 

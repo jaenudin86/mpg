@@ -41,6 +41,10 @@
     <string name="current_vehicle_list">Current Vehicles</string>
     <string name="notify_long_press">Long press on item to edit or delete vehicle</string>
     <string name="add_new_vehicle">Add New Vehicle</string>
+    <string name="alert_dialog_yes">Yes</string>
+    <string name="alert_dialog_no">No</string>
+    <string name="alert_dialog_delete_vehicle_message">This will delete all your data stored for this vehicle! Are you sure you want to continue?</string>
+    <string name="alert_dialog_delete_vehicle_title">Delete Vehicle</string>
 
     <string-array name="default_history_array">
         <item>please add</item>
@@ -58,6 +62,8 @@
     <!--graph-->
     <string name="need_more_data1">Please press "Add Record" to get started!</string>
     <string name="need_more_data2">Need more entries to create a graph for this vehicle</string>
+
+
 
     <!-- backpress toast-->
     <string name="backpress">Press back again to exit</string>
