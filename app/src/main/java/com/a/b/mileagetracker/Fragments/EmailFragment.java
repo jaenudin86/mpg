@@ -1,30 +1,23 @@
 package com.a.b.mileagetracker.Fragments;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.a.b.mileagetracker.DataAccess.DataProvider;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
 import com.a.b.mileagetracker.R;
-import com.opencsv.CSVWriter;
 
 import org.apache.commons.lang3.text.WordUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.NPOIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -36,17 +29,12 @@ import org.apache.poi.ss.util.WorkbookUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Created by Andrew on 11/4/2015.
@@ -58,7 +46,7 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
     Sheet sheet;
     CreationHelper createHelper;
     FileOutputStream fileOut;
-    File exportDir;
+    File exportFile;
     ArrayList<String> vehicles=new ArrayList<>();
     String mFileName="mpgxls.xls";
     String mFileFolder="mpg";
@@ -93,35 +81,39 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 
 //                File dbFile = getActivity().getApplicationContext().getDatabasePath(MySQLiteHelper.getInstance(getActivity().getApplicationContext()).getDatabaseName());
 //                Log.e(TAG, "DbFile path is: " + dbFile); // get the path of db
-//                exportDir = new File(Environment.getExternalStorageDirectory(), mFileFolder);
-//                exportDir = new File(getActivity().getFilesDir()+File.separator, mFileName);
-                exportDir=new File(getActivity().getCacheDir(),mFileName);
+//                exportFile = new File(Environment.getExternalStorageDirectory(), mFileFolder);
+//                exportFile = new File(getActivity().getFilesDir()+File.separator, mFileName);
+                exportFile =new File(getActivity().getCacheDir(),mFileName);
                 try {
-                    exportDir.createNewFile();
+                    if(exportFile.exists()){
+                        Boolean del=exportFile.delete();
+                        Log.e(TAG,"delete old file stuck in cache: "+del);
+                    }
+                    exportFile.createNewFile();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Log.e(TAG, "export spreadsheet path is: " + exportDir); // get the path of speadsheet
+                Log.e(TAG, "export spreadsheet path is: " + exportFile); // get the path of speadsheet
                 File folder=getActivity().getCacheDir();
                 Log.e(TAG,"getCacheDir: "+folder);
 
-//                if (!exportDir.exists()) {
-//                    Boolean createDirResults=exportDir.mkdirs();
+//                if (!exportFile.exists()) {
+//                    Boolean createDirResults=exportFile.mkdirs();
 //                    Log.e(TAG,"make directory: "+createDirResults);
 //                }else{
-//                    Log.e(TAG,"directory exists: "+exportDir.exists());
+//                    Log.e(TAG,"directory exists: "+exportFile.exists());
 //                }
-//                Log.e(TAG,"directory: "+exportDir.exists());
+//                Log.e(TAG,"directory: "+exportFile.exists());
 
 //                try {
-//                    File file =new File(exportDir,mFileName);
+//                    File file =new File(exportFile,mFileName);
 //                    Log.e(TAG,"new File: "+file);
 //
 //                    if(!file.exists()){
 //                        Boolean fileCreated=file.createNewFile();
 //                        Log.e(TAG,"File created?: "+fileCreated);
 //                    }
-////                    fileOut = new FileOutputStream(exportDir+File.separator+mFileName);
+////                    fileOut = new FileOutputStream(exportFile+File.separator+mFileName);
 ////                    workBook.write(fileOut);
 ////                    fileOut.close();
 //
@@ -148,18 +140,16 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
     }
     public void sendEmail(){
         try {
-//            File f = new File(exportDir, mFileName);
             File f=new File(getActivity().getCacheDir(),mFileName);
             f.setReadable(true,false);
 
-//            File f = new File(getActivity().getExternalFilesDir(),mFileName);
             Log.e(TAG, "email path: " + f.getAbsolutePath() + ",   canonical: " + f.getCanonicalPath() + ",   file: " + f);
 
             Intent email = new Intent(Intent.ACTION_SEND);
-//                  email.putExtra(Intent.EXTRA_EMAIL, new String[] { to });
-//                  email.putExtra(Intent.EXTRA_SUBJECT, "test");
-//                  email.putExtra(Intent.EXTRA_TEXT, message);
-//            email.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(f));
+//              email.putExtra(Intent.EXTRA_EMAIL, new String[] { to });
+//              email.putExtra(Intent.EXTRA_SUBJECT, "test");
+//              email.putExtra(Intent.EXTRA_TEXT, message);
+//              email.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(f));
 
             email.setType("message/rfc822");
 //            email.setType("application/zip");
@@ -167,7 +157,7 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 
             email.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 //            startActivityForResult(Intent.createChooser(email, "Choose an Email client"), 1);
-                    startActivity(Intent.createChooser(email, "Choose an Email client"));
+            startActivity(Intent.createChooser(email, "Choose an Email client"));
 
         } catch (IOException e) {
             Log.e("SearchResultActivity", e.getMessage(), e);
@@ -252,7 +242,7 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 
 //                    fileOut = new FileOutputStream(mFileName);
 
-//                    fileOut = new FileOutputStream(exportDir +File.separator+mFileName);
+//                    fileOut = new FileOutputStream(exportFile +File.separator+mFileName);
 //                    fileOut=new FileOutputStream(mFileName);
                     fileOut=new FileOutputStream(getActivity().getCacheDir()+File.separator+mFileName);
                     workBook.write(fileOut);
@@ -266,6 +256,12 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
             Log.e(TAG,"nothing to export from this vehicle");
         }
         if(loader.getId()==mNumberOfVehicles){
+            try {
+                fileOut.close();
+                workBook.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             sendEmail();
         }
 //    @Override
@@ -304,7 +300,7 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 //                   }while(c.moveToNext());
 //                    c.close();
 //
-//                    fileOut = new FileOutputStream(exportDir+"/AdobeXLS.xls");
+//                    fileOut = new FileOutputStream(exportFile+"/AdobeXLS.xls");
 //                    workBook.write(fileOut);
 //                } catch (IOException e) {
 //                    e.printStackTrace();
@@ -335,7 +331,7 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 //                    }while(c.moveToNext());
 //                    c.close();
 //
-//                    fileOut = new FileOutputStream(exportDir+"/AdobeXLS.xls");
+//                    fileOut = new FileOutputStream(exportFile+"/AdobeXLS.xls");
 //                    workBook.write(fileOut);
 //                } catch (IOException e) {
 //                    e.printStackTrace();
@@ -385,7 +381,7 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 //                    }while(c.moveToNext());
 //                    c.close();
 //
-//                    fileOut = new FileOutputStream(exportDir+"/AdobeXLS.xls");
+//                    fileOut = new FileOutputStream(exportFile+"/AdobeXLS.xls");
 //                    workBook.write(fileOut);
 //                } catch (IOException e) {
 //                    e.printStackTrace();
