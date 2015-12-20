@@ -7,9 +7,13 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 
 /**
  * Created by Andrew on 11/6/2015.
@@ -30,6 +34,7 @@ public class DataProvider extends ContentProvider {
         sUriMatcher.addURI("com.a.b.mileagetracker", "vehicle", 3);
         sUriMatcher.addURI("com.a.b.mileagetracker","mpg_data", 4);
         sUriMatcher.addURI("com.a.b.mileagetracker","sum_gals", 5);
+        sUriMatcher.addURI("com.a.b.mileagetracker","spreadsheet.xls",20);
     }
 
     @Override
@@ -79,6 +84,39 @@ public class DataProvider extends ContentProvider {
 //        mDBHelper=MySQLiteHelper.getInstance(getContext());
 //        Cursor c=mSQLDao.getAllData();
         return c;
+    }
+
+        @Nullable
+    @Override
+    public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
+
+        Log.e(TAG,"ContentProvider openFile method called with uri: '" + uri + "'." + uri.getLastPathSegment());
+
+        // Check incoming Uri against the matcher
+        switch (sUriMatcher.match(uri)) {
+            // If it returns 1 - then it matches the Uri defined in onCreate
+            case 20:
+                // The desired file name is specified by the last segment of the
+                // path
+                // E.g.
+                // 'content://com.stephendnicholas.gmailattach.provider/Test.txt'
+                // Take this and build the path to the file
+                String fileLocation = getContext().getCacheDir() +File.separator+"mpgxls.xls";
+                Log.e(TAG,"ContentProvider openFile method file location: "+fileLocation);
+
+                // Create & return a ParcelFileDescriptor pointing to the file
+                // Note: I don't care what mode they ask for - they're only getting
+                // read only
+                ParcelFileDescriptor pfd = ParcelFileDescriptor.open(new File(
+                        fileLocation), ParcelFileDescriptor.MODE_READ_ONLY);
+                return pfd;
+
+            // Otherwise unrecognised Uri
+            default:
+                Log.e(TAG, "Unsupported uri: '" + uri + "'.");
+                throw new FileNotFoundException("Unsupported uri: "
+                        + uri.toString());
+        }
     }
 
     @Nullable
