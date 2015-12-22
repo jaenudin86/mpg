@@ -1,17 +1,18 @@
 package com.a.b.mileagetracker.Fragments;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+
 import android.app.Activity;
-import android.app.LoaderManager;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.DialogInterface;
-import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 
 import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
+import com.a.b.mileagetracker.DataAccess.SettingInterfaces;
 import com.a.b.mileagetracker.DataAccess.VehicleCursorAdapter;
 import com.a.b.mileagetracker.Events.RefreshVehiclesEvent;
 import com.a.b.mileagetracker.R;
@@ -34,7 +36,7 @@ import de.greenrobot.event.EventBus;
  * Created by Andrew on 12/8/2015.
  */
 public class VehicleListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
-    DialogInterfaces.DialogInterface mListener;
+    SettingInterfaces.SettingInterface mListener;
     ListView mListView;
     VehicleCursorAdapter vehicleCurAdpt;
     String TAG="VehicleListFragment";
@@ -48,7 +50,6 @@ public class VehicleListFragment extends Fragment implements LoaderManager.Loade
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);   //tends to cause problems on rotate?
-
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,14 +68,14 @@ public class VehicleListFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        CursorLoader CL=null;
-        switch (id){
-            case 0:
-                CL=new CursorLoader(getActivity().getApplicationContext(), Uri.parse("content://com.a.b.mileagetracker/key_table"), null, null, null, null);
-            break;
+            CursorLoader CL=null;
+            switch (id){
+                case 0:
+                    CL=new CursorLoader(getActivity().getApplicationContext(), Uri.parse("content://com.a.b.mileagetracker/key_table"), null, null, null, null);
+                break;
+            }
+            return CL;
         }
-        return CL;
-    }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, final Cursor data) {
@@ -124,13 +125,13 @@ public class VehicleListFragment extends Fragment implements LoaderManager.Loade
 
         if(currentVehicle.compareToIgnoreCase(vehicle)==0){
             editor.putString("currentVehicle", null).apply();
-
         }
         ContentResolver cr=getActivity().getContentResolver();
         int del=cr.delete(Uri.parse("content://com.a.b.mileagetracker/delete_vehicle"),vehicle,null);
         getLoaderManager().restartLoader(0, null, (LoaderManager.LoaderCallbacks) this);
 //        mListener.updateSharedPrefsVehicles();
-        mListener.updateToolBarView();
+        //TODO THIS!!!!
+//        mListener.updateToolBarView();
     }
 
     @Override
@@ -169,7 +170,7 @@ public class VehicleListFragment extends Fragment implements LoaderManager.Loade
         // Verify that the host activity implements the callback interface
         try {
             // Instantiate the NoticeDialogListener so we can send events to the host
-            mListener = (DialogInterfaces.DialogInterface) activity;
+            mListener = (SettingInterfaces.SettingInterface) activity;
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(activity.toString()

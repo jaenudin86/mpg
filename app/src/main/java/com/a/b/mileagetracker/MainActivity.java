@@ -1,8 +1,8 @@
 package com.a.b.mileagetracker;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.internal.view.menu.MenuBuilder;
@@ -36,7 +38,6 @@ import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
 import com.a.b.mileagetracker.DataAccess.SQLDao;
 import com.a.b.mileagetracker.DataAccess.ToolBarCursorAdapter;
-import com.a.b.mileagetracker.Fragments.AddVehicleDialogFrag;
 import com.a.b.mileagetracker.Fragments.DatePicker;
 import com.a.b.mileagetracker.Fragments.AddRecordDialogFrag;
 import com.a.b.mileagetracker.Fragments.EditHistoryFragment;
@@ -59,18 +60,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SimpleCursorAdapter cursorAdapter;
     private ListView listview;
     private DialogFragment dialogFragment;
-    private AddVehicleDialogFrag addVehicleDialogFrag;
     private EditHistoryFragment mEditEntryData;
     private SharedPreferences mSharedPrefs;
     public static ToolBarCursorAdapter toolBarAdapter;
-    FragmentManager fragmentManager = getFragmentManager();
+    FragmentManager fragmentManager = getSupportFragmentManager();
     private boolean backPressedToExitOnce = false;
     private Toast toast = null;
+    private boolean mIsLargeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mIsLargeLayout=getResources().getBoolean(R.bool.large_layout);
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -104,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (savedInstanceState == null) {
             OverallStatsFragment overallStatsFragment = OverallStatsFragment.newInstance();
 //            overallStatsFragment = new OverallStatsFragment();
-            FragmentManager fragmentManager = getFragmentManager();
+            FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.add(R.id.fragment_holder, overallStatsFragment);
             ft.addToBackStack("stats");
@@ -147,6 +150,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            Log.e("main activity","getCount<0");
 ////            toolBarAdapter = new ToolBarCursorAdapter(getApplicationContext(), c, 0);
 //        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(0, 0);
     }
 
     //    public void showCarSelectorDialog(){
@@ -290,10 +299,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-//        FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_add_record) {
@@ -317,9 +324,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         } else if (id == R.id.nav_settings) {
             SettingsFragment settingsFragment = SettingsFragment.newInstance();
-            ft.replace(R.id.fragment_holder, settingsFragment);
+//            ft.replace(R.id.fragment_holder, settingsFragment);
+
+            if(mIsLargeLayout){
+                settingsFragment.show(fragmentManager,"dialog");
+            }else {
+                Log.e("main","small screen layout");
+                Intent intent=new Intent(this,SettingsActivity.class);
+                intent.putExtra("test",60);
+                startActivity(intent);
+//                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+////            findViewById(android.R.id.content);
+//                popBackStack();
+//                ft.add(android.R.id.content, settingsFragment);
+////                ft.addToBackStack(null)
+//                ft.commit();
+            }
+
 //            ft.addToBackStack(null);
-            ft.commit();
+//            ft.commit();
         } else if (id == R.id.nav_send) {
 //            ExportDatabaseAsyncTask exportDb=new ExportDatabaseAsyncTask(getApplicationContext());
 //            exportDb.execute();
@@ -358,7 +381,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void pressInitialButtonAction() {
         if (mDBHelper.keyTableHasData() == false) {
-            onDialogAddVehicle();
+//            onDialogAddVehicle();
         } else {
             android.support.v4.app.FragmentTransaction ftDialog = getSupportFragmentManager().beginTransaction();
             android.support.v4.app.Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
@@ -371,19 +394,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    @Override
-    public void onDialogAddVehicle() {
-//        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        addVehicleDialogFrag = new AddVehicleDialogFrag().newInstance();
-        addVehicleDialogFrag.show(fragmentManager, "addVehicle");
-    }
 
-    @Override
-    public void onDialogAddVehicleDismiss(String tag) {
-        addVehicleDialogFrag.dismiss();
-        updateToolBarView();
-    }
+
+
 
     @Override
     public void dismissDialogFragment(String tag) {
@@ -402,7 +415,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Log.e("main", "stack: " + fragmentManager.getBackStackEntryCount());
         ft.addToBackStack(null);
         ft.replace(R.id.fragment_holder, vehicleListFragment);
-        ft.setTransition(ft.TRANSIT_FRAGMENT_FADE);
+        ft.setTransition(ft.TRANSIT_FRAGMENT_OPEN);
         ft.commit();
     }
 
@@ -424,7 +437,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onEditDate() {
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         DatePicker datePicker = new DatePicker();
         ft.replace(R.id.fragment_holder, datePicker).commit();

@@ -35,7 +35,7 @@
 <!--edit vehicle-->
     <string name="add_edit_vehicles">Add/Edit Vehicles</string>
     <string name="delete_record">Delete Record</string>
-    <string name="edit_record">Edit Record</string>
+    <string name="edit_record">Save Changes</string>
 
 <!--vehicle list-->
     <string name="current_vehicle_list">Current Vehicles</string>
@@ -67,4 +67,12 @@
 
     <!-- backpress toast-->
     <string name="backpress">Press back again to exit</string>
+
+    <!--Settings Page-->
+    <string name="title_activity_settings">Settings</string>
+    <string name="garage">Current vehicles in your garage:</string>
+    <string name="add">Click the button to add a vehicle to your garage</string>
+    <string name="delete">Delete a vehicle from your garage</string>
+    <string name="add_button">Add Vehicle</string>
+    <string name="delete_button">Delete Vehicle(s)</string>
 </resources>

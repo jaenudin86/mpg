@@ -8,8 +8,6 @@ import android.database.Cursor;
 public class DialogInterfaces {
     public interface DialogInterface{
         void pressInitialButtonAction();
-        void onDialogAddVehicle();
-        void onDialogAddVehicleDismiss(String tag);
         void openEditVehicleEntryFragment();
         void onEditDate();
         void selectCurrentCar(String make, String model, int year);
@@ -19,3 +17,4 @@ public class DialogInterfaces {
         void updateSharedPrefsVehicles();
     }
 }
+

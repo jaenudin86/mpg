@@ -1,14 +1,16 @@
 package com.a.b.mileagetracker.Fragments;
 
-import android.app.Fragment;
-import android.app.LoaderManager;
+
+import android.support.v4.app.LoaderManager;
 import android.content.Context;
-import android.content.CursorLoader;
+import android.support.v4.content.CursorLoader;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -165,13 +167,20 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
     @Override
-    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         CursorLoader CL=null;
         CL= new CursorLoader(getActivity().getApplicationContext(),Uri.parse("content://com.a.b.mileagetracker/vehicle"),null,args.getString("vehicle"),null,null);
         return CL;
     }
+
+
     @Override
-    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor c) {
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
         Row row;
         if(c!=null){
             try {
@@ -399,9 +408,5 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 //
 ////        DateFormat currentDateString =DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
 ////        Log.e("export data", "current date string: " + currentDateString);
-    }
-
-    @Override
-    public void onLoaderReset(android.content.Loader<Cursor> loader) {
     }
 }

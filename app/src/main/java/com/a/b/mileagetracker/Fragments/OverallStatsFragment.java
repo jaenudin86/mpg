@@ -1,15 +1,15 @@
 package com.a.b.mileagetracker.Fragments;
 
-import android.app.Fragment;
-import android.app.LoaderManager;
 import android.content.Context;
-import android.content.CursorLoader;
-import android.content.Loader;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -247,8 +247,9 @@ public class OverallStatsFragment extends Fragment implements LoaderManager.Load
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        CursorLoader CL=null;
+    public android.support.v4.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+                CursorLoader CL=null;
         switch (id) {
             case 0:
                 CL = new CursorLoader(getActivity().getApplicationContext(), Uri.parse("content://com.a.b.mileagetracker/mpg_data"), null, null, null, null);
@@ -261,8 +262,28 @@ public class OverallStatsFragment extends Fragment implements LoaderManager.Load
                 }
                 break;
         }
+
         return CL;
     }
+
+//    @Override
+//    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+//        CursorLoader CL=null;
+//        switch (id) {
+//            case 0:
+//                CL = new CursorLoader(getActivity().getApplicationContext(), Uri.parse("content://com.a.b.mileagetracker/mpg_data"), null, null, null, null);
+//                break;
+//            case 1:
+//                SharedPreferences mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+//                String curVeh=mSharedPrefs.getString("currentVehicle",null);
+//                if(curVeh!=null) {
+//                    CL = new CursorLoader(getActivity().getApplicationContext(), Uri.parse("content://com.a.b.mileagetracker/vehicle"), null, mSharedPrefs.getString("currentVehicle","null"), null, null);
+//                }
+//                break;
+//        }
+//        return CL;
+//    }
+
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {

@@ -1,9 +1,13 @@
 package com.a.b.mileagetracker.Fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +17,12 @@ import android.widget.Button;
 import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
 import com.a.b.mileagetracker.R;
 
+import java.util.zip.Inflater;
+
 /**
  * Created by Andrew on 10/30/2015.
  */
-public class SettingsFragment extends Fragment implements View.OnClickListener {
+public class SettingsFragment extends DialogFragment implements View.OnClickListener {
     DialogInterfaces.DialogInterface mListener;
     public SettingsFragment() {
     }
@@ -25,9 +31,22 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         return settingsFragment;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        LayoutInflater inflater=getActivity().getLayoutInflater();
+        View view=inflater.inflate(R.layout.settings_fragment,null);
+        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+        builder.setView(view);
+        builder.setPositiveButton("Edit",null).setNegativeButton("Delete",null).setNeutralButton("cancel", null);
+        return builder.create();
     }
 
     @Nullable
@@ -37,6 +56,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         Button addEditVehicle=(Button) view.findViewById(R.id.add_edit_vehicle);
         addEditVehicle.setOnClickListener(this);
         return view;
+
     }
 
     @Override

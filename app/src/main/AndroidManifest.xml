@@ -13,9 +13,9 @@
         <provider
             android:name=".DataAccess.DataProvider"
             android:authorities="com.a.b.mileagetracker"
-            android:grantUriPermissions="true"/>
-            <grant-uri-permission
-                android:pathPattern="/notes/" />
+            android:grantUriPermissions="true" />
+
+        <grant-uri-permission android:pathPattern="/notes/" />
 
         <activity
             android:name=".MainActivity"
@@ -23,14 +23,21 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity-->
-            <!--android:name=".SendEmailActivity"-->
-            <!--android:theme="@style/AppTheme.NoActionBar">-->
-        <!--</activity>-->
+
+        <!-- <activity -->
+        <!-- android:name=".SendEmailActivity" -->
+        <!-- android:theme="@style/AppTheme.NoActionBar"> -->
+        <!-- </activity> -->
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".MainActivity">
+        </activity>
     </application>
 
-</manifest>
-    <!--android.permission.INTERACT_ACROSS_USERS_FULL-->
+</manifest> <!-- android.permission.INTERACT_ACROSS_USERS_FULL -->

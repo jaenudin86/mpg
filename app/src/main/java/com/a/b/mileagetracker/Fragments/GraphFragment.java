@@ -1,9 +1,9 @@
 package com.a.b.mileagetracker.Fragments;
 
-import android.app.Fragment;
-import android.app.LoaderManager;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
-import android.content.CursorLoader;
+import android.support.v4.content.CursorLoader;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -13,6 +13,7 @@ import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -191,14 +192,20 @@ public class GraphFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+    public android.support.v4.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
         CursorLoader CL = new CursorLoader(getActivity().getApplicationContext(), Uri.parse("content://com.a.b.mileagetracker/mpg_data"), null, null, null, null);
         Log.e(TAG,"oncreateLoader");
         return CL;
     }
 
+
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, final Cursor data) {
+    public void onLoaderReset(android.support.v4.content.Loader<Cursor> loader) {
+
+    }
+
+    @Override
+    public void onLoadFinished(android.support.v4.content.Loader<Cursor> loader, final Cursor data) {
 //        data.moveToFirst();
 //
 //        if(data.getCount()>1){
@@ -240,10 +247,7 @@ public class GraphFragment extends Fragment implements LoaderManager.LoaderCallb
         }
     }
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
 
-    }
     private void addEntry(Double point) {
         LineData data=mChart.getData();
         if(data!=null) {

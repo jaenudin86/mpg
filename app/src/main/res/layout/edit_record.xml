@@ -121,18 +121,22 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp">
+
                 <Button
                     style="@style/button_style"
-                    
+                    android:background="@drawable/custom_button"
+                    android:backgroundTint="@color/deleteButton"
                     android:id="@+id/delete_details_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/delete_record"
+                    android:textSize="16sp"
                     android:singleLine="true"
                     android:layout_weight="1"
                     android:layout_margin="10dp"
-                    android:textAllCaps="false"
-                    android:background="@color/deleteButton"/>
+                    android:textAllCaps="false"/>
+
+                <!--android:background="@color/deleteButton"-->
 
                 <Button
                     android:id="@+id/edit_details_submit_button"

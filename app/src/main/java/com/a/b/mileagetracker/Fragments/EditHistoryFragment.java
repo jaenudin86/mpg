@@ -69,6 +69,8 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         dbHelper=MySQLiteHelper.getInstance(getActivity().getApplicationContext());
 
+        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+
         LayoutInflater inflater=getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.edit_record, null);
 
@@ -95,8 +97,8 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
         deleteButton=(Button) view.findViewById(R.id.delete_details_button);
         deleteButton.setOnClickListener(this);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
+//        builder.setPositiveButton("Edit",null).setNegativeButton("Delete",null).setNeutralButton("cancel",null);
         return builder.create();
     }
 
