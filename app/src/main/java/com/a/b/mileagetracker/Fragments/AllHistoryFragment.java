@@ -78,9 +78,6 @@ public class AllHistoryFragment extends Fragment implements View.OnClickListener
             mInitMessage.setVisibility(View.GONE);
         }
 
-//        mEmptyButton.setVisibility(cursor!=null?View.GONE:View.VISIBLE);
-//        mEmptyButton.setText(cursor==null?"Get Started":"Add Record");
-
         mHistoryCursorAdapter = new HistoryCursorAdapter(getActivity(), cursor, 0);
         mListView.setAdapter(mHistoryCursorAdapter);
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

@@ -38,15 +38,17 @@ import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
 import com.a.b.mileagetracker.DataAccess.SQLDao;
 import com.a.b.mileagetracker.DataAccess.ToolBarCursorAdapter;
+import com.a.b.mileagetracker.Events.RefreshVehiclesEvent;
+import com.a.b.mileagetracker.Fragments.AddVehicleFragment;
 import com.a.b.mileagetracker.Fragments.DatePicker;
 import com.a.b.mileagetracker.Fragments.AddRecordDialogFrag;
 import com.a.b.mileagetracker.Fragments.EditHistoryFragment;
 import com.a.b.mileagetracker.Fragments.EmailFragment;
 import com.a.b.mileagetracker.Fragments.GraphFragment;
-import com.a.b.mileagetracker.Fragments.SettingsFragment;
 import com.a.b.mileagetracker.Events.RefreshHistoryListViewEvent;
 import com.a.b.mileagetracker.Fragments.AllHistoryFragment;
 import com.a.b.mileagetracker.Fragments.OverallStatsFragment;
+import com.a.b.mileagetracker.Fragments.StartupFragment;
 import com.a.b.mileagetracker.Fragments.VehicleListFragment;
 
 import java.util.ArrayList;
@@ -54,7 +56,7 @@ import java.util.Arrays;
 
 import de.greenrobot.event.EventBus;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogInterfaces.DialogInterface {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogInterfaces.DialogInterface, AddVehicleFragment.AddVehicle {
     OverallStatsFragment overallStatsFragment;
     private MySQLiteHelper mDBHelper;
     private SimpleCursorAdapter cursorAdapter;
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private boolean backPressedToExitOnce = false;
     private Toast toast = null;
     private boolean mIsLargeLayout;
+    private AddVehicleFragment mAddVehicleFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,35 +106,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-//        receiverTest = new AllHistoryFragment();
         if (savedInstanceState == null) {
-            OverallStatsFragment overallStatsFragment = OverallStatsFragment.newInstance();
-//            overallStatsFragment = new OverallStatsFragment();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.add(R.id.fragment_holder, overallStatsFragment);
-            ft.addToBackStack("stats");
-            ft.commit();
+            selectStartupFragment();
         }
-
-//        'getApplicationContext' to help with garbage collection
-//        dbHelper = new MySQLiteHelper(getApplicationContext());
-//        dbHelper = MySQLiteHelper.getInstance(getApplicationContext());
-
-//        int abTitleId=getResources().getIdentifier("action_bar_title", "id","android");
-//        findViewById(abTitleId).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.e("clicked the bar","clicked!!!!!!!");
-//            }
-//        });
-
-//        Does nothing???
-//        mSharedPrefs=getSharedPreferences("prefs",0);
-//        String title=mSharedPrefs.getString("currentVehicleGUI", null);
-//        Log.e("title","title: "+title+", ");
-////        getSupportActionBar().setTitle(title!=null?title:"No Record");
-//        getSupportActionBar().setTitle("hello");
 
         View spinnerContainer = LayoutInflater.from(this).inflate(R.layout.toolbar_spinner, toolbar, false);
         ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -139,17 +116,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mDBHelper = MySQLiteHelper.getInstance(getApplicationContext());
         final Cursor c = mDBHelper.getAllDataFromKeyTable();
-//        c.moveToFirst();
-//        if(c.getCount()>0) {
-            toolBarAdapter = new ToolBarCursorAdapter(getApplicationContext(), c, 0);
-            Spinner spinner = (Spinner) spinnerContainer.findViewById(R.id.toolbar_spinner);
-            spinner.setAdapter(toolBarAdapter);
-            spinner.setOnItemSelectedListener(toolBarAdapter);
-            updateSharedPrefsVehicles();
+
+        toolBarAdapter = new ToolBarCursorAdapter(getApplicationContext(), c, 0);
+        Spinner spinner = (Spinner) spinnerContainer.findViewById(R.id.toolbar_spinner);
+        spinner.setAdapter(toolBarAdapter);
+        spinner.setOnItemSelectedListener(toolBarAdapter);
+        updateSharedPrefsVehicles();
 //        }else{
 //            Log.e("main activity","getCount<0");
 ////            toolBarAdapter = new ToolBarCursorAdapter(getApplicationContext(), c, 0);
 //        }
+    }
+    public void selectStartupFragment(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+
+        OverallStatsFragment overallStatsFragment = OverallStatsFragment.newInstance();
+        mSharedPrefs = getSharedPreferences("prefs", 0);
+        if(mSharedPrefs.getString("currentVehicle",null)==null) {
+            StartupFragment startupFragment = new StartupFragment();
+            ft.add(R.id.fragment_holder, startupFragment);
+        }else {
+            ft.add(R.id.fragment_holder, overallStatsFragment);
+            ft.addToBackStack("stats");
+        }
+        ft.commit();
     }
 
     @Override
@@ -158,14 +149,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         overridePendingTransition(0, 0);
     }
 
-    //    public void showCarSelectorDialog(){
-//        Dialog dialog = new Dialog(this);
-//        dialog.setContentView(R.layout.add_record);
-//        dialog.show();
-//
-//        LayoutInflater factory=LayoutInflater.from(this);
-//        View textEntry= factory.inflate(R.layout.add_record, null);
-//    }
     @Override
     public void updateSharedPrefsVehicles() {
         mDBHelper = MySQLiteHelper.getInstance(getApplicationContext());
@@ -323,15 +306,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.replace(R.id.fragment_holder, graphFrag).commit();
 
         } else if (id == R.id.nav_settings) {
-            SettingsFragment settingsFragment = SettingsFragment.newInstance();
+//            SettingsFragment settingsFragment = SettingsFragment.newInstance();
 //            ft.replace(R.id.fragment_holder, settingsFragment);
 
-            if(mIsLargeLayout){
-                settingsFragment.show(fragmentManager,"dialog");
-            }else {
-                Log.e("main","small screen layout");
+//            if(mIsLargeLayout){
+//                settingsFragment.show(fragmentManager,"dialog");
+//            }else {
+//                Log.e("main","small screen layout");
                 Intent intent=new Intent(this,SettingsActivity.class);
-                intent.putExtra("test",60);
+//                intent.putExtra("test",60);
                 startActivity(intent);
 //                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 ////            findViewById(android.R.id.content);
@@ -339,7 +322,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                ft.add(android.R.id.content, settingsFragment);
 ////                ft.addToBackStack(null)
 //                ft.commit();
-            }
+//            }
 
 //            ft.addToBackStack(null);
 //            ft.commit();
@@ -381,7 +364,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void pressInitialButtonAction() {
         if (mDBHelper.keyTableHasData() == false) {
-//            onDialogAddVehicle();
+            onAddVehicle();
         } else {
             android.support.v4.app.FragmentTransaction ftDialog = getSupportFragmentManager().beginTransaction();
             android.support.v4.app.Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
@@ -394,10 +377,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
-
-
-
     @Override
     public void dismissDialogFragment(String tag) {
         DialogFragment dF = (DialogFragment) getSupportFragmentManager().findFragmentByTag(tag);
@@ -406,18 +385,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mDBHelper.calculateMpgColumn();
         }
     }
+    public void onEvent(RefreshVehiclesEvent event){
+        updateToolBarView();
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().registerSticky(this);
+    }
 
     @Override
-    public void openVehicleListFragment() {
-//        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        VehicleListFragment vehicleListFragment = VehicleListFragment.newInstance();
-        Log.e("main", "stack: " + fragmentManager.getBackStackEntryCount());
-        ft.addToBackStack(null);
-        ft.replace(R.id.fragment_holder, vehicleListFragment);
-        ft.setTransition(ft.TRANSIT_FRAGMENT_OPEN);
-        ft.commit();
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
+//    @Override
+//    public void openVehicleListFragment() {
+////        FragmentManager fragmentManager = getFragmentManager();
+//        FragmentTransaction ft = fragmentManager.beginTransaction();
+//        VehicleListFragment vehicleListFragment = VehicleListFragment.newInstance();
+//        Log.e("main", "stack: " + fragmentManager.getBackStackEntryCount());
+//        ft.addToBackStack(null);
+//        ft.replace(R.id.fragment_holder, vehicleListFragment);
+//        ft.setTransition(ft.TRANSIT_FRAGMENT_OPEN);
+//        ft.commit();
+//    }
 
     @Override
     public void updateToolBarView() {
@@ -434,24 +426,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         editHistoryLineItem.show(getSupportFragmentManager(), "editLineItem");
 //        editHistoryLineItem.setFieldsWithData();
     }
+//
+//    @Override
+//    public void onEditDate() {
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction ft = fragmentManager.beginTransaction();
+//        DatePicker datePicker = new DatePicker();
+//        ft.replace(R.id.fragment_holder, datePicker).commit();
+//        Log.e("onEditDate", "onEditDate");
+//    }
+//
+//    @Override
+//    public void selectCurrentCar(String make, String model, int year) {
+//        String currentCar = make + model + year;
+//        SharedPreferences settings = getSharedPreferences("prefs", 0);
+//        SharedPreferences.Editor editor = settings.edit();
+//        editor.putString("currentVehicle", currentCar);
+//        editor.commit();
+//
+//        Log.e("shared preferences", "shared prefs: " + currentCar);
+//    }
 
     @Override
-    public void onEditDate() {
+    public void onAddVehicle() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        DatePicker datePicker = new DatePicker();
-        ft.replace(R.id.fragment_holder, datePicker).commit();
-        Log.e("onEditDate", "onEditDate");
+        mAddVehicleFragment = new AddVehicleFragment().newInstance();
+        mAddVehicleFragment.show(fragmentManager, "addVehicle");
     }
 
     @Override
-    public void selectCurrentCar(String make, String model, int year) {
-        String currentCar = make + model + year;
-        SharedPreferences settings = getSharedPreferences("prefs", 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString("currentVehicle", currentCar);
-        editor.commit();
-
-        Log.e("shared preferences", "shared prefs: " + currentCar);
+    public void onAddVehicleDismiss() {
+        mAddVehicleFragment.dismiss();
+        updateToolBarView();
     }
 }

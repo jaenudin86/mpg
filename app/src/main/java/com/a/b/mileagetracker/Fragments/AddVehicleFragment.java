@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
 import com.a.b.mileagetracker.DataAccess.SettingInterfaces;
 import com.a.b.mileagetracker.Events.RefreshVehiclesEvent;
@@ -27,7 +28,12 @@ import de.greenrobot.event.EventBus;
  * Created by Andrew on 10/25/2015.
  */
 public class AddVehicleFragment extends DialogFragment {
-    SettingInterfaces.SettingInterface mListener;
+    public interface AddVehicle{
+        void onAddVehicle();
+        void onAddVehicleDismiss();
+    }
+
+    AddVehicleFragment.AddVehicle mListener;
     SharedPreferences mSharedPrefs;
     private MySQLiteHelper dbHelper;
 
@@ -48,37 +54,37 @@ public class AddVehicleFragment extends DialogFragment {
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            try {
+                int year=Integer.parseInt(addYear.getText().toString());
+                String make=WordUtils.capitalizeFully(addMake.getText().toString());
+                String model=WordUtils.capitalizeFully(addModel.getText().toString());
+
+                make=make.trim();
+                model=model.trim();
+
+                String currentVehicle="\""+make+model+year+"\"";
+                currentVehicle=currentVehicle.replaceAll("\\s", "");
+
+                String currentVehicleGUI=year+" "+make+" "+model;
+
+                mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editPrefs=mSharedPrefs.edit();
+                editPrefs.putString("currentVehicle", currentVehicle);
+                editPrefs.putString("currentVehicleGUI", currentVehicleGUI);
+                editPrefs.commit();
                 try {
-                    int year=Integer.parseInt(addYear.getText().toString());
-                    String make=WordUtils.capitalizeFully(addMake.getText().toString());
-                    String model=WordUtils.capitalizeFully(addModel.getText().toString());
-                    
-                    make=make.trim();
-                    model=model.trim();
-
-                    String currentVehicle="\""+make+model+year+"\"";
-                    currentVehicle=currentVehicle.replaceAll("\\s", "");
-
-                    String currentVehicleGUI=year+" "+make+" "+model;
-
-                    mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editPrefs=mSharedPrefs.edit();
-                    editPrefs.putString("currentVehicle", currentVehicle);
-                    editPrefs.putString("currentVehicleGUI", currentVehicleGUI);
-                    editPrefs.commit();
-                    try {
-                        String cv=currentVehicle;
-                        dbHelper.createVehicleTable(year,make,model,cv);
-                        mListener.onDialogAddVehicleDismiss();
-                        EventBus.getDefault().post(new RefreshVehiclesEvent());
-                    } catch (NumberFormatException e) {
-                        e.printStackTrace();
-                        Toast.makeText(getActivity(),"Invalid Car",Toast.LENGTH_LONG).show();
-                    }
+                    String cv=currentVehicle;
+                    dbHelper.createVehicleTable(year, make, model, cv);
+                    mListener.onAddVehicleDismiss();
+                    EventBus.getDefault().postSticky(new RefreshVehiclesEvent());
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
-                    Toast.makeText(getActivity(),"Invalid year, please try again",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"Invalid Car",Toast.LENGTH_LONG).show();
                 }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                Toast.makeText(getActivity(),"Invalid year, please try again",Toast.LENGTH_LONG).show();
+            }
             }
         });
 
@@ -92,7 +98,8 @@ public class AddVehicleFragment extends DialogFragment {
         // Verify that the host activity implements the callback interface
         try {
             // Instantiate the NoticeDialogListener so we can send events to the host
-            mListener = (SettingInterfaces.SettingInterface) activity;
+//            mDialogInterface=(DialogInterfaces.DialogInterface) activity.;
+            mListener = (AddVehicleFragment.AddVehicle) activity;
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(activity.toString()

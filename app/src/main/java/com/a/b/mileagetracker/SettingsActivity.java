@@ -2,41 +2,44 @@ package com.a.b.mileagetracker;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
 import com.a.b.mileagetracker.DataAccess.SettingInterfaces;
 import com.a.b.mileagetracker.Fragments.AddVehicleFragment;
 import com.a.b.mileagetracker.Fragments.VehicleListFragment;
 
-public class SettingsActivity extends AppCompatActivity implements View.OnClickListener, SettingInterfaces.SettingInterface{
+import java.util.Map;
+
+public class SettingsActivity extends AppCompatActivity implements View.OnClickListener, SettingInterfaces.SettingInterface, AddVehicleFragment.AddVehicle,VehicleListFragment.VehicleList, LoaderManager.LoaderCallbacks<Cursor>{
     String TAG = "SettingsActivity";
+    TextView mGarage;
     private AddVehicleFragment mAddVehicleFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        SharedPreferences sharedPrefs = this.getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        Log.e(TAG, "value from SharedPrefs.. currentVehicleGUI: " + sharedPrefs.getString("currentVehicleGUI", "null"));
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             getSupportActionBar().setHomeAsUpIndicator(getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha, null));
         else
@@ -44,8 +47,28 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Button addEditVehicle = (Button) findViewById(R.id.add_edit_vehicle);
-        addEditVehicle.setOnClickListener(this);
+        Button addVehicle = (Button) findViewById(R.id.add_edit_vehicle);
+        Button deleteVehicle=(Button) findViewById(R.id.delete_button);
+        addVehicle.setOnClickListener(this);
+        deleteVehicle.setOnClickListener(this);
+        mGarage=(TextView) findViewById(R.id.garage_textview);
+
+        getAllSharedPrefs();
+
+        getSupportLoaderManager().initLoader(0, null, this);
+    }
+    public void getAllSharedPrefs() {
+        SharedPreferences sharedPrefs = this.getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        Map<String, ?> keys = sharedPrefs.getAll();
+
+        for (Map.Entry<String, ?> entry : keys.entrySet()) {
+            Log.e(TAG, "All values from shared prefs: "+entry.getKey() + ":");
+            try {
+                Log.e(TAG, "value: " + entry.getValue().toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -58,35 +81,61 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.add_edit_vehicle) {
-            Log.e("button pushed", "button pushed");
-            onDialogAddVehicle();
+            onAddVehicle();
         }
         if (id==R.id.delete_button){
             openVehicleListFragment();
         }
     }
 
-    @Override
-    public void onDialogAddVehicle() {
+    public void openVehicleListFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
+        VehicleListFragment vehicleListFragment = VehicleListFragment.newInstance();
+        vehicleListFragment.show(fragmentManager, "openVehicleList");
+    }
+    @Override
+    public void openVehicleListDismiss() {
+        getSupportLoaderManager().restartLoader(0, null, this);
+    }
+
+    public void onAddVehicle() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
         mAddVehicleFragment = new AddVehicleFragment().newInstance();
         mAddVehicleFragment.show(fragmentManager, "addVehicle");
     }
 
     @Override
-    public void onDialogAddVehicleDismiss() {
+    public void onAddVehicleDismiss() {
         mAddVehicleFragment.dismiss();
+        getSupportLoaderManager().restartLoader(0, null, this);
     }
 
-    public void openVehicleListFragment() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        VehicleListFragment vehicleListFragment = VehicleListFragment.newInstance();
-        Log.e("main", "stack: " + fragmentManager.getBackStackEntryCount());
-//        ft.addToBackStack(null);
-        ft.add(android.R.id.content, vehicleListFragment);
-        ft.setTransition(ft.TRANSIT_FRAGMENT_OPEN);
-        ft.commit();
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        CursorLoader CL=null;
+        CL = new CursorLoader(this, Uri.parse("content://com.a.b.mileagetracker/key_table"), null, null, null, null);
+        return CL;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        String vehicles="";
+        data.moveToFirst();
+        if(data!=null&&data.getCount()>0) {
+            do {
+                vehicles += "<b>" + (data.getString(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_YEAR)) + " " +
+                        (data.getString(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_MAKE))) + " " +
+                        (data.getString(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_MODEL))) + "<br>");
+
+            } while (data.moveToNext());
+            mGarage.setText(Html.fromHtml(vehicles));
+        }else{
+            mGarage.setText("no vehicles created");
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }

@@ -9,12 +9,10 @@ public class DialogInterfaces {
     public interface DialogInterface{
         void pressInitialButtonAction();
         void openEditVehicleEntryFragment();
-        void onEditDate();
-        void selectCurrentCar(String make, String model, int year);
         void dismissDialogFragment(String tag);
-        void openVehicleListFragment();
-        void updateToolBarView();
+//        void openVehicleListFragment();
         void updateSharedPrefsVehicles();
+        void updateToolBarView();
     }
 }
 

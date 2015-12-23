@@ -248,8 +248,7 @@ public class OverallStatsFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public android.support.v4.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
-                CursorLoader CL=null;
+        CursorLoader CL=null;
         switch (id) {
             case 0:
                 CL = new CursorLoader(getActivity().getApplicationContext(), Uri.parse("content://com.a.b.mileagetracker/mpg_data"), null, null, null, null);
@@ -262,7 +261,6 @@ public class OverallStatsFragment extends Fragment implements LoaderManager.Load
                 }
                 break;
         }
-
         return CL;
     }
 

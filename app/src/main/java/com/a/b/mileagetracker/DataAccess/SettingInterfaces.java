@@ -6,8 +6,5 @@ package com.a.b.mileagetracker.DataAccess;
 public class SettingInterfaces {
     public interface SettingInterface{
         void openVehicleListFragment();
-        void onDialogAddVehicle();
-        void onDialogAddVehicleDismiss();
     }
-
 }

@@ -173,10 +173,8 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
         return CL;
     }
 
-
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
     }
 
     @Override
