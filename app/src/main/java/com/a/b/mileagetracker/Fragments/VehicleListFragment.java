@@ -71,7 +71,6 @@ public class VehicleListFragment extends DialogFragment implements LoaderManager
         }
     }
 
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
             CursorLoader CL=null;

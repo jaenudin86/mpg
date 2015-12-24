@@ -96,27 +96,27 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                convertDateFieldToInt();
-                try {
+            convertDateFieldToInt();
+            try {
 //                    String carSelectorString= ((Cursor)carSelector.getSelectedItem()).getString(c.getColumnIndex("key_table"));
 //                    Log.e("carselector spinner","csst: "+carSelectorString);
-                    DecimalFormat df3=new DecimalFormat("#.###");
-                    DecimalFormat df2=new DecimalFormat("0.00");
+                DecimalFormat df3=new DecimalFormat("#.###");
+                DecimalFormat df2=new DecimalFormat("0.00");
 
-                    dbHelper.addEntry(
+                dbHelper.addEntry(
 //                            Integer.parseInt(mileage.getText().toString()),
-                            (int) Math.round(Double.parseDouble(mileage.getText().toString())),
-                            Double.valueOf(df3.format(Double.parseDouble(gallons.getText().toString()))),
-                            Double.valueOf(df2.format(Double.parseDouble(price.getText().toString()))),
-                            convertDateFieldToInt(),
-                            WordUtils.capitalizeFully(location.getText().toString()));
+                    (int) Math.round(Double.parseDouble(mileage.getText().toString())),
+                    Double.valueOf(df3.format(Double.parseDouble(gallons.getText().toString()))),
+                    Double.valueOf(df2.format(Double.parseDouble(price.getText().toString()))),
+                    convertDateFieldToInt(),
+                    WordUtils.capitalizeFully(location.getText().toString()));
 //                        mListener.onDialogAddEntryDismiss();  //close dialog from Activity
-                    mListener.dismissDialogFragment(getTag());
-                    EventBus.getDefault().post(new RefreshHistoryListViewEvent("refreshing"));
-                } catch (NumberFormatException e) {
-                    Toast.makeText(getActivity(),"wrong number format",Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                }
+                mListener.dismissDialogFragment(getTag());
+                EventBus.getDefault().postSticky(new RefreshHistoryListViewEvent("refreshing"));
+            } catch (NumberFormatException e) {
+                Toast.makeText(getActivity(),"wrong number format",Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
             }
         });
 

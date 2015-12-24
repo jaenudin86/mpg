@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -69,7 +70,8 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         dbHelper=MySQLiteHelper.getInstance(getActivity().getApplicationContext());
 
-        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+//        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity(), R.style.MyAlertDialogStyle);
 
         LayoutInflater inflater=getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.edit_record, null);
@@ -91,12 +93,43 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
 
         setDateField();
 
-        editButton=(Button) view.findViewById(R.id.edit_details_submit_button);
-        editButton.setOnClickListener(this);
+//        editButton=(Button) view.findViewById(R.id.edit_details_submit_button);
+//        editButton.setOnClickListener(this);
+//
+//        deleteButton=(Button) view.findViewById(R.id.delete_details_button);
+//        deleteButton.setOnClickListener(this);
+        builder.setPositiveButton("Save Changes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try{
+                    NumberFormat formatNumber=NumberFormat.getCurrencyInstance();
+                    Number pNumber=formatNumber.parse(price.getText().toString());
+                    DecimalFormat df3=new DecimalFormat("#.###");
 
-        deleteButton=(Button) view.findViewById(R.id.delete_details_button);
-        deleteButton.setOnClickListener(this);
+                    dbHelper.addEntry(
+                            (int) Math.round(Double.parseDouble(mOdometer.getText().toString())),
+                            Double.parseDouble(df3.format(Double.parseDouble(gallons.getText().toString()))),
+                            Double.parseDouble(pNumber.toString()),
+                            convertDateFieldToInt(),
+                            location.getText().toString());
+                    mListener.dismissDialogFragment(getTag());
+                    dbHelper.deleteEntry(mId);
+                    EventBus.getDefault().post(new RefreshHistoryListViewEvent("refresh history listview"));
+                } catch (NumberFormatException e) {
+                    Toast.makeText(getActivity(),"wrong number format",Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }catch (ParseException e){
 
+                }
+            }
+        }).setNegativeButton("Delete Record", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dbHelper.deleteEntry(mId);
+                mListener.dismissDialogFragment(getTag());
+                EventBus.getDefault().post(new RefreshHistoryListViewEvent("refresh historyListView"));
+            }
+        });
         builder.setView(view);
 //        builder.setPositiveButton("Edit",null).setNegativeButton("Delete",null).setNeutralButton("cancel",null);
         return builder.create();

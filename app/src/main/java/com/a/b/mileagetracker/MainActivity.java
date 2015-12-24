@@ -1,22 +1,19 @@
 package com.a.b.mileagetracker;
 
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.internal.view.menu.MenuBuilder;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
@@ -29,47 +26,36 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.a.b.mileagetracker.DataAccess.DialogInterfaces;
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
-import com.a.b.mileagetracker.DataAccess.SQLDao;
 import com.a.b.mileagetracker.DataAccess.ToolBarCursorAdapter;
 import com.a.b.mileagetracker.Events.RefreshVehiclesEvent;
 import com.a.b.mileagetracker.Fragments.AddVehicleFragment;
-import com.a.b.mileagetracker.Fragments.DatePicker;
 import com.a.b.mileagetracker.Fragments.AddRecordDialogFrag;
 import com.a.b.mileagetracker.Fragments.EditHistoryFragment;
 import com.a.b.mileagetracker.Fragments.EmailFragment;
 import com.a.b.mileagetracker.Fragments.GraphFragment;
 import com.a.b.mileagetracker.Events.RefreshHistoryListViewEvent;
-import com.a.b.mileagetracker.Fragments.AllHistoryFragment;
-import com.a.b.mileagetracker.Fragments.OverallStatsFragment;
-import com.a.b.mileagetracker.Fragments.StartupFragment;
-import com.a.b.mileagetracker.Fragments.VehicleListFragment;
+import com.a.b.mileagetracker.Fragments.HistoryFragment;
+import com.a.b.mileagetracker.Fragments.StatsFragment;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import de.greenrobot.event.EventBus;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogInterfaces.DialogInterface, AddVehicleFragment.AddVehicle {
-    OverallStatsFragment overallStatsFragment;
-    private MySQLiteHelper mDBHelper;
-    private SimpleCursorAdapter cursorAdapter;
-    private ListView listview;
-    private DialogFragment dialogFragment;
-    private EditHistoryFragment mEditEntryData;
     private SharedPreferences mSharedPrefs;
+    private MySQLiteHelper mDBHelper;
+    private DialogFragment dialogFragment;
     public static ToolBarCursorAdapter toolBarAdapter;
     FragmentManager fragmentManager = getSupportFragmentManager();
     private boolean backPressedToExitOnce = false;
-    private Toast toast = null;
     private boolean mIsLargeLayout;
     private AddVehicleFragment mAddVehicleFragment;
+    DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,18 +83,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            }
 //        });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
+        openDrawer();
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        if (savedInstanceState == null) {
-            selectStartupFragment();
-        }
+//        if (savedInstanceState == null) {
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            StatsFragment overallStatsFragment = StatsFragment.newInstance();
+            ft.replace(R.id.fragment_holder, overallStatsFragment).commit();
+//        }
 
         View spinnerContainer = LayoutInflater.from(this).inflate(R.layout.toolbar_spinner, toolbar, false);
         ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -127,21 +116,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 ////            toolBarAdapter = new ToolBarCursorAdapter(getApplicationContext(), c, 0);
 //        }
     }
-    public void selectStartupFragment(){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-
-        OverallStatsFragment overallStatsFragment = OverallStatsFragment.newInstance();
+    public void openDrawer(){
         mSharedPrefs = getSharedPreferences("prefs", 0);
-        if(mSharedPrefs.getString("currentVehicle",null)==null) {
-            StartupFragment startupFragment = new StartupFragment();
-            ft.add(R.id.fragment_holder, startupFragment);
-        }else {
-            ft.add(R.id.fragment_holder, overallStatsFragment);
-            ft.addToBackStack("stats");
+        String veh=mSharedPrefs.getString("currentVehicle",null);
+        if(veh==null) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    drawer.openDrawer(Gravity.LEFT);
+                }
+            }, 750);
         }
-        ft.commit();
     }
+//    public void selectStartupFragment(){
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction ft = fragmentManager.beginTransaction();
+//
+//        StatsFragment overallStatsFragment = StatsFragment.newInstance();
+//        mSharedPrefs = getSharedPreferences("prefs", 0);
+//        if(mSharedPrefs.getString("currentVehicle",null)==null) {
+//            StartupFragment startupFragment = new StartupFragment();
+//            ft.add(R.id.fragment_holder, startupFragment);
+//        }else {
+//            ft.add(R.id.fragment_holder, overallStatsFragment);
+//            ft.addToBackStack("stats");
+//        }
+//        ft.commit();
+//    }
 
     @Override
     protected void onPause() {
@@ -290,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             pressInitialButtonAction();
 
         } else if (id == R.id.nav_history_list) {
-            AllHistoryFragment allDataListViewFragment = new AllHistoryFragment();
+            HistoryFragment allDataListViewFragment = new HistoryFragment();
             ft.replace(R.id.fragment_holder, allDataListViewFragment);
             ft.commit();
 
@@ -298,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         } else if (id == R.id.nav_stats) {
 //            if(!overallStatsFragment.isAdded()) {
-            OverallStatsFragment overallStatsFragment = OverallStatsFragment.newInstance();
+            StatsFragment overallStatsFragment = StatsFragment.newInstance();
             ft.replace(R.id.fragment_holder, overallStatsFragment).commit();
 
         } else if (id == R.id.nav_graph) {

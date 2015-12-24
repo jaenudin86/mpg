@@ -131,14 +131,18 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
                     num++;
                 }
             } else {
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("No Data to Export!")
-//                .setMessage()
-                        .setPositiveButton("OK", null)
-                        .setIcon(R.drawable.alert_48x48)
-                        .show();
+                showNoDataAlert();
             }
         }
+    }
+    public void showNoDataAlert(){
+        new AlertDialog.Builder(getActivity())
+                .setTitle("No Data to Export!")
+//                .setMessage()
+                .setPositiveButton("OK", null)
+                .setIcon(R.drawable.alert_48x48)
+                .show();
+
     }
     public void sendEmail(){
         try {
@@ -255,7 +259,7 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
                     workBook.write(fileOut);
                     Log.e(TAG,"workbook.write location: "+fileOut);
                 }
-                c.close();
+//                c.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -264,12 +268,17 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
         }
         if(loader.getId()==mNumberOfVehicles){
             try {
-                fileOut.close();
-                workBook.close();
+                if(fileOut!=null) {
+                    fileOut.close();
+                    workBook.close();
+                    sendEmail();
+                }else{
+                    showNoDataAlert();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            sendEmail();
+
         }
 //    @Override
 //    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor c) {

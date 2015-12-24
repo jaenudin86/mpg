@@ -118,9 +118,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         onCreate(db);
     }
 
-    public void insertData(String location) {
-        new LoadThread(location).start();
-    }
+//    public void insertData(String location) {
+//        new LoadThread(location).start();
+//    }
 
     @Override
     public void createVehicleTable(int year, String make, String model, String vehicleKey) {
@@ -348,13 +348,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         }
     }
 
-    @Override
-    public int getLastDate() {
-        currentVehicle=mSharedPrefs.getString("currentVehicle","null");
-        Cursor c=mDb.rawQuery("SELECT MIN(" + COLUMN_DATE + ") FROM " + currentVehicle, null);
-        c.moveToFirst();
-        return Integer.parseInt(c.getString(0));
-    }
+//    @Override
+//    public int getLastDate() {
+//        currentVehicle=mSharedPrefs.getString("currentVehicle","null");
+//        Cursor c=mDb.rawQuery("SELECT MIN(" + COLUMN_DATE + ") FROM " + currentVehicle, null);
+//        c.moveToFirst();
+//        return Integer.parseInt(c.getString(0));
+//    }
 
     @Override
     public boolean keyTableHasData() {

@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@color/lightgray">
+    android:orientation="vertical">
+    <!--android:background="@color/lightgray">-->
 
         <TextView
             android:layout_width="wrap_content"
@@ -48,7 +48,6 @@
                     android:ems="5"
                     android:textColorHint="@color/verylightgrey"
                     android:textSize="@dimen/entry_text_size"
-                    android:background="@color/entryTextBoxColor"
                     android:layout_marginBottom="10dp"/>
 
                 <TextView
@@ -62,7 +61,6 @@
                     android:gravity="right"
                     android:inputType="numberDecimal|numberSigned"
                     android:textSize="@dimen/entry_text_size"
-                    android:background="@color/entryTextBoxColor"
                     android:layout_marginBottom="10dp"/>
                 <!--<TextView-->
                 <!--android:layout_width="wrap_content"-->
@@ -79,7 +77,6 @@
                     android:inputType="numberDecimal|numberSigned"
                     android:textSize="@dimen/entry_text_size"
                     android:ems="3"
-                    android:background="@color/entryTextBoxColor"
                     android:layout_marginBottom="10dp"/>
 
                 <!--<TextView-->
@@ -98,7 +95,6 @@
                     android:inputType="numberDecimal|numberSigned"
                     android:textSize="@dimen/entry_text_size"
                     android:ems="3"
-                    android:background="@color/entryTextBoxColor"
                     android:layout_marginBottom="10dp"/>
 
                 <TextView
@@ -111,45 +107,46 @@
                     android:hint="Jan-1-2016"
                     android:gravity="right"
                     android:textSize="@dimen/entry_text_size"
-                    android:background="@color/entryTextBoxColor"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="56dp"/>
+                <!--android:background="@color/entryTextBoxColor"-->
 
             </GridLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_marginTop="15dp"-->
+                <!--android:layout_marginBottom="15dp">-->
 
-                <Button
-                    style="@style/button_style"
-                    android:background="@drawable/custom_button"
-                    android:backgroundTint="@color/deleteButton"
-                    android:id="@+id/delete_details_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/delete_record"
-                    android:textSize="16sp"
-                    android:singleLine="true"
-                    android:layout_weight="1"
-                    android:layout_margin="10dp"
-                    android:textAllCaps="false"/>
+                <!--<Button-->
+                    <!--style="@style/button_style"-->
+                    <!--android:background="@drawable/custom_button"-->
+                    <!--android:backgroundTint="@color/deleteButton"-->
+                    <!--android:id="@+id/delete_details_button"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="@string/delete_record"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:singleLine="true"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:layout_margin="10dp"-->
+                    <!--android:textAllCaps="false"/>-->
 
-                <!--android:background="@color/deleteButton"-->
+                <!--&lt;!&ndash;android:background="@color/deleteButton"&ndash;&gt;-->
 
-                <Button
-                    android:id="@+id/edit_details_submit_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/verylightgrey"
-                    android:layout_weight="1"
-                    android:text="@string/edit_record"
-                    android:textAllCaps="false"
-                    android:singleLine="true"
-                    android:layout_margin="10dp"
-                    android:background="@color/colorPrimary"/>
-            </LinearLayout>
+                <!--<Button-->
+                    <!--android:id="@+id/edit_details_submit_button"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textColor="@color/verylightgrey"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="@string/edit_record"-->
+                    <!--android:textAllCaps="false"-->
+                    <!--android:singleLine="true"-->
+                    <!--android:layout_margin="10dp"-->
+                    <!--android:background="@color/colorPrimary"/>-->
+            <!--</LinearLayout>-->
         </LinearLayout>
 
     </ScrollView>

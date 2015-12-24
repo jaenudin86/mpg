@@ -25,7 +25,7 @@ public interface SQLDao {
     Cursor getSumGallons();
     Cursor getQuantityColumn();
     Double getTotalAmountSpent();
-    int getLastDate();
+//    int getLastDate();
     boolean keyTableHasData();
     Cursor getAllDataFromKeyTable();
     Cursor getMpgColumn();

@@ -29,7 +29,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by Andrew on 10/14/2015.
  */
-public class AllHistoryFragment extends Fragment implements View.OnClickListener{
+public class HistoryFragment extends Fragment implements View.OnClickListener{
 
     private MySQLiteHelper mDBHelper;
     private ListView mListView;
@@ -39,7 +39,7 @@ public class AllHistoryFragment extends Fragment implements View.OnClickListener
     private Button mEmptyButton;
     private TextView mInitMessage;
 
-    public AllHistoryFragment(){
+    public HistoryFragment(){
     }
 
     @Override
@@ -130,7 +130,6 @@ public class AllHistoryFragment extends Fragment implements View.OnClickListener
         super.onStop();
     }
 
-    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

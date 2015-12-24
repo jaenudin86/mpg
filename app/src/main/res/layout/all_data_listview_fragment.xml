@@ -38,6 +38,7 @@
         android:layout_marginBottom="500dp"
         android:textSize="@dimen/init_message"
         tools:text="@string/init_message_no_vehicles"
+        tools:textColor="@color/verylightgrey"
         android:layout_gravity="center_horizontal|top"/>
 
 </FrameLayout>
