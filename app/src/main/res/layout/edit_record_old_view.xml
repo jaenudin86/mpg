@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/lightgray"
+    android:orientation="vertical">
+    <!--android:background="@color/lightgray">-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Record"
+        android:textSize="@dimen/dialog_header_text_size"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:hint="vehicle text"
+        android:id="@+id/current_vehicle_edit_record_frag"
+        android:textSize="20dp"/>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:rowCount="6"
+                android:layout_marginLeft="15dp"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:textSize="24sp"
+                    android:text="Gas Station: " />
+                <EditText
+                    android:id="@+id/edit_station_location"
+                    android:hint="none"
+                    android:ems="5"
+                    android:textColorHint="@color/verylightgrey"
+                    android:background="@color/entryTextBoxColor"
+                    android:textSize="@dimen/entry_text_size"
+                    android:layout_marginBottom="10dp"/>
+
+                <TextView
+                    android:textSize="24sp"
+                    android:text="Odometer: "/>
+
+                <EditText
+                    android:id="@+id/edit_mileage"
+                    android:hint="89045"
+                    android:ems="4"
+                    android:gravity="right"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:textSize="@dimen/entry_text_size"
+                    android:background="@color/entryTextBoxColor"
+                    android:layout_marginBottom="10dp"/>
+                <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textSize="24sp"-->
+                <!--android:text="mi"/>-->
+                <TextView
+                    android:textSize="24sp"
+                    android:text="Gallons: "/>
+
+                <EditText
+                    android:id="@+id/edit_gallons"
+                    android:gravity="right"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:textSize="@dimen/entry_text_size"
+                    android:ems="4"
+                    android:background="@color/entryTextBoxColor"
+                    android:layout_marginBottom="10dp"/>
+
+                <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textSize="24sp"-->
+                <!--android:text="gal"/>-->
+
+                <TextView
+                    android:textSize="24sp"
+                    android:text="Price: "/>
+
+                <EditText
+                    android:id="@+id/edit_price"
+                    android:gravity="right"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:textSize="@dimen/entry_text_size"
+                    android:background="@color/entryTextBoxColor"
+                    android:ems="4"
+                    android:layout_marginBottom="10dp"/>
+
+                <TextView
+                    android:textSize="24sp"
+                    android:text="Date: "/>
+
+                <EditText
+                    android:id="@+id/edit_date"
+                    android:inputType="date"
+                    android:hint="Jan-1-2016"
+                    android:gravity="right"
+                    android:textSize="@dimen/entry_text_size"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="56dp"
+                    android:background="@color/entryTextBoxColor"/>
+
+            </GridLayout>
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp">
+
+            <Button
+                style="@style/button_style"
+                android:id="@+id/delete_details_button"
+                android:background="@drawable/custom_button_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/delete_record"
+                android:textSize="16sp"
+                android:singleLine="true"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:textAllCaps="false"/>
+
+                <!--android:backgroundTint="@color/deleteButton"-->
+                <!--android:background="@drawable/custom_button"-->
+
+                <!--android:background="@color/deleteButton"-->
+
+            <Button
+                android:id="@+id/edit_details_submit_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/verylightgrey"
+                android:layout_weight="1"
+                android:text="@string/edit_record"
+                android:textAllCaps="false"
+                android:singleLine="true"
+                android:layout_margin="10dp"
+                android:background="@color/colorPrimary"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

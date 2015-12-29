@@ -42,7 +42,7 @@
 
 <!--vehicle list-->
     <string name="current_vehicle_list">Current Vehicles</string>
-    <string name="notify_long_press">Long press on item to edit or delete vehicle</string>
+    <string name="notify_long_press">Long press on item delete vehicle</string>
     <string name="add_new_vehicle">Add New Vehicle</string>
     <string name="alert_dialog_yes">Yes</string>
     <string name="alert_dialog_no">No</string>

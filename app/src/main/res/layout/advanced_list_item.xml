@@ -12,8 +12,8 @@
         android:layout_marginBottom="20dp"
         android:padding="10dp"
         android:paddingBottom="15dp"
+        android:background="@color/lightPrimaryColor">
 
-        android:background="@color/extremelightgrey">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

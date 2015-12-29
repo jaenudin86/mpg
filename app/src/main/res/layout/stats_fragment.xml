@@ -23,37 +23,42 @@
                 android:layout_marginBottom="50dp"
                 android:gravity="center"
                 tools:text="stats_title"/>
-
-            <TextView
-                android:id="@+id/perfm_mpg_since_last"
-                android:theme="@style/perfm_text_field"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                tools:text="perfm_mpg_since_last"/>
-            <TextView
-                android:id="@+id/perfm_mpg_overall"
-                android:theme="@style/perfm_text_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                tools:text="perfm_mpg_overall"/>
+                android:orientation="vertical"
+                android:layout_marginLeft="30dp">
+                <TextView
+                    android:id="@+id/perfm_mpg_since_last"
+                    android:theme="@style/perfm_text_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    tools:text="perfm_mpg_since_last"/>
+                <TextView
+                    android:id="@+id/perfm_mpg_overall"
+                    android:theme="@style/perfm_text_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    tools:text="perfm_mpg_overall"/>
 
-            <TextView
-                android:id="@+id/perfm_miles_travelled_total"
-                android:theme="@style/perfm_text_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                tools:text="perfm_miles_travelled_total"/>
+                <TextView
+                    android:id="@+id/perfm_miles_travelled_total"
+                    android:theme="@style/perfm_text_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    tools:text="perfm_miles_travelled_total"/>
 
-            <TextView
-                android:id="@+id/perfm_conclusion"
-                android:theme="@style/perfm_text_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="perfm_conclusion"/>
+                <TextView
+                    android:id="@+id/perfm_conclusion"
+                    android:theme="@style/perfm_text_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="perfm_conclusion"/>
 
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
     <Button

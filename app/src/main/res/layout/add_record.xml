@@ -82,7 +82,7 @@
                     android:textColorHint="@color/verylightgrey"
                     android:inputType="numberDecimal|numberSigned"
                     android:textSize="@dimen/entry_text_size"
-                    android:ems="3"
+                    android:ems="4"
                     android:background="@color/entryTextBoxColor"
                     android:layout_marginBottom="@dimen/space_between_entry_fields"/>
 
@@ -103,7 +103,7 @@
                     android:textColorHint="@color/verylightgrey"
                     android:inputType="numberDecimal|numberSigned"
                     android:textSize="@dimen/entry_text_size"
-                    android:ems="3"
+                    android:ems="4"
                     android:background="@color/entryTextBoxColor"
                     android:layout_marginBottom="@dimen/space_between_entry_fields"/>
 

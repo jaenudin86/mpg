@@ -56,31 +56,41 @@ public class AddVehicleFragment extends DialogFragment {
             public void onClick(View v) {
             try {
                 int year=Integer.parseInt(addYear.getText().toString());
-                String make=WordUtils.capitalizeFully(addMake.getText().toString());
-                String model=WordUtils.capitalizeFully(addModel.getText().toString());
+                if(year>1880&&year<2018||year<100){
+                    String make=WordUtils.capitalizeFully(addMake.getText().toString());
+                    String model=WordUtils.capitalizeFully(addModel.getText().toString());
 
-                make=make.trim();
-                model=model.trim();
+                    make=make.trim();
+                    model=model.trim();
 
-                String currentVehicle="\""+make+model+year+"\"";
-                currentVehicle=currentVehicle.replaceAll("\\s", "");
+                    if(make.length()>2&&model.length()>2&&make.length()<17&&model.length()<17){
+                        String currentVehicle="\""+make+model+year+"\"";
+                        currentVehicle=currentVehicle.replaceAll("\\s", "");
 
-                String currentVehicleGUI=year+" "+make+" "+model;
+                        String currentVehicleGUI=year+" "+make+" "+model;
 
-                mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editPrefs=mSharedPrefs.edit();
-                editPrefs.putString("currentVehicle", currentVehicle);
-                editPrefs.putString("currentVehicleGUI", currentVehicleGUI);
-                editPrefs.commit();
-                try {
-                    String cv=currentVehicle;
-                    dbHelper.createVehicleTable(year, make, model, cv);
-                    mListener.onAddVehicleDismiss();
-                    EventBus.getDefault().postSticky(new RefreshVehiclesEvent());
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getActivity(),"Invalid Car",Toast.LENGTH_LONG).show();
+                        mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editPrefs=mSharedPrefs.edit();
+                        editPrefs.putString("currentVehicle", currentVehicle);
+                        editPrefs.putString("currentVehicleGUI", currentVehicleGUI);
+                        editPrefs.commit();
+                        try {
+                            String cv=currentVehicle;
+                            dbHelper.createVehicleTable(year, make, model, cv);
+                            mListener.onAddVehicleDismiss();
+                            EventBus.getDefault().postSticky(new RefreshVehiclesEvent());
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getActivity(),"Invalid Car",Toast.LENGTH_LONG).show();
+                        }
+                    }else{
+                        Toast.makeText(getActivity(),"Make and model need to be 3 to 16 characters long", Toast.LENGTH_LONG).show();
+                    }
+
+                }else{
+                    Toast.makeText(getActivity(),"Please enter a reasonable car year",Toast.LENGTH_LONG).show();
                 }
+
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 Toast.makeText(getActivity(),"Invalid year, please try again",Toast.LENGTH_LONG).show();

@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorPrimaryLight">#7986CB</color>
     <color name="colorAccent">#69F0AE</color>
+    <color name="lightPrimaryColor">#E8EAF6</color>
     <!--<color name="colorAccent">#FF4081</color>-->
 
     <color name="testGray">#BFBFBF</color>
@@ -12,6 +13,7 @@
     <color name="verylightgrey">#dfdfdf</color>
     <color name="extremelightgrey">#f1f1f1</color>
 
-    <color name="deleteButton">#F00</color>
+    <color name="deleteButtonStart">#F00</color>
+    <color name="deleteButtonEnd">#D32F2F</color>
     <color name="toolbarColor">#000</color>
 </resources>

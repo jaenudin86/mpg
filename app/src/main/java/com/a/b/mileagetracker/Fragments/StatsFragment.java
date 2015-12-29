@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -277,8 +278,10 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
                     case 0: //pull last known MPG record
                         data.moveToFirst();
                         Double mpg = data.getDouble(0);
-                        Log.e(TAG, "onLoadFInished mpg: " + mpg);
-                        mMpgSinceLast.setText(mpg > 0 ? "Most Recent: " + mpg + " mpg" : null);
+                        Log.e(TAG, "onLoadFinished mpg: " + mpg);
+                        String mpgHtml="";
+                        mpgHtml=mpg > 0 ? "Since last fill: <font size=\"3\" color=\"blue\">"+mpg + " mpg" : "Last entry is not correct";
+                        mMpgSinceLast.setText(Html.fromHtml(mpgHtml));
                         break;
                     case 1: //calculate and display aggregate MPG since first record
                         data.moveToFirst();
@@ -296,9 +299,12 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
                             priceTotal += data.getDouble(data.getColumnIndex(MySQLiteHelper.COLUMN_PRICE));
                         } while (data.moveToNext());
 
-                        mMpgTotalView.setText("Total Average: " + String.valueOf(NumberFormat.getNumberInstance(Locale.US).format(totalMiles / galsTotal)) + " mpg");
-                        mTotalMilesTravelled.setText("Total miles tracked: " + NumberFormat.getNumberInstance(Locale.US).format(totalMiles));
-                        mConclusion.setText(NumberFormat.getCurrencyInstance().format(priceTotal) + " since " + getLastDate(lastDate));
+                        String mpgTotalHtml="Total Average: <font size=\"3\" color=\"blue\">"+String.valueOf(NumberFormat.getNumberInstance(Locale.US).format(totalMiles / galsTotal)) + " mpg";
+                        mMpgTotalView.setText(Html.fromHtml(mpgTotalHtml));
+                        String totalMilesHtml="Total miles tracked: <font size=\"3\" color=\"blue\">" + NumberFormat.getNumberInstance(Locale.US).format(totalMiles);
+                        mTotalMilesTravelled.setText(Html.fromHtml(totalMilesHtml));
+                        String conclusionHtml="<font size=\"3\" color=\"blue\">"+NumberFormat.getCurrencyInstance().format(priceTotal)+ " </font><font size=\"3\" color=\"black\">since " + "</font><font size=\"3\" color=\"blue\">"+getLastDate(lastDate);
+                        mConclusion.setText(Html.fromHtml(conclusionHtml));
                     break;
                 }
             }else if(data.getCount()==1) {

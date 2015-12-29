@@ -4,7 +4,7 @@
     <style name="perfm_text_field" parent="@style/AppTheme.NoActionBar">
         <item name="android:textSize">@dimen/perfm_list_item_size</item>
         <item name="android:textColor">#4f4f4f</item>
-        <item name="android:gravity">center</item>
+        <item name="android:gravity">left</item>
     </style>
 
 </resources>
