@@ -17,7 +17,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.a.b.mileagetracker.DataAccess.MySQLiteHelper;
 import com.a.b.mileagetracker.DataAccess.SettingInterfaces;
@@ -47,8 +49,13 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Button addVehicle = (Button) findViewById(R.id.add_edit_vehicle);
+        Switch length=(Switch) findViewById(R.id.switch_distance);
+        Switch quantity=(Switch) findViewById(R.id.switch_quantity);
+        Button addVehicle = (Button) findViewById(R.id.add_vehicle);
         Button deleteVehicle=(Button) findViewById(R.id.delete_button);
+
+        length.setOnClickListener(this);
+        quantity.setOnClickListener(this);
         addVehicle.setOnClickListener(this);
         deleteVehicle.setOnClickListener(this);
         mGarage=(TextView) findViewById(R.id.garage_textview);
@@ -80,11 +87,14 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.add_edit_vehicle) {
+        if (id == R.id.add_vehicle) {
             onAddVehicle();
         }
         if (id==R.id.delete_button){
             openVehicleListFragment();
+        }
+        if(id==R.id.switch_distance||id==R.id.switch_quantity){
+            Toast.makeText(this,R.string.future_length_quanity,Toast.LENGTH_SHORT).show();
         }
     }
 

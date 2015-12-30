@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -14,8 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/listview"
-        android:entries="@array/default_history_array"
-        android:layout_margin="12dp">
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_above="@+id/textView2">
         <!--android:background="@color/extremelightgrey">-->
         </ListView>
 
@@ -27,7 +29,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         tools:text="@string/add_vehicle"
-        android:visibility="visible"/>
+        android:visibility="visible"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/init_message"
@@ -41,4 +45,14 @@
         tools:textColor="@color/verylightgrey"
         android:layout_gravity="center_horizontal|top"/>
 
-</FrameLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/long_press_item"
+        android:layout_gravity="center_horizontal|bottom"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="4dp"
+        android:id="@+id/textView2" />
+
+</RelativeLayout>

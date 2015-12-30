@@ -3,7 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorPrimaryLight">#7986CB</color>
-    <color name="colorAccent">#69F0AE</color>
+    <color name="colorAccent">#4CAF50</color>
     <color name="lightPrimaryColor">#E8EAF6</color>
     <!--<color name="colorAccent">#FF4081</color>-->
 
@@ -15,5 +15,7 @@
 
     <color name="deleteButtonStart">#F00</color>
     <color name="deleteButtonEnd">#D32F2F</color>
+    <color name="editButtonStart">#C5E1A5</color>
+    <color name="editButtonEnd">#3c8c40</color>
     <color name="toolbarColor">#000</color>
 </resources>

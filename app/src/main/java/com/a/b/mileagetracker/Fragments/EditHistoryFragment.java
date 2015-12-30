@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -254,9 +255,21 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
             fromDatePickerDialog.show();
         }
         if(v==deleteButton){
-            dbHelper.deleteEntry(mId);
-            mListener.dismissDialogFragment(getTag());
-            EventBus.getDefault().post(new RefreshHistoryListViewEvent("refresh historyListView"));
+            new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.delete_record)
+                .setMessage(R.string.alert_dialog_delete_record_message)
+                .setPositiveButton(R.string.alert_dialog_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dbHelper.deleteEntry(mId);
+                        mListener.dismissDialogFragment(getTag());
+                        EventBus.getDefault().post(new RefreshHistoryListViewEvent("refresh historyListView"));
+                    }
+                })
+                .setNegativeButton(R.string.alert_dialog_no, null)
+//                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setIcon(R.drawable.alert_48x48)
+                .show();
         }
         if(v==editButton){
             try{
@@ -265,11 +278,11 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
                 DecimalFormat df3=new DecimalFormat("#.###");
 
                 dbHelper.addEntry(
-                        (int) Math.round(Double.parseDouble(mOdometer.getText().toString())),
-                        Double.parseDouble(df3.format(Double.parseDouble(gallons.getText().toString()))),
-                        Double.parseDouble(pNumber.toString()),
-                        convertDateFieldToInt(),
-                        location.getText().toString());
+                    (int) Math.round(Double.parseDouble(mOdometer.getText().toString())),
+                    Double.parseDouble(df3.format(Double.parseDouble(gallons.getText().toString()))),
+                    Double.parseDouble(pNumber.toString()),
+                    convertDateFieldToInt(),
+                    location.getText().toString());
                 mListener.dismissDialogFragment(getTag());
                 dbHelper.deleteEntry(mId);
                 EventBus.getDefault().post(new RefreshHistoryListViewEvent("refresh history listview"));

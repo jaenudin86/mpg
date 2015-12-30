@@ -11,6 +11,7 @@
     <dimen name="dialog_header_text_size">24sp</dimen>
     <dimen name="init_message">24sp</dimen>
 
+    <dimen name="edit_record_button">16sp</dimen>
 
     <dimen name="add_record_text_size">24sp</dimen>
     <dimen name="space_between_entry_fields">20sp</dimen>
