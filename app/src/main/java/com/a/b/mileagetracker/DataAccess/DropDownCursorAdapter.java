@@ -46,7 +46,6 @@ public class DropDownCursorAdapter extends CursorAdapter implements AdapterView.
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String currentVehicle=cursor.getString(cursor.getColumnIndex("key_table"));
-        Log.e("Selected!", "Selected!!!!!: current vehicle: "+currentVehicle);
         SharedPreferences sharedPrefs=context.getSharedPreferences("prefs",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=sharedPrefs.edit();
         editor.putString("currentVehicle",currentVehicle).commit();

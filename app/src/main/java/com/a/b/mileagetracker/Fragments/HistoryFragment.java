@@ -83,12 +83,12 @@ public class HistoryFragment extends Fragment implements View.OnClickListener{
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Cursor c = mDBHelper.getAllData();
-                mListener.openEditVehicleEntryFragment();
-                EventBus.getDefault().postSticky(new EditHistoryEvent(c, position, id));
+            Cursor c = mDBHelper.getAllData();
+            mListener.openEditVehicleEntryFragment();
+            EventBus.getDefault().postSticky(new EditHistoryEvent(c, position, id));
 
-                Log.e("long click", "long clicked: " + view + ", " + position + ", " + id);
-                return true;
+//                Log.e("long click", "long clicked: " + view + ", " + position + ", " + id);
+            return true;
             }
         });
         mListView.setDivider(null);

@@ -14,7 +14,6 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.Selection;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -44,16 +43,16 @@ import de.greenrobot.event.EventBus;
 public class EditHistoryFragment extends DialogFragment implements View.OnClickListener{
 
     DialogInterfaces.DialogInterface mListener;
-    private MySQLiteHelper dbHelper;
-    private DatePickerDialog fromDatePickerDialog;
-    private SimpleDateFormat dateFormatter;
-    private EditText dateView;
-    private EditText location;
+    private MySQLiteHelper mDbHelper;
+    private DatePickerDialog mDatePickerDialog;
+    private SimpleDateFormat mDateFormatter;
+    private EditText mDateView;
+    private EditText mLocation;
     private EditText mOdometer;
-    private EditText gallons;
-    private EditText price;
-    private Button deleteButton;
-    private Button editButton;
+    private EditText mGallons;
+    private EditText mPrice;
+    private Button mDeleteButton;
+    private Button mEditButton;
     private long mId;
 
     String TAG="EditHistoryFragment";
@@ -67,7 +66,7 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        dbHelper=MySQLiteHelper.getInstance(getActivity().getApplicationContext());
+        mDbHelper =MySQLiteHelper.getInstance(getActivity().getApplicationContext());
 
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
 //        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity(), R.style.MyAlertDialogStyle);
@@ -75,44 +74,44 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
         LayoutInflater inflater=getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.edit_record_old_view, null);
 
-        location= (EditText) view.findViewById(R.id.edit_station_location);
+        mLocation = (EditText) view.findViewById(R.id.edit_station_location);
         mOdometer = (EditText) view.findViewById(R.id.edit_mileage);
-        gallons = (EditText) view.findViewById(R.id.edit_gallons);
-        price = (EditText) view.findViewById(R.id.edit_price);
-        dateView = (EditText) view.findViewById(R.id.edit_date);
+        mGallons = (EditText) view.findViewById(R.id.edit_gallons);
+        mPrice = (EditText) view.findViewById(R.id.edit_price);
+        mDateView = (EditText) view.findViewById(R.id.edit_date);
 
         SharedPreferences sharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
         final TextView vehicle = (TextView) view.findViewById(R.id.current_vehicle_edit_record_frag);
         vehicle.setText(sharedPrefs.getString("currentVehicleGUI", "car"));
 
-        dateView.setInputType(InputType.TYPE_NULL);
-        dateView.setOnClickListener(this);
+        mDateView.setInputType(InputType.TYPE_NULL);
+        mDateView.setOnClickListener(this);
 
-        dateFormatter=new SimpleDateFormat("MMM-dd-yyyy", Locale.US);
+        mDateFormatter =new SimpleDateFormat("MMM-dd-yyyy", Locale.US);
 
         setDateField();
 
-        editButton=(Button) view.findViewById(R.id.edit_details_submit_button);
-        editButton.setOnClickListener(this);
+        mEditButton =(Button) view.findViewById(R.id.edit_details_submit_button);
+        mEditButton.setOnClickListener(this);
 
-        deleteButton=(Button) view.findViewById(R.id.delete_details_button);
-        deleteButton.setOnClickListener(this);
+        mDeleteButton =(Button) view.findViewById(R.id.delete_details_button);
+        mDeleteButton.setOnClickListener(this);
 //        builder.setPositiveButton("Save Changes", new DialogInterface.OnClickListener() {
 //            @Override
 //            public void onClick(DialogInterface dialog, int which) {
 //                try{
 //                    NumberFormat formatNumber=NumberFormat.getCurrencyInstance();
-//                    Number pNumber=formatNumber.parse(price.getText().toString());
+//                    Number pNumber=formatNumber.parse(mPrice.getText().toString());
 //                    DecimalFormat df3=new DecimalFormat("#.###");
 //
-//                    dbHelper.addEntry(
+//                    mDbHelper.addEntry(
 //                            (int) Math.round(Double.parseDouble(mOdometer.getText().toString())),
-//                            Double.parseDouble(df3.format(Double.parseDouble(gallons.getText().toString()))),
+//                            Double.parseDouble(df3.format(Double.parseDouble(mGallons.getText().toString()))),
 //                            Double.parseDouble(pNumber.toString()),
 //                            convertDateFieldToInt(),
-//                            location.getText().toString());
+//                            mLocation.getText().toString());
 //                    mListener.dismissDialogFragment(getTag());
-//                    dbHelper.deleteEntry(mId);
+//                    mDbHelper.deleteEntry(mId);
 //                    EventBus.getDefault().post(new RefreshHistoryListViewEvent("refresh history listview"));
 //                } catch (NumberFormatException e) {
 //                    Toast.makeText(getActivity(),"wrong number format",Toast.LENGTH_LONG).show();
@@ -124,7 +123,7 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
 //        }).setNegativeButton("Delete Record", new DialogInterface.OnClickListener() {
 //            @Override
 //            public void onClick(DialogInterface dialog, int which) {
-//                dbHelper.deleteEntry(mId);
+//                mDbHelper.deleteEntry(mId);
 //                mListener.dismissDialogFragment(getTag());
 //                EventBus.getDefault().post(new RefreshHistoryListViewEvent("refresh historyListView"));
 //            }
@@ -153,15 +152,15 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
 //        Log.e("event clicked", " clickedclickedclicked position==> " + editHistoryEvent.mPosition);
         c.moveToPosition(position);
 
-        location.setText(c.getString(c.getColumnIndex("location")));
+        mLocation.setText(c.getString(c.getColumnIndex("location")));
         mOdometer.setText(c.getString(c.getColumnIndex("mileage")));
-        gallons.setText(c.getString(c.getColumnIndex("quantity")));
+        mGallons.setText(c.getString(c.getColumnIndex("quantity")));
 
         Double pD=c.getDouble(c.getColumnIndex("price"));
-        price.addTextChangedListener(textWatcher);
-        price.setText(NumberFormat.getCurrencyInstance().format(pD));
+        mPrice.addTextChangedListener(textWatcher);
+        mPrice.setText(NumberFormat.getCurrencyInstance().format(pD));
 
-        dateView.setText(convertTime(c.getInt(c.getColumnIndex("date"))));
+        mDateView.setText(convertTime(c.getInt(c.getColumnIndex("date"))));
     }
     TextWatcher textWatcher=new TextWatcher() {
         @Override
@@ -186,20 +185,19 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
                 }
                 cashAmountBuilder.insert(cashAmountBuilder.length() - 2, '.');
 
-                price.removeTextChangedListener(this);
-                price.setText(cashAmountBuilder.toString());
+                mPrice.removeTextChangedListener(this);
+                mPrice.setText(cashAmountBuilder.toString());
 
-                price.setTextKeepState("$" + cashAmountBuilder.toString());
-                Selection.setSelection(price.getText(), cashAmountBuilder.toString().length() + 1);
+                mPrice.setTextKeepState("$" + cashAmountBuilder.toString());
+                Selection.setSelection(mPrice.getText(), cashAmountBuilder.toString().length() + 1);
 
-                price.addTextChangedListener(this);
+                mPrice.addTextChangedListener(this);
             }
         }
     };
 
     private String convertTime(long l){
         Date dateInSeconds=new Date(l*1000);
-        Log.e("date", "date: " + dateInSeconds + " seconds: " + l * 1000);
         SimpleDateFormat sdf = new SimpleDateFormat("MMM-dd-yyyy");
 //        sdf.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
         String formatted = sdf.format(dateInSeconds);
@@ -208,24 +206,23 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
 
     private void setDateField(){
         Calendar newCalendar = Calendar.getInstance();
-        fromDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+        mDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                dateView.setText(dateFormatter.format(newDate.getTime()));
+                mDateView.setText(mDateFormatter.format(newDate.getTime()));
             }
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 //        convertDateFieldToInt();
     }
     private long convertDateFieldToInt(){
-        String dateString= dateView.getText().toString();
-        Log.e("somedate","date: "+dateString);
+        String dateString= mDateView.getText().toString();
         SimpleDateFormat sdf=new SimpleDateFormat("MMM-dd-yyyy");
         try {
             Date date = sdf.parse(dateString);
-            Log.e("date","date: "+date.getTime());
+//            Log.e("date","date: "+date.getTime());
             return date.getTime()/1000;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -250,18 +247,17 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if (v == dateView) {
-            Log.e("clicked dateview", "clicked dateview");
-            fromDatePickerDialog.show();
+        if (v == mDateView) {
+            mDatePickerDialog.show();
         }
-        if(v==deleteButton){
+        if(v== mDeleteButton){
             new AlertDialog.Builder(v.getContext())
                 .setTitle(R.string.delete_record)
                 .setMessage(R.string.alert_dialog_delete_record_message)
                 .setPositiveButton(R.string.alert_dialog_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dbHelper.deleteEntry(mId);
+                        mDbHelper.deleteEntry(mId);
                         mListener.dismissDialogFragment(getTag());
                         EventBus.getDefault().post(new RefreshHistoryListViewEvent("refresh historyListView"));
                     }
@@ -271,19 +267,19 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
                 .setIcon(R.drawable.alert_48x48)
                 .show();
         }
-        if(v==editButton){
+        if(v== mEditButton){
             try{
                 NumberFormat formatNumber=NumberFormat.getCurrencyInstance();
-                Number pNumber=formatNumber.parse(price.getText().toString());
+                Number pNumber=formatNumber.parse(mPrice.getText().toString());
                 DecimalFormat df3=new DecimalFormat("#.###");
 
-                dbHelper.addEntry(
-                    (int) Math.round(Double.parseDouble(mOdometer.getText().toString())),
-                    Double.parseDouble(df3.format(Double.parseDouble(gallons.getText().toString()))),
-                    Double.parseDouble(pNumber.toString()),
-                    convertDateFieldToInt(),
-                    location.getText().toString());
-                dbHelper.deleteEntry(mId);
+                mDbHelper.addEntry(
+                        (int) Math.round(Double.parseDouble(mOdometer.getText().toString())),
+                        Double.parseDouble(df3.format(Double.parseDouble(mGallons.getText().toString()))),
+                        Double.parseDouble(pNumber.toString()),
+                        convertDateFieldToInt(),
+                        mLocation.getText().toString());
+                mDbHelper.deleteEntry(mId);
                 mListener.dismissDialogFragment(getTag());
                 EventBus.getDefault().post(new RefreshHistoryListViewEvent("refresh history listview"));
             } catch (NumberFormatException e) {

@@ -278,7 +278,7 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
                     case 0: //pull last known MPG record
                         data.moveToFirst();
                         Double mpg = data.getDouble(0);
-                        Log.e(TAG, "onLoadFinished mpg: " + mpg);
+//                        Log.e(TAG, "onLoadFinished mpg: " + mpg);
                         String mpgHtml="";
                         mpgHtml=mpg > 0 ? "Since last fill: <font size=\"3\" color=\"blue\">"+mpg + " mpg" : "<font size=\"3\" color=\"red\">Last entry is not correct!!";
                         mMpgSinceLast.setText(Html.fromHtml(mpgHtml));

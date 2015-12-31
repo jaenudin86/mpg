@@ -77,7 +77,6 @@ public class GraphFragment extends Fragment implements LoaderManager.LoaderCallb
         }else{
 //            Snackbar.make(R.id.fragment_holder,R.string.need_more_data1,Snackbar.LENGTH_LONG).setDuration(7000).show();
             Toast.makeText(getActivity().getApplicationContext(),R.string.need_more_data1,Toast.LENGTH_LONG).show();
-            Log.e(TAG,"empty graph");
         }
     }
 
@@ -144,7 +143,7 @@ public class GraphFragment extends Fragment implements LoaderManager.LoaderCallb
         for(int i=0;i<yVals.size();i++){
             t+=yVals.get(i);
         }
-        Log.e(TAG,"yVals: "+ t);
+//        Log.e(TAG,"yVals: "+ t);
 
 
 //        for (int i = 0; i < count; i++) {//
@@ -194,7 +193,6 @@ public class GraphFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public android.support.v4.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
         CursorLoader CL = new CursorLoader(getActivity().getApplicationContext(), Uri.parse("content://com.a.b.mileagetracker/mpg_data"), null, null, null, null);
-        Log.e(TAG,"oncreateLoader");
         return CL;
     }
 
@@ -249,7 +247,6 @@ public class GraphFragment extends Fragment implements LoaderManager.LoaderCallb
             }).start();
         }else{
             Snackbar.make(mChart,R.string.need_more_data2,Snackbar.LENGTH_LONG).setDuration(5000).show();
-            Log.e(TAG,"empty graph");
         }
     }
 

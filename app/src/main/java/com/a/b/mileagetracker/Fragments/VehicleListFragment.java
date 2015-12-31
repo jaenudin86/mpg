@@ -91,7 +91,7 @@ public class VehicleListFragment extends DialogFragment implements LoaderManager
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, final long id) {
-                Log.e(TAG, "clicked position: " + position + ", long id: " + id);
+//                Log.e(TAG, "clicked position: " + position + ", long id: " + id);
                 TextView flag = (TextView) view.findViewById(R.id.text_delete_flag);
 
                 if (flag.getVisibility() == View.VISIBLE) {
@@ -153,7 +153,7 @@ public class VehicleListFragment extends DialogFragment implements LoaderManager
     }
 
     public void onEvent(RefreshVehiclesEvent event){
-        Log.e(TAG, "refresh event caught");
+//        Log.e(TAG, "RefreshVehiclesEvent event caught");
         getLoaderManager().restartLoader(0, null, (LoaderManager.LoaderCallbacks) this);
     }
 

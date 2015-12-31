@@ -205,7 +205,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void popBackStack() {
         if (backPressedToExitOnce) {
-            Log.e("main", "end app???");
             super.onBackPressed();
         }
 
@@ -222,7 +221,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }, 2000);
         }
-        Log.e("main", "backpresed boolean: " + backPressedToExitOnce + ", backstackcount: " + fragmentManager.getBackStackEntryCount());
     }
 
 //        if((backPressedToExitOnce) || (fragmentManager.getBackStackEntryCount() != 0)) {
@@ -268,7 +266,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
-        Log.e("settings", "settings selected00 actionbar");
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -349,7 +346,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setNegativeButton(R.string.alert_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.e("main", "nope");
                     }
                 })
                     .setIcon(R.drawable.taxi)

@@ -139,11 +139,10 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
     }
     private long convertDateFieldToInt(){
         String dateString= dateView.getText().toString();
-        Log.e("somedate","date: "+dateString);
         SimpleDateFormat sdf=new SimpleDateFormat("MMM-dd-yyyy");
         try {
             Date date = sdf.parse(dateString);
-            Log.e("date","date: "+date.getTime());
+//            Log.e("date","date: "+date.getTime());
             return date.getTime()/1000;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -173,7 +172,6 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
     @Override
     public void onClick(View v) {
         if (v == dateView) {
-            Log.e("clicked dateview", "clicked dateview");
             fromDatePickerDialog.show();
         }
     }

@@ -64,7 +64,7 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 
         long freeBytesInternal = new File(getActivity().getApplicationContext().getFilesDir().getAbsoluteFile().toString()).getFreeSpace();
         long megAvailable = freeBytesInternal / 1048576;
-        Log.e(TAG, "processors available: " + Runtime.getRuntime().availableProcessors());
+//        Log.e(TAG, "processors available: " + Runtime.getRuntime().availableProcessors());
         if (megAvailable < 0.1) {
             new AlertDialog.Builder(getActivity()).setTitle("Not enough memory to export")
 //                .setMessage()
@@ -73,9 +73,9 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
             SharedPreferences sharedPrefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
             ArrayList<String> vehicles = new ArrayList<String>(Arrays.asList(TextUtils.split(sharedPrefs.getString("vehicle_list", ""), "‚‗‚")));
             mNumberOfVehicles=vehicles.size();
-            for (String v : vehicles) {
-                Log.e(TAG, "vehicles in shared prefs: " + v);
-            }
+//            for (String v : vehicles) {
+//                Log.e(TAG, "vehicles in shared prefs: " + v);
+//            }
 
             if (vehicles.size() > 0) {
                 workBook = new HSSFWorkbook();
@@ -89,15 +89,15 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
                 try {
                     if(exportFile.exists()){
                         Boolean del=exportFile.delete();
-                        Log.e(TAG,"delete old file stuck in cache: "+del);
+//                        Log.e(TAG,"delete old file stuck in cache: "+del);
                     }
                     exportFile.createNewFile();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Log.e(TAG, "export spreadsheet path is: " + exportFile); // get the path of speadsheet
-                File folder=getActivity().getCacheDir();
-                Log.e(TAG,"getCacheDir: "+folder);
+//                Log.e(TAG, "export spreadsheet path is: " + exportFile); // get the path of speadsheet
+//                File folder=getActivity().getCacheDir();
+//                Log.e(TAG,"getCacheDir: "+folder);
 
 //                if (!exportFile.exists()) {
 //                    Boolean createDirResults=exportFile.mkdirs();
@@ -145,11 +145,11 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 
     }
     public void sendEmail(){
-        try {
+//        try {
             File f=new File(getActivity().getCacheDir(),mFileName);
             f.setReadable(true,false);
 
-            Log.e(TAG, "email path: " + f.getAbsolutePath() + ",   canonical: " + f.getCanonicalPath() + ",   file: " + f);
+//            Log.e(TAG, "email path: " + f.getAbsolutePath() + ",   canonical: " + f.getCanonicalPath() + ",   file: " + f);
 
             Intent email = new Intent(Intent.ACTION_SEND);
 //              email.putExtra(Intent.EXTRA_EMAIL, new String[] { to });
@@ -165,9 +165,9 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 //            startActivityForResult(Intent.createChooser(email, "Choose an Email client"), 1);
             startActivity(Intent.createChooser(email, "Choose an Email client"));
 
-        } catch (IOException e) {
-            Log.e("SearchResultActivity", e.getMessage(), e);
-        }
+//        } catch (IOException e) {
+//            Log.e("SearchResultActivity", e.getMessage(), e);
+//        }
     }
 
     @Override
@@ -188,11 +188,11 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
             try {
                 c.moveToFirst();
                 if (c.getCount() > 0) {
-                    do {
-                        for (int i = 0; i < c.getColumnCount(); i++) {
-                            Log.e(TAG, "values: " + c.getString(i));
-                        }
-                    } while (c.moveToNext());
+//                    do {
+//                        for (int i = 0; i < c.getColumnCount(); i++) {
+//                            Log.e(TAG, "values: " + c.getString(i));
+//                        }
+//                    } while (c.moveToNext());
 
                     c.moveToFirst();
                     String vehicle = c.getString(c.getColumnIndex(MySQLiteHelper.COLUMN_VEHICLE));
@@ -257,14 +257,14 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 //                    fileOut=new FileOutputStream(mFileName);
                     fileOut=new FileOutputStream(getActivity().getCacheDir()+File.separator+mFileName);
                     workBook.write(fileOut);
-                    Log.e(TAG,"workbook.write location: "+fileOut);
+//                    Log.e(TAG,"workbook.write location: "+fileOut);
                 }
 //                c.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }else{
-            Log.e(TAG,"nothing to export from this vehicle");
+//            Log.e(TAG,"nothing to export from this vehicle");
         }
         mNumberOfProcessedVehicles++;
         if(mNumberOfProcessedVehicles==mNumberOfVehicles){

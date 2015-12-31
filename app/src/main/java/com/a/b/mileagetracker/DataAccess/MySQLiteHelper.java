@@ -91,7 +91,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 //            db = getWritableDatabase();
 //        }
         mDb=database;
-        Log.e(TAG, "MySQLiteHelper called onCreate()");
+//        Log.e(TAG, "MySQLiteHelper called onCreate()");
         try {
             database.execSQL(KEY_DB_CREATE);
 //            Attempting to fill the first row in vehicle key table; hoping to create a title for spinner when first starting app
@@ -99,7 +99,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 //            values.put(KEY_COLUMN_MAKE, "Mileage Tracker");
 //            mDb.insert(KEY_TABLE_NAME, KEY_COLUMN_MAKE, values);
         } catch (SQLException e) {
-            Log.e(TAG, "failed to create db");
+//            Log.e(TAG, "failed to create db");
         }
     }
 
@@ -107,13 +107,11 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Cursor cd=db.rawQuery("SELECT "+KEY_COLUMN_TABLE+"  FROM " + KEY_TABLE_NAME, null);
         while(cd.moveToNext()) {
-            Log.e(TAG, "dropped table " + cd.getString(0));
+//            Log.e(TAG, "dropped table " + cd.getString(0));
             db.execSQL("DROP TABLE IF EXISTS " + cd.getString(0));
         }cd.close();
 
-        Log.w(MySQLiteHelper.class.getName(),
-                "Upgrading database from version " + oldVersion + " to "
-                        + newVersion + ", which will destroy all old data");
+//        Log.e(MySQLiteHelper.class.getName(),"Upgrading database from version " + oldVersion + " to "+ newVersion + ", which will destroy all old data");
         db.execSQL("DROP TABLE IF EXISTS " + KEY_TABLE_NAME);
         onCreate(db);
     }
@@ -171,7 +169,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
 
             mDb.insert(currentVehicle, COLUMN_LOCATION, values);
         }else{
-            Log.e(TAG,"Shared preferences doesn't have current vehicle selected");
         }
     }
 
@@ -181,38 +178,38 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         currentVehicle=mSharedPrefs.getString("currentVehicle","null");
         mDb=getWritableDatabase();
         int result=mDb.delete(currentVehicle,"_id = ?", new String[] {pos});
-        Log.e(TAG, "delete entry results ==> " + result + " for: " + currentVehicle + " at position: " + pos);
-        getAllData(); //<--for testing only
+//        Log.e(TAG, "delete entry results ==> " + result + " for: " + currentVehicle + " at position: " + pos);
+//        getAllData(); //<--for testing only
     }
 
     @Override
     public void deleteVehicle(String vehicle) {
-        Log.e(TAG, "before removing from key table------:");
-        logKeyTable();
+//        Log.e(TAG, "before removing from key table------:");
+//        logKeyTable();
 
         String[] pos= new String[]{vehicle};
         mDb.delete(KEY_TABLE_NAME, KEY_COLUMN_TABLE + " = ?", pos);
         mDb.execSQL("DROP TABLE IF EXISTS " + vehicle);
 
-        Log.e(TAG, "after removing from key table------:");
-        logKeyTable();
+//        Log.e(TAG, "after removing from key table------:");
+//        logKeyTable();
     }
-    public void logKeyTable(){
-        Cursor c=getAllDataFromKeyTable();
-        if(c.moveToFirst()) {
-            String record = "";
-            do {
-                record = String.format("%d _id , make: %s, model: %s, year: %s, associated name: %s",
-                        c.getInt(0),
-                        c.getString(1),
-                        c.getString(2),
-                        c.getString(3),
-                        c.getString(4));
-
-                Log.e(TAG, "getAllDataFromKeyTable----: " + record);
-            } while (c.moveToNext());
-        }
-    }
+//    public void logKeyTable(){
+//        Cursor c=getAllDataFromKeyTable();
+//        if(c.moveToFirst()) {
+//            String record = "";
+//            do {
+//                record = String.format("%d _id , make: %s, model: %s, year: %s, associated name: %s",
+//                        c.getInt(0),
+//                        c.getString(1),
+//                        c.getString(2),
+//                        c.getString(3),
+//                        c.getString(4));
+//
+//                Log.e(TAG, "getAllDataFromKeyTable----: " + record);
+//            } while (c.moveToNext());
+//        }
+//    }
 
     @Override
     public Cursor getAllData() {
@@ -225,8 +222,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
                 for(String s: c.getColumnNames()){
                     names=names+s+", ";
                 }
-                logger("getAllData() method in MySqlHelper: ---start---");
-                Log.e(TAG, "column names: " + names);
+//                logger("getAllData() method in MySqlHelper: ---start---");
+//                Log.e(TAG, "column names: " + names);
 
 //                if(c.moveToFirst()){
 //                    String record="";
@@ -295,7 +292,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
                 }
                 c.moveToPrevious();
                 Double currentMpg=(currentMiles-previousMiles)/currentGallons;
-                Log.e(TAG, "calculate... miles:"+currentMiles+" - previous Miles: " +previousMiles+" / currentGallons: "+currentGallons+" equals: "+ currentMpg);
+//                Log.e(TAG, "calculate... miles:"+currentMiles+" - previous Miles: " +previousMiles+" / currentGallons: "+currentGallons+" equals: "+ currentMpg);
 
                 DecimalFormat df3=new DecimalFormat("#.###");
 
@@ -408,7 +405,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         }
     }
     private void logger(String log){
-        Log.e("DataDAOImplementation",log);
+//        Log.e("DataDAOImplementation",log);
     }
     private class UpdateThread extends Thread{
     }

@@ -30,7 +30,6 @@ public class ToolBarCursorAdapter extends CursorAdapter implements AdapterView.O
         this.context = context;
         this.cursor=c;
         mInflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        Log.e(TAG, "constructor");
     }
 
     @Override
@@ -68,7 +67,6 @@ public class ToolBarCursorAdapter extends CursorAdapter implements AdapterView.O
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String currentVehicleGUI=cursor.getString(cursor.getColumnIndex("key_year"))+" "+cursor.getString(cursor.getColumnIndex("key_make"))+" "+cursor.getString(cursor.getColumnIndex("key_model"));
         String currentVehicle=cursor.getString(cursor.getColumnIndex("key_table"));
-        Log.e("Selected!", "Selected!!!!!: row id: " + currentVehicle);
         SharedPreferences sharedPrefs=context.getSharedPreferences("prefs",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=sharedPrefs.edit();
         editor.putString("currentVehicleGUI", currentVehicleGUI);

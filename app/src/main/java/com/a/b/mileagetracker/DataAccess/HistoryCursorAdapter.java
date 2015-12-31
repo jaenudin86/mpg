@@ -72,7 +72,6 @@ public class HistoryCursorAdapter extends CursorAdapter{
 
     private String convertTime(long l){
         Date dateInSeconds=new Date(l*1000);
-            Log.e("date","date: "+dateInSeconds+" seconds: "+l*1000);
         SimpleDateFormat sdf = new SimpleDateFormat("MMM-dd-yyyy");
 //        sdf.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
         String formatted = sdf.format(dateInSeconds);

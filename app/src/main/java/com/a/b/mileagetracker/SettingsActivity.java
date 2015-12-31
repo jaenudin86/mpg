@@ -62,7 +62,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         deleteVehicle.setOnClickListener(this);
         mGarage=(TextView) findViewById(R.id.garage_textview);
 
-        getAllSharedPrefs();
+//        getAllSharedPrefs();  <= log all shared prefs
 
         getSupportLoaderManager().initLoader(0, null, this);
     }
@@ -75,19 +75,19 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         }
         return false;
     }
-    public void getAllSharedPrefs() {
-        SharedPreferences sharedPrefs = this.getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        Map<String, ?> keys = sharedPrefs.getAll();
-
-        for (Map.Entry<String, ?> entry : keys.entrySet()) {
-            Log.e(TAG, "All values from shared prefs: "+entry.getKey() + ":");
-            try {
-                Log.e(TAG, "value: " + entry.getValue().toString());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
+//    public void getAllSharedPrefs() {
+//        SharedPreferences sharedPrefs = this.getSharedPreferences("prefs", Context.MODE_PRIVATE);
+//        Map<String, ?> keys = sharedPrefs.getAll();
+//
+//        for (Map.Entry<String, ?> entry : keys.entrySet()) {
+//            Log.e(TAG, "All values from shared prefs: "+entry.getKey() + ":");
+//            try {
+//                Log.e(TAG, "value: " + entry.getValue().toString());
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     @Override
     protected void onPause() {

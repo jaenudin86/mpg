@@ -60,16 +60,12 @@ public class DataProvider extends ContentProvider {
         mDBHelper=MySQLiteHelper.getInstance(getContext());
         switch(sUriMatcher.match(uri)){
             case 1:
-                Log.e(TAG,"query case 1");
                 c=mDBHelper.getAllDataFromKeyTable();
                 break;
             case 2:
-//                c= mDBHelper.getAllData();
-//                Log.e(TAG,"query case 2");
                 break;
             case 3:
                 c=mDBHelper.getAllData(selection);
-                Log.e(TAG,"getalldata from: "+selection);
                 break;
             case 4:
                 c=mDBHelper.getMpgColumn();
@@ -78,7 +74,6 @@ public class DataProvider extends ContentProvider {
                 c=mDBHelper.getSumGallons();
                 break;
             default:
-                Log.e(TAG,TAG+" case default");
         }
 
 //        mDBHelper=MySQLiteHelper.getInstance(getContext());
@@ -90,7 +85,7 @@ public class DataProvider extends ContentProvider {
     @Override
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
 
-        Log.e(TAG,"ContentProvider openFile method called with uri: '" + uri + "'." + uri.getLastPathSegment());
+//        Log.e(TAG,"ContentProvider openFile method called with uri: '" + uri + "'." + uri.getLastPathSegment());
 
         // Check incoming Uri against the matcher
         switch (sUriMatcher.match(uri)) {
@@ -102,7 +97,7 @@ public class DataProvider extends ContentProvider {
                 // 'content://com.stephendnicholas.gmailattach.provider/Test.txt'
                 // Take this and build the path to the file
                 String fileLocation = getContext().getCacheDir() +File.separator+"mpgxls.xls";
-                Log.e(TAG,"ContentProvider openFile method file location: "+fileLocation);
+//                Log.e(TAG,"ContentProvider openFile method file location: "+fileLocation);
 
                 // Create & return a ParcelFileDescriptor pointing to the file
                 // Note: I don't care what mode they ask for - they're only getting
@@ -113,7 +108,7 @@ public class DataProvider extends ContentProvider {
 
             // Otherwise unrecognised Uri
             default:
-                Log.e(TAG, "Unsupported uri: '" + uri + "'.");
+//                Log.e(TAG, "Unsupported uri: '" + uri + "'.");
                 throw new FileNotFoundException("Unsupported uri: "
                         + uri.toString());
         }
@@ -144,7 +139,6 @@ public class DataProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         switch(sUriMatcher.match(uri)){
             case 10:
-                Log.e(TAG,"deleting: "+selection);
                 mDBHelper.deleteVehicle(selection);
                 break;
         }
