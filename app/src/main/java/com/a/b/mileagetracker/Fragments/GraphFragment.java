@@ -169,14 +169,14 @@ public class GraphFragment extends Fragment implements LoaderManager.LoaderCallb
         // set the line to be drawn like this "- - - - - -"
         set1.enableDashedLine(10f, 5f, 0f);
         set1.enableDashedHighlightLine(10f, 5f, 0f);
-        set1.setColor(Color.BLACK);
-        set1.setCircleColor(Color.BLACK);
-        set1.setLineWidth(1f);
-        set1.setCircleSize(3f);
+        set1.setColor(Color.BLUE);
+        set1.setCircleColor(Color.BLUE);
+        set1.setLineWidth(2f);
+        set1.setCircleSize(4f);
         set1.setDrawCircleHole(false);
-        set1.setValueTextSize(9f);
-        set1.setFillAlpha(65);
-        set1.setFillColor(Color.BLACK);
+        set1.setValueTextSize(16f);
+//        set1.setFillAlpha(0);
+        set1.setFillColor(Color.BLUE);
 //        set1.setDrawFilled(true);
         // set1.setShader(new LinearGradient(0, 0, 0, mChart.getHeight(),
         // Color.BLACK, Color.WHITE, Shader.TileMode.MIRROR));
@@ -231,12 +231,18 @@ public class GraphFragment extends Fragment implements LoaderManager.LoaderCallb
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            data.moveToFirst();
-                            do {
-                                Double value = data.getDouble(0);
-                                if (value != 0)
-                                    addEntry(value);
-                            } while (data.moveToNext());
+                        data.moveToFirst();
+//                        do {
+//                            Double value = data.getDouble(0);
+//                            if (value != 0)
+//                                addEntry(value);
+//                        } while (data.moveToNext());
+                        data.moveToLast();
+                        do {
+                            Double value = data.getDouble(0);
+                            if (value != 0)
+                                addEntry(value);
+                        } while (data.moveToPrevious());
                         }
                     });
                 }

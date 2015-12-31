@@ -51,8 +51,8 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
     File exportFile;
     ArrayList<String> vehicles=new ArrayList<>();
     String mFileName="mpgxls.xls";
-    String mFileFolder="mpg";
     int mNumberOfVehicles=0;
+    int mNumberOfProcessedVehicles=0;
 
     public EmailFragment() {
         super();
@@ -266,7 +266,9 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
         }else{
             Log.e(TAG,"nothing to export from this vehicle");
         }
-        if(loader.getId()==mNumberOfVehicles){
+        mNumberOfProcessedVehicles++;
+        if(mNumberOfProcessedVehicles==mNumberOfVehicles){
+//        if(loader.getId()==mNumberOfVehicles){
             try {
                 if(fileOut!=null) {
                     fileOut.close();
@@ -278,7 +280,6 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
 //    @Override
 //    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor c) {

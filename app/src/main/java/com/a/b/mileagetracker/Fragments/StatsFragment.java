@@ -297,7 +297,9 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
                         do {
                             galsTotal += data.getDouble(data.getColumnIndex(MySQLiteHelper.COLUMN_QUANTITY));
                             priceTotal += data.getDouble(data.getColumnIndex(MySQLiteHelper.COLUMN_PRICE));
-                        } while (data.moveToNext());
+                        } while (data.moveToNext()&&!data.isLast());
+                        priceTotal += data.getDouble(data.getColumnIndex(MySQLiteHelper.COLUMN_PRICE));
+
 
                         String mpgTotalHtml="Total Average: <font size=\"3\" color=\"blue\">"+String.valueOf(NumberFormat.getNumberInstance(Locale.US).format(totalMiles / galsTotal)) + " mpg";
                         mMpgTotalView.setText(Html.fromHtml(mpgTotalHtml));

@@ -150,7 +150,7 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
         Cursor c=editHistoryEvent.mC;
         int position=editHistoryEvent.mPosition;
         mId = editHistoryEvent.mId;
-        Log.e("event clicked", " clickedclickedclicked position==> " + editHistoryEvent.mPosition);
+//        Log.e("event clicked", " clickedclickedclicked position==> " + editHistoryEvent.mPosition);
         c.moveToPosition(position);
 
         location.setText(c.getString(c.getColumnIndex("location")));
@@ -255,7 +255,7 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
             fromDatePickerDialog.show();
         }
         if(v==deleteButton){
-            new AlertDialog.Builder(getActivity())
+            new AlertDialog.Builder(v.getContext())
                 .setTitle(R.string.delete_record)
                 .setMessage(R.string.alert_dialog_delete_record_message)
                 .setPositiveButton(R.string.alert_dialog_yes, new DialogInterface.OnClickListener() {
@@ -283,8 +283,8 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
                     Double.parseDouble(pNumber.toString()),
                     convertDateFieldToInt(),
                     location.getText().toString());
-                mListener.dismissDialogFragment(getTag());
                 dbHelper.deleteEntry(mId);
+                mListener.dismissDialogFragment(getTag());
                 EventBus.getDefault().post(new RefreshHistoryListViewEvent("refresh history listview"));
             } catch (NumberFormatException e) {
                 Toast.makeText(getActivity(),"wrong number format",Toast.LENGTH_LONG).show();

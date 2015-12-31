@@ -220,7 +220,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
         try {
             currentVehicle=mSharedPrefs.getString("currentVehicle",null);
             if(currentVehicle!=null){
-                Log.e(TAG, "current vehicle: "+currentVehicle);
                 Cursor c=mDb.rawQuery("SELECT * FROM "+ currentVehicle +" ORDER BY "+COLUMN_DATE+" DESC", null);
                 String names="";
                 for(String s: c.getColumnNames()){
@@ -229,24 +228,24 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
                 logger("getAllData() method in MySqlHelper: ---start---");
                 Log.e(TAG, "column names: " + names);
 
-                if(c.moveToFirst()){
-                    String record="";
-                    do{
-                        record= String.format("%d _id , vehicle: %s, %d miles, %.3f gallons, %.2f dollars, date: %d, location %s, MPG %.3f",
-                                c.getInt(0),
-                                c.getString(1),
-                                c.getInt(2),
-                                c.getFloat(3),
-                                c.getFloat(4),
-                                c.getInt(5),
-                                c.getString(6),
-                                c.getFloat(7));
-
-                        Log.e(TAG, "record: "+record);
-
-                    }while(c.moveToNext());
-                    logger("getAllData() method in MySqlHelper: ---end---");
-                }
+//                if(c.moveToFirst()){
+//                    String record="";
+//                    do{
+//                        record= String.format("%d _id , vehicle: %s, %d miles, %.3f gallons, %.2f dollars, date: %d, location %s, MPG %.3f",
+//                                c.getInt(0),
+//                                c.getString(1),
+//                                c.getInt(2),
+//                                c.getFloat(3),
+//                                c.getFloat(4),
+//                                c.getInt(5),
+//                                c.getString(6),
+//                                c.getFloat(7));
+//
+//                        Log.e(TAG, "record: "+record);
+//
+//                    }while(c.moveToNext());
+//                    logger("getAllData() method in MySqlHelper: ---end---");
+//                }
                 return c;
             }
 
@@ -296,7 +295,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
                 }
                 c.moveToPrevious();
                 Double currentMpg=(currentMiles-previousMiles)/currentGallons;
-                Log.e(TAG, "MPG= " + currentMpg);
+                Log.e(TAG, "calculate... miles:"+currentMiles+" - previous Miles: " +previousMiles+" / currentGallons: "+currentGallons+" equals: "+ currentMpg);
 
                 DecimalFormat df3=new DecimalFormat("#.###");
 

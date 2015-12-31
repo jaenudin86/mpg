@@ -273,10 +273,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Log.e("settings", "settings selected00");
+            Intent intent=new Intent(this,SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -315,7 +315,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            }else {
 //                Log.e("main","small screen layout");
                 Intent intent=new Intent(this,SettingsActivity.class);
-//                intent.putExtra("test",60);
                 startActivity(intent);
 //                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 ////            findViewById(android.R.id.content);
@@ -337,25 +336,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             new AlertDialog.Builder(this)
                 .setTitle("Export Data")
-                .setMessage("This will create a spreadsheet of all your collected data. You can send it by email to yourself in the next screens!")
-                .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                .setMessage(R.string.alert_email_to_yourself)
+                .setPositiveButton(R.string.alert_send, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         FragmentTransaction ft = fragmentManager.beginTransaction();
-                        Log.e("Main", "clicked yep");
                         EmailFragment emailFragment = new EmailFragment();
                         ft.add(emailFragment, "emailFragment");
                         ft.commit();
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.alert_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.e("main", "nope");
                     }
                 })
-                .setIcon(R.mipmap.ic_launcher)
-                .show();
+                    .setIcon(R.drawable.taxi)
+                    .show();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

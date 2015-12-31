@@ -6,13 +6,17 @@
     android:background="@color/lightgray">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_vehicle"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:gravity="center"
         android:layout_marginBottom="10dp"
-        android:textSize="@dimen/dialog_header_text_size" />
+        android:textSize="@dimen/dialog_header_text_size"
+        android:textColor="#fff"
+        android:background="@color/colorPrimary"
+        android:paddingBottom="12dp"
+        android:paddingTop="12dp"/>
 
     <ScrollView
         android:layout_width="fill_parent"

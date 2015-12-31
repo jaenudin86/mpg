@@ -3,6 +3,7 @@ package com.a.b.mileagetracker;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -63,6 +65,15 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         getAllSharedPrefs();
 
         getSupportLoaderManager().initLoader(0, null, this);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                break;
+        }
+        return false;
     }
     public void getAllSharedPrefs() {
         SharedPreferences sharedPrefs = this.getSharedPreferences("prefs", Context.MODE_PRIVATE);
