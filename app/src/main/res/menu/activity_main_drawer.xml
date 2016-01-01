@@ -13,7 +13,7 @@
             android:title="Stats" />
         <item android:id="@+id/nav_graph"
             android:icon="@drawable/ic_chart_line_grey600_48dp"
-            android:title="Graph" />
+            android:title="MPG Graph" />
     </group>
 
     <!--<item android:title="">-->

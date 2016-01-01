@@ -1,4 +1,4 @@
-package com.a.b.mileagetracker;
+package com.radicaldroids.mileage.b.mileagetracker;
 
 import org.junit.Test;
 

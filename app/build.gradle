@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.a.b.mileagetracker"
+        applicationId "com.radicaldroids.mileage"
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
@@ -14,7 +14,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            debuggable true
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
