@@ -66,15 +66,12 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 //        Log.e(TAG, "processors available: " + Runtime.getRuntime().availableProcessors());
         if (megAvailable < 0.1) {
             new AlertDialog.Builder(getActivity()).setTitle("Not enough memory to export")
-//                .setMessage()
                 .setPositiveButton("OK", null).setIcon(R.drawable.alert_48x48).show();
+
         } else {
             SharedPreferences sharedPrefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
             ArrayList<String> vehicles = new ArrayList<String>(Arrays.asList(TextUtils.split(sharedPrefs.getString("vehicle_list", ""), "‚‗‚")));
             mNumberOfVehicles=vehicles.size();
-//            for (String v : vehicles) {
-//                Log.e(TAG, "vehicles in shared prefs: " + v);
-//            }
 
             if (vehicles.size() > 0) {
                 workBook = new HSSFWorkbook();

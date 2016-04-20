@@ -76,7 +76,8 @@
     <string name="delete_button">Delete Vehicle(s)</string>
 
 <!--email alert-->
-    <string name="alert_email_to_yourself">This will create a spreadsheet of all your collected data. You can send it by email to yourself in the next screens! An email app must be installed on this device for this function to work properly.</string>
+    <string name="alert_email_to_yourself">This will create a spreadsheet of all your collected data.</string>
+    <!--<string name="alert_email_to_yourself">This will create a spreadsheet of all your collected data. You can send it by email to yourself in the next screens! An email app must be installed on this device for this function to work properly.</string>-->
     <string name="alert_send">Send</string>
     <string name="alert_cancel">Cancel</string>
 </resources>

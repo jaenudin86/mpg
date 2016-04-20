@@ -15,13 +15,13 @@
         android:textSize="@dimen/init_message"
         tools:text="@string/init_message_no_vehicles"
         android:layout_gravity="center_horizontal|top"/>
-    <Button
-        style="@style/button_style"
-        android:background="@drawable/custom_button"
-        android:id="@+id/empty_history_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        tools:text="@string/add_vehicle"
-        android:visibility="visible"/>
+    <!--<Button-->
+        <!--style="@style/button_style"-->
+        <!--android:background="@drawable/custom_button"-->
+        <!--android:id="@+id/empty_history_button"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--tools:text="@string/add_vehicle"-->
+        <!--android:visibility="visible"/>-->
 </LinearLayout>

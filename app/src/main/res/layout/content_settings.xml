@@ -21,46 +21,46 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Select a length measurement"/>
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Select a length measurement"/>-->
 
-            <Switch
-                android:layout_marginTop="12dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/entry_text_size"
-                android:textOn="Miles"
-                android:textOff="Kilometers"
-                android:id="@+id/switch_distance"
-                android:layout_marginLeft="56dp"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:background="@android:color/darker_gray"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Select a quantity measurement"/>
-            <Switch
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/entry_text_size"
-                android:textOn="Gallons"
-                android:textOff="Liters"
-                android:layout_marginTop="12dp"
-                android:id="@+id/switch_quantity"
-                android:layout_marginLeft="56dp"/>
+            <!--<Switch-->
+                <!--android:layout_marginTop="12dp"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textSize="@dimen/entry_text_size"-->
+                <!--android:textOn="Miles"-->
+                <!--android:textOff="Kilometers"-->
+                <!--android:id="@+id/switch_distance"-->
+                <!--android:layout_marginLeft="56dp"/>-->
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginTop="16dp"-->
+                <!--android:layout_marginBottom="16dp"-->
+                <!--android:background="@android:color/darker_gray"/>-->
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Select a quantity measurement"/>-->
+            <!--<Switch-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textSize="@dimen/entry_text_size"-->
+                <!--android:textOn="Gallons"-->
+                <!--android:textOff="Liters"-->
+                <!--android:layout_marginTop="12dp"-->
+                <!--android:id="@+id/switch_quantity"-->
+                <!--android:layout_marginLeft="56dp"/>-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:background="@android:color/darker_gray"/>
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginTop="16dp"-->
+                <!--android:layout_marginBottom="16dp"-->
+                <!--android:background="@android:color/darker_gray"/>-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

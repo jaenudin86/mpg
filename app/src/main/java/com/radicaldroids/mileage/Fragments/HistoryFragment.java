@@ -34,7 +34,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener{
     private TextView header;
     private DialogInterfaces.DialogInterface mListener;
     public static HistoryCursorAdapter mHistoryCursorAdapter;
-    private Button mEmptyButton;
+//    private Button mEmptyButton;
     private TextView mInitMessage;
 
     public HistoryFragment(){
@@ -51,9 +51,9 @@ public class HistoryFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mDBHelper=MySQLiteHelper.getInstance(getActivity().getApplicationContext());
         View view = inflater.inflate(R.layout.all_data_listview_fragment, container, false);
-        mEmptyButton = (Button) view.findViewById(R.id.empty_history_button);
+//        mEmptyButton = (Button) view.findViewById(R.id.empty_history_button);
         mInitMessage=(TextView) view.findViewById(R.id.init_message);
-        mEmptyButton.setOnClickListener(this);
+//        mEmptyButton.setOnClickListener(this);
         mListView = (ListView) view.findViewById(R.id.listview);
 
         SharedPreferences mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
@@ -62,17 +62,17 @@ public class HistoryFragment extends Fragment implements View.OnClickListener{
         final Cursor cursor=mDBHelper.getAllData();
 
         if(cursor==null){
-            mEmptyButton.setText(R.string.get_started);
-            mEmptyButton.setVisibility(View.VISIBLE);
+//            mEmptyButton.setText(R.string.get_started);
+//            mEmptyButton.setVisibility(View.VISIBLE);
             mInitMessage.setText(R.string.init_message_no_vehicles);
             mInitMessage.setVisibility(View.VISIBLE);
         }else if (cursor.getCount()<1){
-            mEmptyButton.setText(R.string.add_record_title);
-            mEmptyButton.setVisibility(View.VISIBLE);
+//            mEmptyButton.setText(R.string.add_record_title);
+//            mEmptyButton.setVisibility(View.VISIBLE);
             mInitMessage.setText(R.string.init_message_no_data);
             mInitMessage.setVisibility(View.VISIBLE);
         }else{
-            mEmptyButton.setVisibility(View.GONE);
+//            mEmptyButton.setVisibility(View.GONE);
             mInitMessage.setVisibility(View.GONE);
         }
 
@@ -101,17 +101,17 @@ public class HistoryFragment extends Fragment implements View.OnClickListener{
         mHistoryCursorAdapter.notifyDataSetChanged();
 
         if(cursor==null){
-            mEmptyButton.setText(R.string.get_started);
-            mEmptyButton.setVisibility(View.VISIBLE);
+//            mEmptyButton.setText(R.string.get_started);
+//            mEmptyButton.setVisibility(View.VISIBLE);
             mInitMessage.setText(R.string.init_message_no_vehicles);
             mInitMessage.setVisibility(View.VISIBLE);
         }else if (cursor.getCount()<1){
-            mEmptyButton.setText(R.string.add_record_title);
-            mEmptyButton.setVisibility(View.VISIBLE);
+//            mEmptyButton.setText(R.string.add_record_title);
+//            mEmptyButton.setVisibility(View.VISIBLE);
             mInitMessage.setText(R.string.init_message_no_data);
             mInitMessage.setVisibility(View.VISIBLE);
         }else{
-            mEmptyButton.setVisibility(View.GONE);
+//            mEmptyButton.setVisibility(View.GONE);
             mInitMessage.setVisibility(View.GONE);
         }
     }

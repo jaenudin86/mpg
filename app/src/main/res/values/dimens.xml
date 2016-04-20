@@ -5,7 +5,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_margin">24dp</dimen>
     <dimen name="entry_text_size">24sp</dimen>
     <dimen name="perfm_list_item_size">24sp</dimen>
     <dimen name="dialog_header_text_size">24sp</dimen>
@@ -15,4 +15,7 @@
 
     <dimen name="add_record_text_size">24sp</dimen>
     <dimen name="space_between_entry_fields">20sp</dimen>
+
+    <dimen name="fab_elevation">6dp</dimen>
+    <dimen name="fab_press_translation_z">12dp</dimen>
 </resources>

@@ -23,7 +23,7 @@ import com.radicaldroids.mileage.R;
  * Created by Andrew on 12/22/2015.
  */
 public class StartupFragment extends Fragment implements View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor>{
-    private Button mEmptyButton;
+//    private Button mEmptyButton;
     private TextView mInitMessage;
     AddVehicleFragment.AddVehicle mListener;
     @Override
@@ -40,9 +40,9 @@ public class StartupFragment extends Fragment implements View.OnClickListener, L
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.startup_fragment, container, false);
-        mEmptyButton = (Button) view.findViewById(R.id.empty_history_button);
+//        mEmptyButton = (Button) view.findViewById(R.id.empty_history_button);
         mInitMessage=(TextView) view.findViewById(R.id.init_message);
-        mEmptyButton.setOnClickListener(this);
+//        mEmptyButton.setOnClickListener(this);
         setScreen();
         return view;
     }
@@ -56,8 +56,8 @@ public class StartupFragment extends Fragment implements View.OnClickListener, L
         SharedPreferences mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
         String currentVehicle=mSharedPrefs.getString("currentVehicle",null);
         if(currentVehicle==null){
-            mEmptyButton.setText(R.string.get_started);
-            mEmptyButton.setVisibility(View.VISIBLE);
+//            mEmptyButton.setText(R.string.get_started);
+//            mEmptyButton.setVisibility(View.VISIBLE);
             mInitMessage.setText(R.string.init_message_no_vehicles);
             mInitMessage.setVisibility(View.VISIBLE);
         }else{
@@ -77,12 +77,12 @@ public class StartupFragment extends Fragment implements View.OnClickListener, L
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data.getCount()<1){
-            mEmptyButton.setText(R.string.add_record_title);
-            mEmptyButton.setVisibility(View.VISIBLE);
+//            mEmptyButton.setText(R.string.add_record_title);
+//            mEmptyButton.setVisibility(View.VISIBLE);
             mInitMessage.setText(R.string.init_message_no_data);
             mInitMessage.setVisibility(View.VISIBLE);
         }else{
-            mEmptyButton.setVisibility(View.GONE);
+//            mEmptyButton.setVisibility(View.GONE);
             mInitMessage.setVisibility(View.GONE);
         }
     }

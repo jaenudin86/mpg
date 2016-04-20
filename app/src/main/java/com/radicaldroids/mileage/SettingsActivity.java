@@ -45,13 +45,13 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Switch length=(Switch) findViewById(R.id.switch_distance);
-        Switch quantity=(Switch) findViewById(R.id.switch_quantity);
+//        Switch length=(Switch) findViewById(R.id.switch_distance);
+//        Switch quantity=(Switch) findViewById(R.id.switch_quantity);
         Button addVehicle = (Button) findViewById(R.id.add_vehicle);
         Button deleteVehicle=(Button) findViewById(R.id.delete_button);
 
-        length.setOnClickListener(this);
-        quantity.setOnClickListener(this);
+//        length.setOnClickListener(this);
+//        quantity.setOnClickListener(this);
         addVehicle.setOnClickListener(this);
         deleteVehicle.setOnClickListener(this);
         mGarage=(TextView) findViewById(R.id.garage_textview);
@@ -98,9 +98,9 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         if (id==R.id.delete_button){
             openVehicleListFragment();
         }
-        if(id==R.id.switch_distance||id==R.id.switch_quantity){
-            Toast.makeText(this,R.string.future_length_quanity,Toast.LENGTH_SHORT).show();
-        }
+//        if(id==R.id.switch_distance||id==R.id.switch_quantity){
+//            Toast.makeText(this,R.string.future_length_quanity,Toast.LENGTH_SHORT).show();
+//        }
     }
 
     public void openVehicleListFragment() {

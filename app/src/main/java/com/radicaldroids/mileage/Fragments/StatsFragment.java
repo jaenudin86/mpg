@@ -71,8 +71,8 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
         mConclusion = (TextView) view.findViewById(R.id.perfm_conclusion);
 
         mEmptyStats =(TextView) view.findViewById(R.id.init_stats_message);
-        mEmptyButton =(Button) view.findViewById(R.id.empty_stats_button);
-        mEmptyButton.setOnClickListener(this);
+//        mEmptyButton =(Button) view.findViewById(R.id.empty_stats_button);
+//        mEmptyButton.setOnClickListener(this);
 
         return view;
     }
@@ -268,7 +268,7 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data != null) {
             if (data.getCount() > 1) {
-                mEmptyButton.setVisibility(View.GONE);
+//                mEmptyButton.setVisibility(View.GONE);
                 mEmptyStats.setVisibility(View.GONE);
                 mTitle.setText(R.string.stats_title);
                 setViewsVisible();
@@ -309,23 +309,23 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
                     break;
                 }
             }else if(data.getCount()==1) {
-                mEmptyButton.setText(R.string.add_record_title);
-                mEmptyButton.setVisibility(View.VISIBLE);
+//                mEmptyButton.setText(R.string.add_record_title);
+//                mEmptyButton.setVisibility(View.VISIBLE);
                 mEmptyStats.setText(R.string.init_message_one_more_entry);
                 mEmptyStats.setVisibility(View.VISIBLE);
                 setViewsInvisible();
             }else{
-                mEmptyButton.setText(R.string.add_record_title);
-                mEmptyButton.setVisibility(View.VISIBLE);
+//                mEmptyButton.setText(R.string.add_record_title);
+//                mEmptyButton.setVisibility(View.VISIBLE);
                 mEmptyStats.setText(R.string.init_message_no_data);
                 mEmptyStats.setVisibility(View.VISIBLE);
                 setViewsInvisible();
             }
         }else{
             mEmptyStats.setText(R.string.init_message_no_vehicles);
-            mEmptyButton.setText(R.string.get_started);
+//            mEmptyButton.setText(R.string.get_started);
             mEmptyStats.setVisibility(View.VISIBLE);
-            mEmptyButton.setVisibility(View.VISIBLE);
+//            mEmptyButton.setVisibility(View.VISIBLE);
             setViewsInvisible();
         }
     }

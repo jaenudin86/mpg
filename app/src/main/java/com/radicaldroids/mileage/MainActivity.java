@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -73,14 +75,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            }
 //        });
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pressInitialButtonAction();
+            }
+        });
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -180,28 +181,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        if ((backPressedToExitOnce) || (getSupportFragmentManager().getBackStackEntryCount() > 0)) {
-//            super.onBackPressed();
-//        } else {
-//            this.backPressedToExitOnce = true;
-//            showToast("Press again to exit ");
-//            new Handler().postDelayed(new Runnable() {
-//
-//                @Override
-//                public void run() {
-//                    backPressedToExitOnce = false;
-//                }
-//            }, 2000);
-//        }
-//    }
-
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//    }
-
     public void popBackStack() {
         if (backPressedToExitOnce) {
             super.onBackPressed();
@@ -222,35 +201,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-//        if((backPressedToExitOnce) || (fragmentManager.getBackStackEntryCount() != 0)) {
-//            Log.e("main", "backstack count: " + fragmentManager.getBackStackEntryCount());
-//
-////            super.onBackPressed();
-//        }
-//            Log.e("main","popbackstack else clause");
-//            this.backPressedToExitOnce = true;
-////            Toast.makeText(getApplicationContext(), "Press again to exit ", Toast.LENGTH_LONG);
-//            showToast("message");
-//            new Handler().postDelayed(new Runnable() {
-//
-//                @Override
-//                public void run() {
-//                    backPressedToExitOnce = false;
-//                }
-//            }, 2000);
-//
-//    }
-//    private void showToast(String message) {
-//        if (this.toast == null) {
-//            this.toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-//        } else if (this.toast.getView() == null) {
-//            this.toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-//        } else {
-//            this.toast.setText(message);
-//        }
-//        this.toast.show();
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -261,13 +211,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent=new Intent(this,SettingsActivity.class);
             startActivity(intent);
@@ -393,17 +338,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
-//    @Override
-//    public void openVehicleListFragment() {
-////        FragmentManager fragmentManager = getFragmentManager();
-//        FragmentTransaction ft = fragmentManager.beginTransaction();
-//        VehicleListFragment vehicleListFragment = VehicleListFragment.newInstance();
-//        Log.e("main", "stack: " + fragmentManager.getBackStackEntryCount());
-//        ft.addToBackStack(null);
-//        ft.replace(R.id.fragment_holder, vehicleListFragment);
-//        ft.setTransition(ft.TRANSIT_FRAGMENT_OPEN);
-//        ft.commit();
-//    }
 
     @Override
     public void updateToolBarView() {
@@ -420,26 +354,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         editHistoryLineItem.show(getSupportFragmentManager(), "editLineItem");
 //        editHistoryLineItem.setFieldsWithData();
     }
-//
-//    @Override
-//    public void onEditDate() {
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction ft = fragmentManager.beginTransaction();
-//        DatePicker datePicker = new DatePicker();
-//        ft.replace(R.id.fragment_holder, datePicker).commit();
-//        Log.e("onEditDate", "onEditDate");
-//    }
-//
-//    @Override
-//    public void selectCurrentCar(String make, String model, int year) {
-//        String currentCar = make + model + year;
-//        SharedPreferences settings = getSharedPreferences("prefs", 0);
-//        SharedPreferences.Editor editor = settings.edit();
-//        editor.putString("currentVehicle", currentCar);
-//        editor.commit();
-//
-//        Log.e("shared preferences", "shared prefs: " + currentCar);
-//    }
 
     @Override
     public void onAddVehicle() {

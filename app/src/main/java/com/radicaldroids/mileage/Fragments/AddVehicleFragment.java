@@ -60,7 +60,7 @@ public class AddVehicleFragment extends DialogFragment {
             public void onClick(View v) {
             try {
                 int year=Integer.parseInt(addYear.getText().toString());
-                if(year>1880&&year<2018||year<100){
+                if(year>1880&&year<2019||year<100){
                     String make=WordUtils.capitalizeFully(addMake.getText().toString());
                     String model=WordUtils.capitalizeFully(addModel.getText().toString());
 
