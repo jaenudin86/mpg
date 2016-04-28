@@ -21,10 +21,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.radicaldroids.mileage.DataAccess.DialogInterfaces;
 import com.radicaldroids.mileage.DataAccess.MySQLiteHelper;
 import com.radicaldroids.mileage.Events.EditHistoryEvent;
 import com.radicaldroids.mileage.Events.RefreshHistoryListViewEvent;
+import com.radicaldroids.mileage.MyApplication;
 import com.radicaldroids.mileage.R;
 
 
@@ -55,6 +58,7 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
     private Button mDeleteButton;
     private Button mEditButton;
     private long mId;
+    private Tracker mTracker;
 
     String TAG="EditHistoryFragment";
 
@@ -67,6 +71,10 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        MyApplication application=(MyApplication) getActivity().getApplication();
+        mTracker=application.getTracker();
+        sendAnalyticName();
+
         mDbHelper =MySQLiteHelper.getInstance(getActivity().getApplicationContext());
 
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
@@ -290,5 +298,14 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
 
             }
         }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        sendAnalyticName();
+    }
+    private void sendAnalyticName(){
+        mTracker.setScreenName("EditHistoryFragment");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 }

@@ -15,10 +15,13 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.radicaldroids.mileage.DataAccess.DialogInterfaces;
 import com.radicaldroids.mileage.DataAccess.HistoryCursorAdapter;
 import com.radicaldroids.mileage.DataAccess.MySQLiteHelper;
 import com.radicaldroids.mileage.Events.EditHistoryEvent;
+import com.radicaldroids.mileage.MyApplication;
 import com.radicaldroids.mileage.R;
 import com.radicaldroids.mileage.Events.RefreshHistoryListViewEvent;
 
@@ -36,6 +39,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener{
     public static HistoryCursorAdapter mHistoryCursorAdapter;
 //    private Button mEmptyButton;
     private TextView mInitMessage;
+    private Tracker mTracker;
 
     public HistoryFragment(){
     }
@@ -44,6 +48,9 @@ public class HistoryFragment extends Fragment implements View.OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        MyApplication application=(MyApplication) getActivity().getApplication();
+        mTracker=application.getTracker();
+        sendAnalyticName();
     }
 
     @Nullable
@@ -140,6 +147,16 @@ public class HistoryFragment extends Fragment implements View.OnClickListener{
             throw new ClassCastException(activity.toString()
                     + " must implement NoticeDialogListener");
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        sendAnalyticName();
+    }
+    private void sendAnalyticName(){
+        mTracker.setScreenName("HistoryFragment");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override

@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.radicaldroids.mileage.Events.RefreshHistoryListViewEvent;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -23,6 +25,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.radicaldroids.mileage.MyApplication;
 import com.radicaldroids.mileage.R;
 
 import java.util.ArrayList;
@@ -36,6 +39,7 @@ public class GraphFragment extends Fragment implements LoaderManager.LoaderCallb
     private LineChart mChart;
     String TAG="graphFragment";
     ArrayList<Double> mPoints;
+    private Tracker mTracker;
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -54,6 +58,11 @@ public class GraphFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        MyApplication application=(MyApplication) getActivity().getApplication();
+        mTracker=application.getTracker();
+        sendAnalyticName();
+
         mPoints=new ArrayList<>();
         String s=getArguments().getString("someString", "notFound");
         setRetainInstance(true);   //tends to cause problems on rotate
@@ -304,5 +313,14 @@ public class GraphFragment extends Fragment implements LoaderManager.LoaderCallb
         deleteData();
         getLoaderManager().restartLoader(1, null, (LoaderManager.LoaderCallbacks) this);
 //        setData();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        sendAnalyticName();
+    }
+    private void sendAnalyticName(){
+        mTracker.setScreenName("GraphFragment");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 }

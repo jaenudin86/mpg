@@ -30,6 +30,10 @@ import android.view.ViewGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.tagmanager.ContainerHolder;
+import com.google.android.gms.tagmanager.TagManager;
 import com.radicaldroids.mileage.DataAccess.DialogInterfaces;
 import com.radicaldroids.mileage.DataAccess.MySQLiteHelper;
 import com.radicaldroids.mileage.DataAccess.ToolBarCursorAdapter;
@@ -44,6 +48,7 @@ import com.radicaldroids.mileage.Fragments.HistoryFragment;
 import com.radicaldroids.mileage.Fragments.StatsFragment;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import de.greenrobot.event.EventBus;
 
@@ -57,11 +62,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private boolean mIsLargeLayout;
     private AddVehicleFragment mAddVehicleFragment;
     DrawerLayout drawer;
+    TagManager mTagManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ((MyApplication)getApplication()).startTracking();
+//        loadGTMContainer();
+        
 
         mIsLargeLayout=getResources().getBoolean(R.bool.large_layout);
 
@@ -128,6 +138,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }, 750);
         }
     }
+//    // Load a TagManager container
+//    public void loadGTMContainer () {
+//        // TODO Get the TagManager
+//        mTagManager = ((MyApplication) getApplication()).getTagManager();
+//
+//        // Enable verbose logging
+//        mTagManager.setVerboseLoggingEnabled(true);
+//
+//        // Load the container
+//        PendingResult pending = mTagManager.loadContainerPreferFresh("GTM-123456",R.raw.gtm_default);
+//
+//        // Define the callback to store the loaded container
+//        pending.setResultCallback(new ResultCallback<ContainerHolder>() {
+//            @Override
+//            public void onResult(ContainerHolder containerHolder) {
+//
+//                // If unsuccessful, return
+//                if (!containerHolder.getStatus().isSuccess()) {
+//                    // Deal with failure
+//                    return;
+//                }
+//
+//                // Manually refresh the container holder
+//                // Can only do this once every 15 minutes or so
+//                containerHolder.refresh();
+//
+//                // Set the container holder, only want one per running app
+//                // We can retrieve it later as needed
+//                ((MyApplication) getApplication()).setContainerHolder(
+//                        containerHolder);
+//
+//            }
+//        }, 2, TimeUnit.SECONDS);
+//    }
 //    public void selectStartupFragment(){
 //        FragmentManager fragmentManager = getSupportFragmentManager();
 //        FragmentTransaction ft = fragmentManager.beginTransaction();

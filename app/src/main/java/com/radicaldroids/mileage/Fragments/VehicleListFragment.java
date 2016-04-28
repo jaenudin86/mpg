@@ -22,9 +22,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.radicaldroids.mileage.DataAccess.MySQLiteHelper;
 import com.radicaldroids.mileage.DataAccess.VehicleCursorAdapter;
 import com.radicaldroids.mileage.Events.RefreshVehiclesEvent;
+import com.radicaldroids.mileage.MyApplication;
 import com.radicaldroids.mileage.R;
 
 import de.greenrobot.event.EventBus;
@@ -40,6 +43,7 @@ public class VehicleListFragment extends DialogFragment implements LoaderManager
     ListView mListView;
     VehicleCursorAdapter vehicleCurAdpt;
     String TAG="VehicleListFragment";
+    private Tracker mTracker;
 
     public static VehicleListFragment newInstance(){
         VehicleListFragment vehicleListFragment=new VehicleListFragment();
@@ -61,6 +65,10 @@ public class VehicleListFragment extends DialogFragment implements LoaderManager
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        MyApplication application=(MyApplication) getActivity().getApplication();
+        mTracker=application.getTracker();
+
         setRetainInstance(true);   //tends to cause problems on rotate?
 
         if(savedInstanceState==null) {
@@ -137,6 +145,7 @@ public class VehicleListFragment extends DialogFragment implements LoaderManager
 //        mListener.updateSharedPrefsVehicles();
         //TODO THIS!!!!
 //        mListener.updateToolBarView();
+        sendAnalytic();
     }
 
     @Override
@@ -166,6 +175,14 @@ public class VehicleListFragment extends DialogFragment implements LoaderManager
     public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+    private void sendAnalytic(){
+        mTracker.setScreenName("Deleted Vehicle");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
 

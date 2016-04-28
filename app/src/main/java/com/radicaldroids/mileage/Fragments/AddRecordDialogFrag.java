@@ -16,9 +16,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.radicaldroids.mileage.DataAccess.DialogInterfaces;
 import com.radicaldroids.mileage.DataAccess.MySQLiteHelper;
 import com.radicaldroids.mileage.Events.RefreshHistoryListViewEvent;
+import com.radicaldroids.mileage.MyApplication;
 import com.radicaldroids.mileage.R;
 
 
@@ -46,6 +49,7 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
     private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
     private EditText dateView;
+    private Tracker mTracker;
 
 //    public interface DialogInterface{
 //        void onDialogAddEntryDismiss();
@@ -66,6 +70,10 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
 
         LayoutInflater inflater=getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.add_record, null);
+
+        MyApplication application=(MyApplication) getActivity().getApplication();
+        mTracker=application.getTracker();
+        sendAnalyticName();
 
 //        final Spinner carSelector=(Spinner) view.findViewById(R.id.vehicle_dropdown_spinner);
 //        final Cursor c=dbHelper.getAllDataFromKeyTable();
@@ -168,6 +176,17 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        sendAnalyticName();
+    }
+    private void sendAnalyticName(){
+        mTracker.setScreenName("AddRecordDialogFragment");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
     @Override
     public void onClick(View v) {
         if (v == dateView) {

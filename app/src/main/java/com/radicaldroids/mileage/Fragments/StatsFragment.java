@@ -18,9 +18,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.radicaldroids.mileage.DataAccess.DialogInterfaces;
 import com.radicaldroids.mileage.DataAccess.MySQLiteHelper;
 import com.radicaldroids.mileage.Events.RefreshHistoryListViewEvent;
+import com.radicaldroids.mileage.MyApplication;
 import com.radicaldroids.mileage.R;
 
 import java.text.NumberFormat;
@@ -44,6 +47,7 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
     private TextView mEmptyStats;
     private TextView mEmptyButton;
     String TAG="StatsFragment";
+    private Tracker mTracker;
 
     public static StatsFragment newInstance(){
         StatsFragment overallStatsFragment=new StatsFragment();
@@ -57,6 +61,9 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
             getLoaderManager().initLoader(0, null, (LoaderManager.LoaderCallbacks) this);
             getLoaderManager().initLoader(1, null, (LoaderManager.LoaderCallbacks) this);
         }
+        MyApplication application=(MyApplication) getActivity().getApplication();
+        mTracker=application.getTracker();
+        sendAnalyticName();
     }
 
     @Nullable
@@ -351,6 +358,15 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onClick(View v) {
         mListener.pressInitialButtonAction();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        sendAnalyticName();
+    }
+    private void sendAnalyticName(){
+        mTracker.setScreenName("StatsFragment");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override

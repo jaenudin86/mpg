@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ga_trackingId">UA-77014702-2</string>
+    <bool name="ga_autoActivityTracking">true</bool>
+    <screenName name="com.radicaldroids.mileage.MainActivity">Main Activity</screenName>
+    <screenName name="com.radicaldroids.mileage.SettingsActivity">Settings Activity</screenName>
+    <!--<bool name="ga_reportUncaughtExceptions">true</bool>-->
+
+</resources>

@@ -1,8 +1,10 @@
 apply plugin: 'com.android.application'
+//apply plugin: 'com.google.gms.google-services'
+
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "com.radicaldroids.mileage"
@@ -32,13 +34,14 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.android.support:design:23.0.1'
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.google.android.gms:play-services-analytics:8.4.0'
+//    compile 'com.google.android.gms:play-services:8.4.0'
+    compile 'com.android.support:design:23.3.0'
     compile 'de.greenrobot:eventbus:2.4.0'
-    compile files('libs/opencsv-3.5.jar')
+//    compile files('libs/opencsv-3.5.jar')
     compile 'org.apache.poi:poi:3.12'
     compile 'org.apache.commons:commons-lang3:3.0'
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
-
 
 }

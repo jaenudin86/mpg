@@ -18,8 +18,11 @@ import android.widget.Toast;
 //import com.radicaldroids.mileagetracker.DataAccess.SettingInterfaces;
 //import com.radicaldroids.mileagetracker.Events.RefreshVehiclesEvent;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.radicaldroids.mileage.DataAccess.MySQLiteHelper;
 import com.radicaldroids.mileage.Events.RefreshVehiclesEvent;
+import com.radicaldroids.mileage.MyApplication;
 import com.radicaldroids.mileage.R;
 
 
@@ -40,6 +43,7 @@ public class AddVehicleFragment extends DialogFragment {
     AddVehicleFragment.AddVehicle mListener;
     SharedPreferences mSharedPrefs;
     private MySQLiteHelper dbHelper;
+    private Tracker mTracker;
 
     public static AddVehicleFragment newInstance() {
         return new AddVehicleFragment();
@@ -48,6 +52,9 @@ public class AddVehicleFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         dbHelper = MySQLiteHelper.getInstance(getActivity().getApplicationContext());
+
+        MyApplication application=(MyApplication) getActivity().getApplication();
+        mTracker=application.getTracker();
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.add_vehicle, null);
@@ -83,6 +90,7 @@ public class AddVehicleFragment extends DialogFragment {
                             dbHelper.createVehicleTable(year, make, model, cv);
                             mListener.onAddVehicleDismiss();
                             EventBus.getDefault().postSticky(new RefreshVehiclesEvent());
+                            sendAnalytic();
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
                             Toast.makeText(getActivity(),"Invalid Car",Toast.LENGTH_LONG).show();
@@ -105,6 +113,11 @@ public class AddVehicleFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
         return builder.create();
+    }
+
+    private void sendAnalytic(){
+        mTracker.setScreenName("Vehicle Added");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
     @Override
     public void onAttach(Activity activity) {
