@@ -292,7 +292,7 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
                 mListener.dismissDialogFragment(getTag());
                 EventBus.getDefault().post(new RefreshHistoryListViewEvent("refresh history listview"));
             } catch (NumberFormatException e) {
-                Toast.makeText(getActivity(),"wrong number format",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),R.string.wrong_number_format,Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }catch (ParseException e){
 

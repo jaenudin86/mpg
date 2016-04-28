@@ -121,7 +121,7 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
                 mListener.dismissDialogFragment(getTag());
                 EventBus.getDefault().postSticky(new RefreshHistoryListViewEvent("refreshing"));
             } catch (NumberFormatException e) {
-                Toast.makeText(getActivity(),"wrong number format",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),R.string.wrong_number_format,Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
             }

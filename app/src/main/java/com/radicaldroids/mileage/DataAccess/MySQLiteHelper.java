@@ -10,6 +10,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.radicaldroids.mileage.R;
+
 import java.text.DecimalFormat;
 
 /**
@@ -137,7 +139,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements SQLDao{
             addVehicleToKeyTable(year, make, model, vehicleKey);
         } catch (SQLException e) {
             e.printStackTrace();
-            Toast.makeText(mContext.getApplicationContext(),"Invalid vehicle make or type",Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext.getApplicationContext(), R.string.invalid_make_or_type,Toast.LENGTH_LONG).show();
         }
     }
     public void addVehicleToKeyTable(int year, String make, String model, String vehicleKey){

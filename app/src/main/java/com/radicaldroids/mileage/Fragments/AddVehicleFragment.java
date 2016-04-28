@@ -93,19 +93,19 @@ public class AddVehicleFragment extends DialogFragment {
                             sendAnalytic();
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
-                            Toast.makeText(getActivity(),"Invalid Car",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(),R.string.invalid_car,Toast.LENGTH_LONG).show();
                         }
                     }else{
-                        Toast.makeText(getActivity(),"Make and model need to be 3 to 16 characters long", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(),R.string.reasonable_length, Toast.LENGTH_LONG).show();
                     }
 
                 }else{
-                    Toast.makeText(getActivity(),"Please enter a reasonable car year",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),R.string.reasonable_year,Toast.LENGTH_LONG).show();
                 }
 
             } catch (NumberFormatException e) {
                 e.printStackTrace();
-                Toast.makeText(getActivity(),"Invalid year, please try again",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),R.string.invalid_year,Toast.LENGTH_LONG).show();
             }
             }
         });
