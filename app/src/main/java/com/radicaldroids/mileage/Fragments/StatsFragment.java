@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.radicaldroids.mileage.DataAccess.DialogInterfaces;
@@ -81,126 +83,24 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
 //        mEmptyButton =(Button) view.findViewById(R.id.empty_stats_button);
 //        mEmptyButton.setOnClickListener(this);
 
+        AdView mAdView=(AdView) view.findViewById(R.id.ad_view);
+        AdRequest adRequest=new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        mAdView.loadAd(adRequest);
+
         return view;
     }
-//    private void displayCurrentVehicleStats(){
-//        getLoaderManager().restartLoader(0,null,(LoaderManager.LoaderCallbacks) this);
-//        getLoaderManager().restartLoader(1,null,(LoaderManager.LoaderCallbacks) this);
-////        Cursor c = dbHelper.getAllData().getCount();
-////        if(c!=null&& c.getCount()?>0) {
-//        if(dbHelper.getAllData()!=null&&dbHelper.getAllData().getCount()>0){
-//            displayResults();
-////            logData();
-//        }else{
-////            noRecordForCurrentVehicle();
-//        }
-//    }
 
-//    private void displayResults(){
-////        DecimalFormat decim=new DecimalFormat("0.00");
-//        mMilesRecent = getMilesSinceLast();
-//        mMilesTotal = getMilesTotal();
-////        mpgRecent=getMpgRecent();
-//        mpgTotal=getMpgTotal();
-
-
-//        mMpgSinceLast.setText((mpgRecent>0?"Most recent: "+mpgRecent+" mpg": null));
-//        mMpgTotalView.setText((mpgTotal>0?"Total: "+mpgTotal+" mpg":"Need 2 or more data points to calculate MPG. Please Add another record"));
-//        milesTravelled.setText((mpgRecent>0?"Miles since last record: " + mpgRecent:null));
-//        mTotalMilesTravelled.setText((mMilesTotal>0?"Total miles tracked: " + NumberFormat.getNumberInstance(Locale.US).format(mMilesTotal):null));
-//        mConclusion.setText(NumberFormat.getCurrencyInstance().format(dbHelper.getTotalAmountSpent())+ " since "+getLastDate());
-//        mConclusion.setText("$ " + decim.format(dbHelper.getTotalAmountSpent()) + " since "+getLastDate());
-//    }
-//    private void noRecordForCurrentVehicle(){
-//        milesTravelled.setText("No data collected for selected vehicle!");
-//        mConclusion.setText("Click \"Add Record\" to get started");
-//    }
-
-//    private Double getMpgRecent(){
-//        Double gallons;
-//        Cursor cQuant=dbHelper.getQuantityColumn();
-//        DecimalFormat df=new DecimalFormat("#.###");
-//        if(cQuant!=null && cQuant.moveToLast()){
-//            gallons=Double.parseDouble(cQuant.getString(0));
-//            return Double.parseDouble(df.format(mMilesRecent / gallons));
-//        }else{
-//            return 0.0;
-//        }
-//    }
-//    private Double getMpgRecent(){
-//        return 0.0;
-//    }
-
-//    private Double getMpgTotal(){
-//        Double gallons;
-//        DecimalFormat df=new DecimalFormat("#.###");
-//        Cursor galCur=dbHelper.getSumGallons();
-//        galCur.moveToFirst();
-//        gallons=Double.parseDouble(galCur.getString(0));
-//        return Double.parseDouble(df.format(mMilesTotal/gallons));
-//    }
-//
-//    private int getMilesTotal(){
-//        int last,first;
-//        Cursor cMiles=dbHelper.getMilesColumn();
-//        if(cMiles.getCount()>1 && cMiles.moveToLast()) {
-//            last = Integer.parseInt(cMiles.getString(0));
-//            cMiles.moveToFirst();
-//            first = Integer.parseInt(cMiles.getString(0));
-//            cMiles.close();
-//            return last - first;
-//        }else{
-//            cMiles.close();
-//            return 0;
-//        }
-//    }
-//    private int getMilesSinceLast(){
-//        int last,previous;
-//        Cursor cMiles=dbHelper.getMilesColumn();
-//        if(cMiles!=null && cMiles.moveToLast()&&cMiles.getCount()>1) {
-//            last = Integer.parseInt(cMiles.getString(0));
-//            cMiles.moveToPrevious();
-//            previous = Integer.parseInt(cMiles.getString(0));
-//            cMiles.close();
-//            return last - previous;
-//        }else{
-//            cMiles.close();
-//            return 0;
-//        }
-//    }
     private String getLastDate(long number){
         Date date=new Date(number*1000);
         SimpleDateFormat format=new SimpleDateFormat("MMM/dd/yyyy");
 //        sdf.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
         return format.format(date);
     }
-//    private int getMilesTotal(Cursor c){
-//        int last=0,first = 0;
-//        if(c!=null && c.moveToLast()) {
-//            last = Integer.parseInt(c.getString(0));
-//            c.moveToFirst();
-//            first = Integer.parseInt(c.getString(0));
-//            return last - first;
-//        }else{
-//            return 0;
-//        }
-//    }
-//
-//    private int getMilesSinceLast(Cursor c){
-//        int last=0,previous = 0;
-//        if(c!=null && c.moveToLast()) {
-//            last = Integer.parseInt(c.getString(0));
-//            c.moveToPrevious();
-//            previous = Integer.parseInt(c.getString(0));
-//            return last - previous;
-//        }else{
-//            return 0;
-//        }
-//    }
 
 //     Deleteable methods for internal logging only
 //     @param
-//
 //
 //    public void logData(){
 //        Cursor c= dbHelper.getMilesColumn();
@@ -305,7 +205,6 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
                             priceTotal += data.getDouble(data.getColumnIndex(MySQLiteHelper.COLUMN_PRICE));
                         } while (data.moveToNext()&&!data.isLast());
                         priceTotal += data.getDouble(data.getColumnIndex(MySQLiteHelper.COLUMN_PRICE));
-
 
                         String mpgTotalHtml="Total Average: <font size=\"3\" color=\"blue\">"+String.valueOf(NumberFormat.getNumberInstance(Locale.US).format(totalMiles / galsTotal)) + " mpg";
                         mMpgTotalView.setText(Html.fromHtml(mpgTotalHtml));
