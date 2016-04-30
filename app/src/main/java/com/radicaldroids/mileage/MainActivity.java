@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -39,7 +40,6 @@ import com.radicaldroids.mileage.Events.RefreshVehiclesEvent;
 import com.radicaldroids.mileage.Fragments.AddVehicleFragment;
 import com.radicaldroids.mileage.Fragments.AddRecordDialogFrag;
 import com.radicaldroids.mileage.Fragments.EditHistoryFragment;
-import com.radicaldroids.mileage.Fragments.EmailFragment;
 import com.radicaldroids.mileage.Fragments.GraphFragment;
 import com.radicaldroids.mileage.Events.RefreshHistoryListViewEvent;
 import com.radicaldroids.mileage.Fragments.HistoryFragment;
@@ -49,7 +49,8 @@ import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogInterfaces.DialogInterface, AddVehicleFragment.AddVehicle {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        DialogInterfaces.DialogInterface, AddVehicleFragment.AddVehicle {
     private SharedPreferences mSharedPrefs;
     private SQLiteHelper mDBHelper;
     private DialogFragment dialogFragment;
@@ -265,16 +266,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
 
         } else if (id == R.id.nav_send) {
+            final Context context=this;
             new AlertDialog.Builder(this)
                 .setTitle(R.string.export_data_title)
                 .setMessage(R.string.alert_email_to_yourself)
                 .setPositiveButton(R.string.alert_send, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        FragmentTransaction ft = fragmentManager.beginTransaction();
-                        EmailFragment emailFragment = new EmailFragment();
-                        ft.add(emailFragment, "emailFragment");
-                        ft.commit();
+//                        FragmentTransaction ft = fragmentManager.beginTransaction();
+//                        EmailFragment emailFragment = new EmailFragment();
+//                        ft.add(emailFragment, "emailFragment");
+//                        ft.commit();
+                        new SpreadsheetCreator(context).execute();
+
+
                     }
                 })
                 .setNegativeButton(R.string.alert_cancel, new DialogInterface.OnClickListener() {

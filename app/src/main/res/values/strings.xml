@@ -11,14 +11,16 @@
 
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
+
 <!--stats page-->
     <string name="stats_title">Vehicle Stats</string>
     <string name="init_message_one_more_entry">This vehicle needs one more entry to calculate Statistics!</string>
+
 <!--init message/button-->
     <string name="init_message_no_vehicles">There are no vehicles created. Click the button below to get started!</string>
     <string name="init_message_no_data">This vehicle needs data to create a record. Click the button below to create an entry!</string>
 
-    <string name="get_started">Get Started</string>
+    <!--<string name="get_started">Get Started</string>-->
 <!--add record-->
     <string name="add_record_title">Add Record</string>
     <string name="gas_station">Gas Station:</string>
@@ -35,7 +37,7 @@
     <string name="edit_record">Save Changes</string>
     <string name="alert_dialog_delete_record_message">This will delete this entry. Are you sure you want to continue?</string>
 
-<!-- add vehicle-->
+<!--add vehicle-->
     <string name="add_vehicle">Add Vehicle</string>
     <string name="make">Make:</string>
     <string name="model">Model:</string>
@@ -70,7 +72,7 @@
     <string name="need_more_data1">Please press "Add Record" to get started!</string>
     <string name="need_more_data2">Need more entries to create a graph for this vehicle</string>
 
-<!-- backpress toast-->
+<!--back press toast-->
     <string name="backpress">Press back again to exit</string>
 
 <!--Settings Page-->
@@ -83,13 +85,16 @@
     <string name="delete_button">Delete Vehicle(s)</string>
     <string name="no_vehicles_created">no vehicles created</string>
 
-<!--email alert-->
+<!--spreadsheet-->
     <string name="export_data_title">Export Data</string>
     <string name="alert_email_to_yourself">This will create a spreadsheet of all your collected data.</string>
     <!--<string name="alert_email_to_yourself">This will create a spreadsheet of all your collected data. You can send it by email to yourself in the next screens! An email app must be installed on this device for this function to work properly.</string>-->
     <string name="alert_send">Send</string>
     <string name="alert_cancel">Cancel</string>
     <string name="not_enough_memory">Not enough memory to export</string>
+    <string name="no_data_to_export">No Data to Export!</string>
+    <string name="ok">OK</string>
+    <string name="data_for">Data for </string>
 
 <!--analytics-->
     <string name="add_record_analytic_tag">AddRecordDialogFragment</string>
