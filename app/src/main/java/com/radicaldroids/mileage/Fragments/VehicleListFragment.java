@@ -24,7 +24,9 @@ import android.widget.TextView;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.radicaldroids.mileage.DataAccess.MySQLiteHelper;
+import com.radicaldroids.mileage.Constants;
+import com.radicaldroids.mileage.DataAccess.DataProvider;
+import com.radicaldroids.mileage.DataAccess.SQLiteHelper;
 import com.radicaldroids.mileage.DataAccess.VehicleCursorAdapter;
 import com.radicaldroids.mileage.Events.RefreshVehiclesEvent;
 import com.radicaldroids.mileage.MyApplication;
@@ -35,7 +37,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by Andrew on 12/8/2015.
  */
-public class VehicleListFragment extends DialogFragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener {
+public class VehicleListFragment extends DialogFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     public interface VehicleList {
         void openVehicleListDismiss();
     }
@@ -83,7 +85,7 @@ public class VehicleListFragment extends DialogFragment implements LoaderManager
             CursorLoader CL=null;
             switch (id){
                 case 0:
-                    CL=new CursorLoader(getActivity().getApplicationContext(), Uri.parse("content://com.radicaldroids.mileage/key_table"), null, null, null, null);
+                    CL=new CursorLoader(getActivity().getApplicationContext(), Uri.parse(DataProvider.BASE_CONTENT_URI +"/key_table"), null, null, null, null);
                 break;
             }
             return CL;
@@ -105,7 +107,6 @@ public class VehicleListFragment extends DialogFragment implements LoaderManager
                     flag.setVisibility(View.INVISIBLE);
                 } else {
                     flag.setVisibility(View.VISIBLE);
-//                    mListView.getItemAtPosition(position)
                     flag.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -116,12 +117,11 @@ public class VehicleListFragment extends DialogFragment implements LoaderManager
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         data.moveToPosition(position);
-                                        deleteVehicle(data.getString(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
+                                        deleteVehicle(data.getString(data.getColumnIndex(SQLiteHelper.KEY_COLUMN_TABLE)));
                                         mListener.openVehicleListDismiss();
                                     }
                                 })
                                 .setNegativeButton(R.string.alert_dialog_no, null)
-//                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                 .setIcon(R.drawable.alert_48x48)
                                 .show();
                         }
@@ -131,33 +131,24 @@ public class VehicleListFragment extends DialogFragment implements LoaderManager
             }
         });
     }
+
     public void deleteVehicle(String vehicle){
-        SharedPreferences sharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        String currentVehicle=sharedPrefs.getString("currentVehicle", "null");
-        SharedPreferences.Editor editor = sharedPrefs.edit();
+        SharedPreferences sharedPrefs=getActivity().getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
+        String currentVehicle=sharedPrefs.getString(Constants.SHARED_PREFS_CURRENT_VEHICLE, "null");
 
         if(currentVehicle.compareToIgnoreCase(vehicle)==0){
-            editor.putString("currentVehicle", null).apply();
+            SharedPreferences.Editor editor = sharedPrefs.edit();
+            editor.putString(Constants.SHARED_PREFS_CURRENT_VEHICLE, null).apply();
         }
-        ContentResolver cr=getActivity().getContentResolver();
-        int del=cr.delete(Uri.parse("content://com.radicaldroids.mileage/delete_vehicle"),vehicle,null);
+
+        getActivity().getContentResolver().delete(Uri.parse(DataProvider.BASE_CONTENT_URI +"/delete_vehicle"),vehicle,null);
         getLoaderManager().restartLoader(0, null, (LoaderManager.LoaderCallbacks) this);
-//        mListener.updateSharedPrefsVehicles();
-        //TODO THIS!!!!
-//        mListener.updateToolBarView();
+
         sendAnalytic();
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
-    }
-    @Override
-    public void onClick(View v) {
-//        int id=v.getId();
-//        if(id==R.id.add_new_vehicle){
-//            mListener.onAddVehicle();
-//        }
     }
 
     public void onEvent(RefreshVehiclesEvent event){
@@ -181,10 +172,9 @@ public class VehicleListFragment extends DialogFragment implements LoaderManager
         super.onResume();
     }
     private void sendAnalytic(){
-        mTracker.setScreenName("Deleted Vehicle");
+        mTracker.setScreenName(getString(R.string.deleted_vehicle_analytic_tag));
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
-
 
     @Override
     public void onAttach(Activity activity) {

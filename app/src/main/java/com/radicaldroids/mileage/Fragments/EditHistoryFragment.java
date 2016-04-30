@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
@@ -23,13 +25,17 @@ import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.radicaldroids.mileage.Constants;
+import com.radicaldroids.mileage.DataAccess.DataProvider;
 import com.radicaldroids.mileage.DataAccess.DialogInterfaces;
-import com.radicaldroids.mileage.DataAccess.MySQLiteHelper;
+import com.radicaldroids.mileage.DataAccess.SQLiteHelper;
 import com.radicaldroids.mileage.Events.EditHistoryEvent;
 import com.radicaldroids.mileage.Events.RefreshHistoryListViewEvent;
 import com.radicaldroids.mileage.MyApplication;
 import com.radicaldroids.mileage.R;
 
+
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -47,7 +53,7 @@ import de.greenrobot.event.EventBus;
 public class EditHistoryFragment extends DialogFragment implements View.OnClickListener{
 
     DialogInterfaces.DialogInterface mListener;
-    private MySQLiteHelper mDbHelper;
+    private SQLiteHelper mDbHelper;
     private DatePickerDialog mDatePickerDialog;
     private SimpleDateFormat mDateFormatter;
     private EditText mDateView;
@@ -75,7 +81,7 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
         mTracker=application.getTracker();
         sendAnalyticName();
 
-        mDbHelper =MySQLiteHelper.getInstance(getActivity().getApplicationContext());
+        mDbHelper = SQLiteHelper.getInstance(getActivity().getApplicationContext());
 
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
 //        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity(), R.style.MyAlertDialogStyle);
@@ -89,7 +95,7 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
         mPrice = (EditText) view.findViewById(R.id.edit_price);
         mDateView = (EditText) view.findViewById(R.id.edit_date);
 
-        SharedPreferences sharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        SharedPreferences sharedPrefs=getActivity().getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
         final TextView vehicle = (TextView) view.findViewById(R.id.current_vehicle_edit_record_frag);
         vehicle.setText(sharedPrefs.getString("currentVehicleGUI", "car"));
 
@@ -224,8 +230,8 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
                 mDateView.setText(mDateFormatter.format(newDate.getTime()));
             }
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-//        convertDateFieldToInt();
     }
+
     private long convertDateFieldToInt(){
         String dateString= mDateView.getText().toString();
         SimpleDateFormat sdf=new SimpleDateFormat("MMM-dd-yyyy");
@@ -266,7 +272,8 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
                 .setPositiveButton(R.string.alert_dialog_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mDbHelper.deleteEntry(mId);
+//                        mDbHelper.deleteEntry(mId);
+                        getActivity().getContentResolver().delete(Uri.parse(DataProvider.BASE_CONTENT_URI +"/delete_entry"),Long.toString(mId),null);
                         mListener.dismissDialogFragment(getTag());
                         EventBus.getDefault().post(new RefreshHistoryListViewEvent("refresh historyListView"));
                     }
@@ -281,21 +288,25 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
                 NumberFormat formatNumber=NumberFormat.getCurrencyInstance();
                 Number pNumber=formatNumber.parse(mPrice.getText().toString());
                 DecimalFormat df3=new DecimalFormat("#.###");
+                DecimalFormat df2=new DecimalFormat("0.00");
 
-                mDbHelper.addEntry(
-                        (int) Math.round(Double.parseDouble(mOdometer.getText().toString())),
-                        Double.parseDouble(df3.format(Double.parseDouble(mGallons.getText().toString()))),
-                        Double.parseDouble(pNumber.toString()),
-                        convertDateFieldToInt(),
-                        mLocation.getText().toString());
-                mDbHelper.deleteEntry(mId);
+                ContentValues values=new ContentValues();
+
+                values.put(SQLiteHelper.COLUMN_ODOMETER,(int) Math.round(Double.parseDouble(mOdometer.getText().toString())));
+                values.put(SQLiteHelper.COLUMN_QUANTITY,Double.valueOf(df3.format(Double.parseDouble(mGallons.getText().toString()))));
+                values.put(SQLiteHelper.COLUMN_PRICE,Double.valueOf(df2.format(Double.parseDouble(pNumber.toString()))));
+                values.put(SQLiteHelper.COLUMN_DATE,convertDateFieldToInt());
+                values.put(SQLiteHelper.COLUMN_LOCATION, WordUtils.capitalizeFully(mLocation.getText().toString()));
+
+                getActivity().getContentResolver().insert(Uri.parse(DataProvider.BASE_CONTENT_URI +"/fillup"),values);
+
+                getActivity().getContentResolver().delete(Uri.parse(DataProvider.BASE_CONTENT_URI +"/delete_entry"),Long.toString(mId),null);
                 mListener.dismissDialogFragment(getTag());
                 EventBus.getDefault().post(new RefreshHistoryListViewEvent("refresh history listview"));
             } catch (NumberFormatException e) {
                 Toast.makeText(getActivity(),R.string.wrong_number_format,Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }catch (ParseException e){
-
             }
         }
     }
@@ -304,8 +315,9 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
         super.onResume();
         sendAnalyticName();
     }
+
     private void sendAnalyticName(){
-        mTracker.setScreenName("EditHistoryFragment");
+        mTracker.setScreenName(getString(R.string.edit_history_analytic_tag));
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 }

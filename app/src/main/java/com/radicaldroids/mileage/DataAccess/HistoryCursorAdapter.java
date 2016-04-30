@@ -53,7 +53,7 @@ public class HistoryCursorAdapter extends CursorAdapter{
         date.setText(convertTime(cursor.getInt(cursor.getColumnIndex("date"))));
 
         location.setText("Station: "+cursor.getString(cursor.getColumnIndex("location")));
-        Double mpgValue=cursor.getDouble(cursor.getColumnIndex(MySQLiteHelper.COLUMN_MPG));
+        Double mpgValue=cursor.getDouble(cursor.getColumnIndex(SQLiteHelper.COLUMN_MPG));
         mpg.setText("MPG: "+ (mpgValue==0.0?"--":mpgValue));
     }
     @Override

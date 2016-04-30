@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.radicaldroids.mileage.Constants;
+import com.radicaldroids.mileage.DataAccess.DataProvider;
 import com.radicaldroids.mileage.Events.RefreshHistoryListViewEvent;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -67,8 +69,8 @@ public class GraphFragment extends Fragment implements LoaderManager.LoaderCallb
         String s=getArguments().getString("someString", "notFound");
         setRetainInstance(true);   //tends to cause problems on rotate
 
-        SharedPreferences sharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        String currentVehicle=sharedPrefs.getString("currentVehicle","null");
+        SharedPreferences sharedPrefs=getActivity().getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
+        String currentVehicle=sharedPrefs.getString(Constants.SHARED_PREFS_CURRENT_VEHICLE,"null");
         if(currentVehicle.compareToIgnoreCase("null")!=0) {
             if (savedInstanceState == null) {
                 getLoaderManager().initLoader(1, null, (LoaderManager.LoaderCallbacks) this);
@@ -193,7 +195,7 @@ public class GraphFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public android.support.v4.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        CursorLoader CL = new CursorLoader(getActivity().getApplicationContext(), Uri.parse("content://com.radicaldroids.mileage/mpg_data"), null, null, null, null);
+        CursorLoader CL = new CursorLoader(getActivity().getApplicationContext(), Uri.parse(DataProvider.BASE_CONTENT_URI +"/mpg_data"), null, null, null, null);
         return CL;
     }
 
@@ -320,7 +322,7 @@ public class GraphFragment extends Fragment implements LoaderManager.LoaderCallb
         sendAnalyticName();
     }
     private void sendAnalyticName(){
-        mTracker.setScreenName("GraphFragment");
+        mTracker.setScreenName(getString(R.string.graph_fragment_analytic_tag));
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 }

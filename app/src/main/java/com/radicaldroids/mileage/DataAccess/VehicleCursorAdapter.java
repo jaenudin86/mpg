@@ -32,9 +32,9 @@ public class VehicleCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         TextView vehicle=(TextView) view.findViewById(R.id.vehicle);
         String car=
-                cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_COLUMN_YEAR))+" "+
-                cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_COLUMN_MAKE))+" "+
-                cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_COLUMN_MODEL));
+                cursor.getString(cursor.getColumnIndex(SQLiteHelper.KEY_COLUMN_YEAR))+" "+
+                cursor.getString(cursor.getColumnIndex(SQLiteHelper.KEY_COLUMN_MAKE))+" "+
+                cursor.getString(cursor.getColumnIndex(SQLiteHelper.KEY_COLUMN_MODEL));
         vehicle.setText(car);
     }
     @Override

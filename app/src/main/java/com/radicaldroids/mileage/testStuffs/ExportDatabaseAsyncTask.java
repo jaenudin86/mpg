@@ -10,7 +10,7 @@
 //import android.util.Log;
 //import android.widget.Toast;
 //
-//import MySQLiteHelper;
+//import SQLiteHelper;
 //import EmailFragment;
 //import com.opencsv.CSVReader;
 //import com.opencsv.CSVWriter;
@@ -53,7 +53,7 @@
 //        DateFormat currentDateString =DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
 //        Log.e("export data", "current date string: "+currentDateString);
 //
-//        File dbFile = mContext.getDatabasePath(MySQLiteHelper.getInstance(mContext).getDatabaseName());
+//        File dbFile = mContext.getDatabasePath(SQLiteHelper.getInstance(mContext).getDatabaseName());
 //            Log.e(TAG, "DbFile path is: " + dbFile); // get the path of db
 //        File exportDir = new File(Environment.getExternalStorageDirectory() + File.separator + "exportFillupTable");
 //            Log.e(TAG, "exportDB path is: " + exportDir.getAbsolutePath()); // get the path of db

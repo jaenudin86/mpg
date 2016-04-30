@@ -13,8 +13,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 
-import com.radicaldroids.mileage.DataAccess.MySQLiteHelper;
+import com.radicaldroids.mileage.Constants;
+import com.radicaldroids.mileage.DataAccess.DataProvider;
+import com.radicaldroids.mileage.DataAccess.SQLiteHelper;
 import com.radicaldroids.mileage.R;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -41,7 +44,6 @@ import java.util.Date;
  * Created by Andrew on 11/4/2015.
  */
 public class EmailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private MySQLiteHelper mDBHelper;
     String TAG="EmailFragment";
     Workbook workBook;
     Sheet sheet;
@@ -65,11 +67,11 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
         long megAvailable = freeBytesInternal / 1048576;
 //        Log.e(TAG, "processors available: " + Runtime.getRuntime().availableProcessors());
         if (megAvailable < 0.1) {
-            new AlertDialog.Builder(getActivity()).setTitle("Not enough memory to export")
+            new AlertDialog.Builder(getActivity()).setTitle(R.string.not_enough_memory)
                 .setPositiveButton("OK", null).setIcon(R.drawable.alert_48x48).show();
 
         } else {
-            SharedPreferences sharedPrefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+            SharedPreferences sharedPrefs = getActivity().getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
             ArrayList<String> vehicles = new ArrayList<String>(Arrays.asList(TextUtils.split(sharedPrefs.getString("vehicle_list", ""), "‚‗‚")));
             mNumberOfVehicles=vehicles.size();
 
@@ -77,7 +79,7 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
                 workBook = new HSSFWorkbook();
                 createHelper = workBook.getCreationHelper();
 
-//                File dbFile = getActivity().getApplicationContext().getDatabasePath(MySQLiteHelper.getInstance(getActivity().getApplicationContext()).getDatabaseName());
+//                File dbFile = getActivity().getApplicationContext().getDatabasePath(SQLiteHelper.getInstance(getActivity().getApplicationContext()).getDatabaseName());
 //                Log.e(TAG, "DbFile path is: " + dbFile); // get the path of db
 //                exportFile = new File(Environment.getExternalStorageDirectory(), mFileFolder);
 //                exportFile = new File(getActivity().getFilesDir()+File.separator, mFileName);
@@ -121,8 +123,10 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 
                 int num = 1;
                 for (String v : vehicles) {
+                    Log.e(TAG, "vehicles: "+v);
                     Bundle extra = new Bundle();
                     extra.putString("vehicle", v);
+                    //create a new Loader for each vehicle in the database. Each Loader will create it's own page in the spreadsheet.
                     getLoaderManager().initLoader(num, extra, (LoaderManager.LoaderCallbacks) this);
                     num++;
                 }
@@ -155,7 +159,7 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 
             email.setType("message/rfc822");
 //            email.setType("application/zip");
-            email.putExtra(Intent.EXTRA_STREAM, Uri.parse("content://com.radicaldroids.mileage/spreadsheet.xls"));
+            email.putExtra(Intent.EXTRA_STREAM, Uri.parse(DataProvider.BASE_CONTENT_URI +"/spreadsheet.xls"));
 
             email.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 //            startActivityForResult(Intent.createChooser(email, "Choose an Email client"), 1);
@@ -169,7 +173,7 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         CursorLoader CL=null;
-        CL= new CursorLoader(getActivity().getApplicationContext(),Uri.parse("content://com.radicaldroids.mileage/vehicle"),null,args.getString("vehicle"),null,null);
+        CL= new CursorLoader(getActivity().getApplicationContext(),Uri.parse(DataProvider.BASE_CONTENT_URI +"/vehicle"),null,args.getString("vehicle"),null,null);
         return CL;
     }
 
@@ -179,6 +183,7 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
+        Log.e(TAG, "Loader cursor: "+loader);
         Row row;
         if(c!=null){
             try {
@@ -191,8 +196,9 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 //                    } while (c.moveToNext());
 
                     c.moveToFirst();
-                    String vehicle = c.getString(c.getColumnIndex(MySQLiteHelper.COLUMN_VEHICLE));
+                    String vehicle = c.getString(c.getColumnIndex(SQLiteHelper.COLUMN_VEHICLE));
                     String sheetName = WorkbookUtil.createSafeSheetName(vehicle);
+                    Log.e(TAG,"sheets: "+sheetName+", vehicle from column: "+vehicle);
 
                     CellStyle styleBold = workBook.createCellStyle();
                     Font font = workBook.createFont();
@@ -284,7 +290,7 @@ public class EmailFragment extends Fragment implements LoaderManager.LoaderCallb
 //            case 0:
 //                c.moveToFirst();
 //                do{
-//                    vehicles.add(c.getString(c.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
+//                    vehicles.add(c.getString(c.getColumnIndex(SQLiteHelper.KEY_COLUMN_TABLE)));
 //                }while(c.moveToNext());
 //
 //                Log.e(TAG,"onloadFinished 0: ");

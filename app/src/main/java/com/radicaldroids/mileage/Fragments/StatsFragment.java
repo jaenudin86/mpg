@@ -15,15 +15,16 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.radicaldroids.mileage.Constants;
+import com.radicaldroids.mileage.DataAccess.DataProvider;
 import com.radicaldroids.mileage.DataAccess.DialogInterfaces;
-import com.radicaldroids.mileage.DataAccess.MySQLiteHelper;
+import com.radicaldroids.mileage.DataAccess.SQLiteHelper;
 import com.radicaldroids.mileage.Events.RefreshHistoryListViewEvent;
 import com.radicaldroids.mileage.MyApplication;
 import com.radicaldroids.mileage.R;
@@ -38,7 +39,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by Andrew on 10/22/2015.
  */
-public class StatsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener{
+public class StatsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private DialogInterfaces.DialogInterface mListener;
     private TextView mTitle;
@@ -47,7 +48,6 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
     private TextView mTotalMilesTravelled;
     private TextView mConclusion;
     private TextView mEmptyStats;
-    private TextView mEmptyButton;
     String TAG="StatsFragment";
     private Tracker mTracker;
 
@@ -80,9 +80,8 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
         mConclusion = (TextView) view.findViewById(R.id.perfm_conclusion);
 
         mEmptyStats =(TextView) view.findViewById(R.id.init_stats_message);
-//        mEmptyButton =(Button) view.findViewById(R.id.empty_stats_button);
-//        mEmptyButton.setOnClickListener(this);
 
+        //AdMob for ads
         AdView mAdView=(AdView) view.findViewById(R.id.ad_view);
         AdRequest adRequest=new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
@@ -158,13 +157,13 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
         CursorLoader CL=null;
         switch (id) {
             case 0:
-                CL = new CursorLoader(getActivity().getApplicationContext(), Uri.parse("content://com.radicaldroids.mileage/mpg_data"), null, null, null, null);
+                CL = new CursorLoader(getActivity().getApplicationContext(), Uri.parse(DataProvider.BASE_CONTENT_URI +"/mpg_data"), null, null, null, null);
                 break;
             case 1:
-                SharedPreferences mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                SharedPreferences mSharedPrefs=getActivity().getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
                 String curVeh=mSharedPrefs.getString("currentVehicle",null);
                 if(curVeh!=null) {
-                    CL = new CursorLoader(getActivity().getApplicationContext(), Uri.parse("content://com.radicaldroids.mileage/vehicle"), null, mSharedPrefs.getString("currentVehicle","null"), null, null);
+                    CL = new CursorLoader(getActivity().getApplicationContext(), Uri.parse(DataProvider.BASE_CONTENT_URI +"/vehicle"), null, curVeh, null, null);
                 }
                 break;
         }
@@ -175,7 +174,6 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data != null) {
             if (data.getCount() > 1) {
-//                mEmptyButton.setVisibility(View.GONE);
                 mEmptyStats.setVisibility(View.GONE);
                 mTitle.setText(R.string.stats_title);
                 setViewsVisible();
@@ -191,20 +189,20 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
                         break;
                     case 1: //calculate and display aggregate MPG since first record
                         data.moveToFirst();
-                        int maxMiles = data.getInt(data.getColumnIndex(MySQLiteHelper.COLUMN_ODOMETER));
+                        int maxMiles = data.getInt(data.getColumnIndex(SQLiteHelper.COLUMN_ODOMETER));
                         data.moveToLast();
-                        int minMiles = data.getInt(data.getColumnIndex(MySQLiteHelper.COLUMN_ODOMETER));
+                        int minMiles = data.getInt(data.getColumnIndex(SQLiteHelper.COLUMN_ODOMETER));
                         int totalMiles = maxMiles - minMiles;
-                        long lastDate=data.getInt(data.getColumnIndex(MySQLiteHelper.COLUMN_DATE));
+                        long lastDate=data.getInt(data.getColumnIndex(SQLiteHelper.COLUMN_DATE));
 
                         data.moveToFirst();
                         Double galsTotal = 0.0;
                         Double priceTotal = 0.0;
                         do {
-                            galsTotal += data.getDouble(data.getColumnIndex(MySQLiteHelper.COLUMN_QUANTITY));
-                            priceTotal += data.getDouble(data.getColumnIndex(MySQLiteHelper.COLUMN_PRICE));
+                            galsTotal += data.getDouble(data.getColumnIndex(SQLiteHelper.COLUMN_QUANTITY));
+                            priceTotal += data.getDouble(data.getColumnIndex(SQLiteHelper.COLUMN_PRICE));
                         } while (data.moveToNext()&&!data.isLast());
-                        priceTotal += data.getDouble(data.getColumnIndex(MySQLiteHelper.COLUMN_PRICE));
+                        priceTotal += data.getDouble(data.getColumnIndex(SQLiteHelper.COLUMN_PRICE));
 
                         String mpgTotalHtml="Total Average: <font size=\"3\" color=\"blue\">"+String.valueOf(NumberFormat.getNumberInstance(Locale.US).format(totalMiles / galsTotal)) + " mpg";
                         mMpgTotalView.setText(Html.fromHtml(mpgTotalHtml));
@@ -215,23 +213,20 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
                     break;
                 }
             }else if(data.getCount()==1) {
-//                mEmptyButton.setText(R.string.add_record_title);
-//                mEmptyButton.setVisibility(View.VISIBLE);
+                //if there is a vehicle created, but only one gas-station entry entered, display a message in EmptyStats. You need two data points to calculate MPG
                 mEmptyStats.setText(R.string.init_message_one_more_entry);
                 mEmptyStats.setVisibility(View.VISIBLE);
                 setViewsInvisible();
             }else{
-//                mEmptyButton.setText(R.string.add_record_title);
-//                mEmptyButton.setVisibility(View.VISIBLE);
+                //if there is a vehicle created, but no gas-station entries entered, display a message in EmptyStats
                 mEmptyStats.setText(R.string.init_message_no_data);
                 mEmptyStats.setVisibility(View.VISIBLE);
                 setViewsInvisible();
             }
         }else{
+            //if there are no vehicles created, display a message in EmptyStats
             mEmptyStats.setText(R.string.init_message_no_vehicles);
-//            mEmptyButton.setText(R.string.get_started);
             mEmptyStats.setVisibility(View.VISIBLE);
-//            mEmptyButton.setVisibility(View.VISIBLE);
             setViewsInvisible();
         }
     }
@@ -255,16 +250,12 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
     @Override
-    public void onClick(View v) {
-        mListener.pressInitialButtonAction();
-    }
-    @Override
     public void onResume() {
         super.onResume();
         sendAnalyticName();
     }
     private void sendAnalyticName(){
-        mTracker.setScreenName("StatsFragment");
+        mTracker.setScreenName(getString(R.string.stats_fragment_analytic_tag));
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 

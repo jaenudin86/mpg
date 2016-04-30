@@ -5,10 +5,9 @@ package com.radicaldroids.mileage.DataAccess;
  */
 public class DialogInterfaces {
     public interface DialogInterface{
-        void pressInitialButtonAction();
+        void fabAdd();
         void openEditVehicleEntryFragment();
         void dismissDialogFragment(String tag);
-//        void openVehicleListFragment();
         void updateSharedPrefsVehicles();
         void updateToolBarView();
     }

@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import com.radicaldroids.mileage.Constants;
 import com.radicaldroids.mileage.Events.RefreshHistoryListViewEvent;
 import com.radicaldroids.mileage.R;
 //import com.radicaldroids.mileage.R;
@@ -48,10 +49,9 @@ public class ToolBarCursorAdapter extends CursorAdapter implements AdapterView.O
         TextView vehicle = (TextView) view.findViewById(R.id.drop_text_view);
 //        Log.e(TAG, "bindView");
         if(cursor.getCount()>0) {
-            vehicle.setText(
-                    cursor.getString(cursor.getColumnIndex("key_year")) + " " +
-                            cursor.getString(cursor.getColumnIndex("key_make")) + " " +
-                            cursor.getString(cursor.getColumnIndex("key_model")));
+            vehicle.setText(cursor.getString(cursor.getColumnIndex(SQLiteHelper.KEY_COLUMN_YEAR)) + " " +
+                            cursor.getString(cursor.getColumnIndex(SQLiteHelper.KEY_COLUMN_MAKE)) + " " +
+                            cursor.getString(cursor.getColumnIndex(SQLiteHelper.KEY_COLUMN_MODEL)));
         }else{
             vehicle.setText("No Vehicle");
         }
@@ -65,19 +65,18 @@ public class ToolBarCursorAdapter extends CursorAdapter implements AdapterView.O
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String currentVehicleGUI=cursor.getString(cursor.getColumnIndex("key_year"))+" "+cursor.getString(cursor.getColumnIndex("key_make"))+" "+cursor.getString(cursor.getColumnIndex("key_model"));
-        String currentVehicle=cursor.getString(cursor.getColumnIndex("key_table"));
-        SharedPreferences sharedPrefs=context.getSharedPreferences("prefs",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor=sharedPrefs.edit();
-        editor.putString("currentVehicleGUI", currentVehicleGUI);
-        editor.putString("currentVehicle",currentVehicle).commit();
-        EventBus.getDefault().post(new RefreshHistoryListViewEvent(currentVehicle));
+        String currentVehicleGUI=cursor.getString(cursor.getColumnIndex(SQLiteHelper.KEY_COLUMN_YEAR))+" "
+                +cursor.getString(cursor.getColumnIndex(SQLiteHelper.KEY_COLUMN_MAKE))+" "
+                +cursor.getString(cursor.getColumnIndex(SQLiteHelper.KEY_COLUMN_MODEL));
 
-//        mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editPrefs=mSharedPrefs.edit();
-//        editPrefs.putString("currentVehicle",currentVehicle);
-//        editPrefs.putString("currentVehicleGUI", currentVehicleGUI);
-//        editPrefs.commit();
+        String currentVehicle=cursor.getString(cursor.getColumnIndex(SQLiteHelper.KEY_COLUMN_TABLE));
+
+        SharedPreferences sharedPrefs=context.getSharedPreferences(Constants.SHARED_PREFS,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPrefs.edit();
+        editor.putString(Constants.SHARED_PREFS_CURRENT_VEHICLE_GUI, currentVehicleGUI);
+        editor.putString(Constants.SHARED_PREFS_CURRENT_VEHICLE, currentVehicle).commit();
+
+        EventBus.getDefault().post(new RefreshHistoryListViewEvent(currentVehicle));
     }
 
     @Override

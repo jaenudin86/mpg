@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.InputType;
@@ -18,8 +20,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.radicaldroids.mileage.Constants;
+import com.radicaldroids.mileage.DataAccess.DataProvider;
 import com.radicaldroids.mileage.DataAccess.DialogInterfaces;
-import com.radicaldroids.mileage.DataAccess.MySQLiteHelper;
+import com.radicaldroids.mileage.DataAccess.SQLiteHelper;
 import com.radicaldroids.mileage.Events.RefreshHistoryListViewEvent;
 import com.radicaldroids.mileage.MyApplication;
 import com.radicaldroids.mileage.R;
@@ -41,11 +45,8 @@ import de.greenrobot.event.EventBus;
  */
 public class AddRecordDialogFrag extends DialogFragment implements View.OnClickListener{
 
-    // Use this instance of the interface to deliver action events
     DialogInterfaces.DialogInterface mListener;
-//    SQLDao mSqlDao = new DataDAOImplementation();
-//    SQLDao mMySQLiteHelper;
-    private MySQLiteHelper dbHelper;
+    private SQLiteHelper dbHelper;
     private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
     private EditText dateView;
@@ -66,7 +67,7 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        dbHelper=MySQLiteHelper.getInstance(getActivity().getApplicationContext());
+        dbHelper= SQLiteHelper.getInstance(getActivity().getApplicationContext());
 
         LayoutInflater inflater=getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.add_record, null);
@@ -86,9 +87,9 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
         final EditText gallons = (EditText) view.findViewById(R.id.gallons);
         final EditText price = (EditText) view.findViewById(R.id.price);
 
-        SharedPreferences sharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        final SharedPreferences sharedPrefs=getActivity().getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
         final TextView vehicle = (TextView) view.findViewById(R.id.current_vehicle_add_record_frag);
-        vehicle.setText(sharedPrefs.getString("currentVehicleGUI", "car"));
+        vehicle.setText(sharedPrefs.getString(Constants.SHARED_PREFS_CURRENT_VEHICLE_GUI, "car"));
 
         dateView = (EditText) view.findViewById(R.id.date);
         dateView.setInputType(InputType.TYPE_NULL);
@@ -110,13 +111,16 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
                 DecimalFormat df3=new DecimalFormat("#.###");
                 DecimalFormat df2=new DecimalFormat("0.00");
 
-                dbHelper.addEntry(
-//                            Integer.parseInt(mileage.getText().toString()),
-                    (int) Math.round(Double.parseDouble(mileage.getText().toString())),
-                    Double.valueOf(df3.format(Double.parseDouble(gallons.getText().toString()))),
-                    Double.valueOf(df2.format(Double.parseDouble(price.getText().toString()))),
-                    convertDateFieldToInt(),
-                    WordUtils.capitalizeFully(location.getText().toString()));
+                ContentValues values=new ContentValues();
+
+                values.put(SQLiteHelper.COLUMN_ODOMETER,(int) Math.round(Double.parseDouble(mileage.getText().toString())));
+                values.put(SQLiteHelper.COLUMN_QUANTITY,Double.valueOf(df3.format(Double.parseDouble(gallons.getText().toString()))));
+                values.put(SQLiteHelper.COLUMN_PRICE,Double.valueOf(df2.format(Double.parseDouble(price.getText().toString()))));
+                values.put(SQLiteHelper.COLUMN_DATE,convertDateFieldToInt());
+                values.put(SQLiteHelper.COLUMN_LOCATION,WordUtils.capitalizeFully(location.getText().toString()));
+
+                getActivity().getContentResolver().insert(Uri.parse(DataProvider.BASE_CONTENT_URI +"/fillup"),values);
+
 //                        mListener.onDialogAddEntryDismiss();  //close dialog from Activity
                 mListener.dismissDialogFragment(getTag());
                 EventBus.getDefault().postSticky(new RefreshHistoryListViewEvent("refreshing"));
@@ -183,7 +187,7 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
         sendAnalyticName();
     }
     private void sendAnalyticName(){
-        mTracker.setScreenName("AddRecordDialogFragment");
+        mTracker.setScreenName(getString(R.string.add_record_analytic_tag));
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 

@@ -9,7 +9,6 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.tagmanager.ContainerHolder;
 import com.google.android.gms.tagmanager.TagManager;
 
-
 /**
  * Created by Andrew on 4/26/2016.
  */

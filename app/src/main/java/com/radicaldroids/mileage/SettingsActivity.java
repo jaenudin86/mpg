@@ -15,11 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.radicaldroids.mileage.DataAccess.MySQLiteHelper;
+import com.radicaldroids.mileage.DataAccess.DataProvider;
+import com.radicaldroids.mileage.DataAccess.SQLiteHelper;
 import com.radicaldroids.mileage.DataAccess.SettingInterfaces;
 import com.radicaldroids.mileage.Fragments.AddVehicleFragment;
 import com.radicaldroids.mileage.Fragments.VehicleListFragment;
@@ -45,18 +44,12 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//        Switch length=(Switch) findViewById(R.id.switch_distance);
-//        Switch quantity=(Switch) findViewById(R.id.switch_quantity);
         Button addVehicle = (Button) findViewById(R.id.add_vehicle);
         Button deleteVehicle=(Button) findViewById(R.id.delete_button);
 
-//        length.setOnClickListener(this);
-//        quantity.setOnClickListener(this);
         addVehicle.setOnClickListener(this);
         deleteVehicle.setOnClickListener(this);
         mGarage=(TextView) findViewById(R.id.garage_textview);
-
-//        getAllSharedPrefs();  <= log all shared prefs
 
         getSupportLoaderManager().initLoader(0, null, this);
     }
@@ -98,9 +91,6 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         if (id==R.id.delete_button){
             openVehicleListFragment();
         }
-//        if(id==R.id.switch_distance||id==R.id.switch_quantity){
-//            Toast.makeText(this,R.string.future_length_quanity,Toast.LENGTH_SHORT).show();
-//        }
     }
 
     public void openVehicleListFragment() {
@@ -128,7 +118,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         CursorLoader CL=null;
-        CL = new CursorLoader(this, Uri.parse("content://com.radicaldroids.mileage/key_table"), null, null, null, null);
+        CL = new CursorLoader(this, Uri.parse(DataProvider.BASE_CONTENT_URI +"/key_table"), null, null, null, null);
         return CL;
     }
 
@@ -138,19 +128,18 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         if(data!=null&&data.getCount()>0) {
             data.moveToFirst();
             do {
-                vehicles += "<b>" + (data.getString(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_YEAR)) + " " +
-                        (data.getString(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_MAKE))) + " " +
-                        (data.getString(data.getColumnIndex(MySQLiteHelper.KEY_COLUMN_MODEL))) + "<br>");
+                vehicles += "<b>" + (data.getString(data.getColumnIndex(SQLiteHelper.KEY_COLUMN_YEAR)) + " " +
+                        (data.getString(data.getColumnIndex(SQLiteHelper.KEY_COLUMN_MAKE))) + " " +
+                        (data.getString(data.getColumnIndex(SQLiteHelper.KEY_COLUMN_MODEL))) + "<br>");
 
             } while (data.moveToNext());
             mGarage.setText(Html.fromHtml(vehicles));
         }else{
-            mGarage.setText("no vehicles created");
+            mGarage.setText(R.string.no_vehicles_created);
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
     }
 }

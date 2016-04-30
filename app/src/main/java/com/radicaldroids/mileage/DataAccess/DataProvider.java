@@ -3,11 +3,16 @@ package com.radicaldroids.mileage.DataAccess;
 import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.support.annotation.Nullable;
+
+import com.radicaldroids.mileage.Constants;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,96 +21,97 @@ import java.io.FileNotFoundException;
  * Created by Andrew on 11/6/2015.
  */
 public class DataProvider extends ContentProvider {
-    public static final String AUTHORITY="content://com.radicaldroids.mileage";
-    public static final Uri CONTENT_URI=Uri.parse(AUTHORITY);
+    public static final String BASE_CONTENT_URI ="content://com.radicaldroids.mileage";
+    public static final String AUTHORITY ="com.radicaldroids.mileage";
     private ContentResolver contentResolver;
-    MySQLiteHelper mDBHelper;
-//    SQLiteDatabase mSqliteDB;
-    SQLDao mSQLDao;
+    SQLiteHelper mDBHelper;
     String TAG="DataProvider class";
 
     private static UriMatcher sUriMatcher=new UriMatcher(UriMatcher.NO_MATCH);
     static {
-        sUriMatcher.addURI("com.radicaldroids.mileage","key_table", 1);
-        sUriMatcher.addURI("com.radicaldroids.mileage","delete_vehicle", 10);
-        sUriMatcher.addURI("com.radicaldroids.mileage","vehicle", 3);
-        sUriMatcher.addURI("com.radicaldroids.mileage","mpg_data", 4);
-        sUriMatcher.addURI("com.radicaldroids.mileage","sum_gals", 5);
-        sUriMatcher.addURI("com.radicaldroids.mileage","spreadsheet.xls",20);
+        sUriMatcher.addURI(AUTHORITY,"key_table", 1);
+        sUriMatcher.addURI(AUTHORITY,"delete_vehicle", 10);
+        sUriMatcher.addURI(AUTHORITY,"delete_entry", 11);
+        sUriMatcher.addURI(AUTHORITY,"vehicle", 3);
+        sUriMatcher.addURI(AUTHORITY,"mpg_data", 4);
+        sUriMatcher.addURI(AUTHORITY,"sum_gals", 5);
+        sUriMatcher.addURI(AUTHORITY,"current_vehicle", 6);
+        sUriMatcher.addURI(AUTHORITY,"fillup", 7);
+        sUriMatcher.addURI(AUTHORITY,"spreadsheet.xls",20);
     }
 
     @Override
     public boolean onCreate() {
         contentResolver=getContext().getContentResolver();
-        mDBHelper = new MySQLiteHelper(getContext());
+        mDBHelper = new SQLiteHelper(getContext());
         return true;
+    }
+
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        Cursor cursor=null;
+        SQLiteHelper helper=new SQLiteHelper(getContext());
+        final SQLiteDatabase db=helper.getWritableDatabase();
+
+        SharedPreferences sharedPrefs=getContext().getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
+        String currentVehicle= sharedPrefs.getString(Constants.SHARED_PREFS_CURRENT_VEHICLE,"null");
+
+        switch(sUriMatcher.match(uri)){
+            case 1:
+                cursor=db.rawQuery("SELECT * FROM "+SQLiteHelper.KEY_TABLE_NAME,null);
+                break;
+
+            case 3:
+                if(selection!=null) {
+                    try {
+                        cursor = db.rawQuery("SELECT * FROM " + selection + " ORDER BY " + SQLiteHelper.COLUMN_DATE + " DESC", null);
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
+                break;
+
+            case 4:
+                if(currentVehicle.compareToIgnoreCase("null")!=0){
+                    try{
+                        cursor=db.query(currentVehicle,new String[]{SQLiteHelper.COLUMN_MPG},null,null,null,null, SQLiteHelper.COLUMN_DATE+" DESC");
+                    }catch (Exception e){
+                    }
+                }else{
+                    cursor=null;
+                }
+                break;
+
+            case 5:
+                db.rawQuery("SELECT SUM (" + SQLiteHelper.COLUMN_QUANTITY + ") FROM " + currentVehicle, null);
+                break;
+
+            case 6:
+                if(currentVehicle.compareToIgnoreCase("null")!=0){
+                    try {
+                        cursor = db.rawQuery("SELECT * FROM " + currentVehicle + " ORDER BY " + SQLiteHelper.COLUMN_DATE + " DESC", null);
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            default:
+        }
+        return cursor;
     }
 
     @Nullable
     @Override
-    /**
-     * 1. A Uri representing the collection or instance being queried
-     2. A String array representing the list of properties that should be returned
-     3. A String representing what amounts to a SQL WHERE clause, constraining
-     which instances should be considered for the query results
-     4. A String array representing values to “pour into” the WHERE clause, replacing
-     any ? found there
-     5. A String representing what amounts to a SQL ORDER BY clause
-     */
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        Cursor c=null;
-        mDBHelper=MySQLiteHelper.getInstance(getContext());
-        switch(sUriMatcher.match(uri)){
-            case 1:
-                c=mDBHelper.getAllDataFromKeyTable();
-                break;
-            case 2:
-                break;
-            case 3:
-                c=mDBHelper.getAllData(selection);
-                break;
-            case 4:
-                c=mDBHelper.getMpgColumn();
-                break;
-            case 5:
-                c=mDBHelper.getSumGallons();
-                break;
-            default:
-        }
-
-//        mDBHelper=MySQLiteHelper.getInstance(getContext());
-//        Cursor c=mSQLDao.getAllData();
-        return c;
-    }
-
-        @Nullable
-    @Override
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
 
-//        Log.e(TAG,"ContentProvider openFile method called with uri: '" + uri + "'." + uri.getLastPathSegment());
-
-        // Check incoming Uri against the matcher
         switch (sUriMatcher.match(uri)) {
-            // If it returns 1 - then it matches the Uri defined in onCreate
             case 20:
-                // The desired file name is specified by the last segment of the
-                // path
-                // E.g.
-                // 'content://com.stephendnicholas.gmailattach.provider/Test.txt'
-                // Take this and build the path to the file
-                String fileLocation = getContext().getCacheDir() +File.separator+"mpgxls.xls";
-//                Log.e(TAG,"ContentProvider openFile method file location: "+fileLocation);
+                String fileLocation = getContext().getCacheDir()+File.separator+"mpgxls.xls";
 
-                // Create & return a ParcelFileDescriptor pointing to the file
-                // Note: I don't care what mode they ask for - they're only getting
-                // read only
                 ParcelFileDescriptor pfd = ParcelFileDescriptor.open(new File(
                         fileLocation), ParcelFileDescriptor.MODE_READ_ONLY);
                 return pfd;
 
-            // Otherwise unrecognised Uri
             default:
-//                Log.e(TAG, "Unsupported uri: '" + uri + "'.");
                 throw new FileNotFoundException("Unsupported uri: "
                         + uri.toString());
         }
@@ -124,22 +130,43 @@ public class DataProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-//        long id=mSqliteDB.insertWithOnConflict(table,null,values,SQLiteDatabase.CONFLICT_IGNORE)
-//        if(id!=-1){
-//            return Uri.withAppendedPath(uri,Long.toString(id));
-//        }else{
-            return uri;
-//        }
+        SharedPreferences sharedPrefs=getContext().getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
+        String currentVehicle= sharedPrefs.getString(Constants.SHARED_PREFS_CURRENT_VEHICLE,"null");
+
+        SQLiteHelper helper=new SQLiteHelper(getContext());
+        final SQLiteDatabase db=helper.getWritableDatabase();
+        db.insert(currentVehicle,null,values);
+
+        return uri;
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
+
+        SQLiteHelper helper=new SQLiteHelper(getContext());
+        final SQLiteDatabase db=helper.getWritableDatabase();
+        int rowsDeleted=0;
         switch(sUriMatcher.match(uri)){
-            case 10:
-                mDBHelper.deleteVehicle(selection);
+
+            case 10:    //delete vehicle
+                String[] row= new String[]{selection};
+                //delete vehicle from key table
+                rowsDeleted=db.delete(SQLiteHelper.KEY_TABLE_NAME,SQLiteHelper.KEY_COLUMN_TABLE+" = ?",row);
+                //drop the table for the selected vehicle
+                db.execSQL("DROP TABLE IF EXISTS "+selection);
+                break;
+
+            case 11:    //delete single entry
+                SharedPreferences sharedPrefs=getContext().getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
+                String currentVehicle= sharedPrefs.getString(Constants.SHARED_PREFS_CURRENT_VEHICLE,"null");
+
+                rowsDeleted= db.delete(currentVehicle,"_id = ?", new String[]{selection});
                 break;
         }
-        return 0;
+        if (rowsDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsDeleted;
     }
 
     @Override

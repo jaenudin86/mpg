@@ -1,9 +1,8 @@
 package com.radicaldroids.mileage.Fragments;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,15 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.radicaldroids.mileage.DataAccess.DataProvider;
 import com.radicaldroids.mileage.DataAccess.DialogInterfaces;
 import com.radicaldroids.mileage.DataAccess.HistoryCursorAdapter;
-import com.radicaldroids.mileage.DataAccess.MySQLiteHelper;
 import com.radicaldroids.mileage.Events.EditHistoryEvent;
 import com.radicaldroids.mileage.MyApplication;
 import com.radicaldroids.mileage.R;
@@ -30,19 +28,13 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by Andrew on 10/14/2015.
  */
-public class HistoryFragment extends Fragment implements View.OnClickListener{
+public class HistoryFragment extends Fragment {
 
-    private MySQLiteHelper mDBHelper;
     private ListView mListView;
-    private TextView header;
     private DialogInterfaces.DialogInterface mListener;
     public static HistoryCursorAdapter mHistoryCursorAdapter;
-//    private Button mEmptyButton;
     private TextView mInitMessage;
     private Tracker mTracker;
-
-    public HistoryFragment(){
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,30 +48,19 @@ public class HistoryFragment extends Fragment implements View.OnClickListener{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mDBHelper=MySQLiteHelper.getInstance(getActivity().getApplicationContext());
         View view = inflater.inflate(R.layout.all_data_listview_fragment, container, false);
-//        mEmptyButton = (Button) view.findViewById(R.id.empty_history_button);
         mInitMessage=(TextView) view.findViewById(R.id.init_message);
-//        mEmptyButton.setOnClickListener(this);
         mListView = (ListView) view.findViewById(R.id.listview);
 
-        SharedPreferences mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-
-        mDBHelper = MySQLiteHelper.getInstance(getActivity().getApplicationContext());
-        final Cursor cursor=mDBHelper.getAllData();
+        final Cursor cursor = getActivity().getContentResolver().query(Uri.parse(DataProvider.BASE_CONTENT_URI +"/current_vehicle"),null,null,null,null);
 
         if(cursor==null){
-//            mEmptyButton.setText(R.string.get_started);
-//            mEmptyButton.setVisibility(View.VISIBLE);
             mInitMessage.setText(R.string.init_message_no_vehicles);
             mInitMessage.setVisibility(View.VISIBLE);
         }else if (cursor.getCount()<1){
-//            mEmptyButton.setText(R.string.add_record_title);
-//            mEmptyButton.setVisibility(View.VISIBLE);
             mInitMessage.setText(R.string.init_message_no_data);
             mInitMessage.setVisibility(View.VISIBLE);
         }else{
-//            mEmptyButton.setVisibility(View.GONE);
             mInitMessage.setVisibility(View.GONE);
         }
 
@@ -88,9 +69,9 @@ public class HistoryFragment extends Fragment implements View.OnClickListener{
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            Cursor c = mDBHelper.getAllData();
+            final Cursor cursor = getActivity().getContentResolver().query(Uri.parse(DataProvider.BASE_CONTENT_URI +"/current_vehicle"),null,null,null,null);
             mListener.openEditVehicleEntryFragment();
-            EventBus.getDefault().postSticky(new EditHistoryEvent(c, position, id));
+            EventBus.getDefault().postSticky(new EditHistoryEvent(cursor, position, id));
 
 //                Log.e("long click", "long clicked: " + view + ", " + position + ", " + id);
             return true;
@@ -102,23 +83,17 @@ public class HistoryFragment extends Fragment implements View.OnClickListener{
     }
 
     public void onEvent(RefreshHistoryListViewEvent event){
-        mDBHelper = MySQLiteHelper.getInstance(getActivity().getApplicationContext());
-        Cursor cursor=mDBHelper.getAllData();
+        final Cursor cursor = getActivity().getContentResolver().query(Uri.parse(DataProvider.BASE_CONTENT_URI +"/current_vehicle"),null,null,null,null);
         mHistoryCursorAdapter.changeCursor(cursor);
         mHistoryCursorAdapter.notifyDataSetChanged();
 
         if(cursor==null){
-//            mEmptyButton.setText(R.string.get_started);
-//            mEmptyButton.setVisibility(View.VISIBLE);
             mInitMessage.setText(R.string.init_message_no_vehicles);
             mInitMessage.setVisibility(View.VISIBLE);
         }else if (cursor.getCount()<1){
-//            mEmptyButton.setText(R.string.add_record_title);
-//            mEmptyButton.setVisibility(View.VISIBLE);
             mInitMessage.setText(R.string.init_message_no_data);
             mInitMessage.setVisibility(View.VISIBLE);
         }else{
-//            mEmptyButton.setVisibility(View.GONE);
             mInitMessage.setVisibility(View.GONE);
         }
     }
@@ -155,12 +130,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener{
         sendAnalyticName();
     }
     private void sendAnalyticName(){
-        mTracker.setScreenName("HistoryFragment");
+        mTracker.setScreenName(getString(R.string.history_fragment_analytic_tag));
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-    }
-
-    @Override
-    public void onClick(View v) {
-        mListener.pressInitialButtonAction();
     }
 }

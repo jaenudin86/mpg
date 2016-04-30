@@ -47,7 +47,6 @@
     <string name="reasonable_year">Please enter a reasonable car year</string>
     <string name="invalid_make_or_type">Invalid vehicle make or type</string>
 
-
 <!--edit vehicle-->
     <string name="add_edit_vehicles">Add/Edit Vehicles</string>
     <string name="delete_record">Delete Record</string>
@@ -63,14 +62,13 @@
     <string name="alert_dialog_delete_vehicle_title">Delete Vehicle</string>
     <string name="delete_flag">Delete??</string>
 
-    <string-array name="default_vehicle_list">
-        <item>please add a vehicle</item>
-    </string-array>
+    <!--<string-array name="default_vehicle_list">-->
+        <!--<item>please add a vehicle</item>-->
+    <!--</string-array>-->
 
 <!--graph-->
     <string name="need_more_data1">Please press "Add Record" to get started!</string>
     <string name="need_more_data2">Need more entries to create a graph for this vehicle</string>
-
 
 <!-- backpress toast-->
     <string name="backpress">Press back again to exit</string>
@@ -83,10 +81,23 @@
     <string name="delete">Delete a vehicle from your garage</string>
     <string name="add_button">Add Vehicle</string>
     <string name="delete_button">Delete Vehicle(s)</string>
+    <string name="no_vehicles_created">no vehicles created</string>
 
 <!--email alert-->
+    <string name="export_data_title">Export Data</string>
     <string name="alert_email_to_yourself">This will create a spreadsheet of all your collected data.</string>
     <!--<string name="alert_email_to_yourself">This will create a spreadsheet of all your collected data. You can send it by email to yourself in the next screens! An email app must be installed on this device for this function to work properly.</string>-->
     <string name="alert_send">Send</string>
     <string name="alert_cancel">Cancel</string>
+    <string name="not_enough_memory">Not enough memory to export</string>
+
+<!--analytics-->
+    <string name="add_record_analytic_tag">AddRecordDialogFragment</string>
+    <string name="vehicle_added_analytic_tag">Vehicle Added</string>
+    <string name="edit_history_analytic_tag">EditHistoryFragment</string>
+    <string name="graph_fragment_analytic_tag">GraphFragment</string>
+    <string name="history_fragment_analytic_tag">HistoryFragment</string>
+    <string name="stats_fragment_analytic_tag">StatsFragment</string>
+    <string name="deleted_vehicle_analytic_tag">Deleted Vehicle</string>
+
 </resources>

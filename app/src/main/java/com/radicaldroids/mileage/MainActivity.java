@@ -1,13 +1,14 @@
 package com.radicaldroids.mileage;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -30,12 +31,9 @@ import android.view.ViewGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.tagmanager.ContainerHolder;
-import com.google.android.gms.tagmanager.TagManager;
+import com.radicaldroids.mileage.DataAccess.DataProvider;
 import com.radicaldroids.mileage.DataAccess.DialogInterfaces;
-import com.radicaldroids.mileage.DataAccess.MySQLiteHelper;
+import com.radicaldroids.mileage.DataAccess.SQLiteHelper;
 import com.radicaldroids.mileage.DataAccess.ToolBarCursorAdapter;
 import com.radicaldroids.mileage.Events.RefreshVehiclesEvent;
 import com.radicaldroids.mileage.Fragments.AddVehicleFragment;
@@ -48,13 +46,12 @@ import com.radicaldroids.mileage.Fragments.HistoryFragment;
 import com.radicaldroids.mileage.Fragments.StatsFragment;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 import de.greenrobot.event.EventBus;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogInterfaces.DialogInterface, AddVehicleFragment.AddVehicle {
     private SharedPreferences mSharedPrefs;
-    private MySQLiteHelper mDBHelper;
+    private SQLiteHelper mDBHelper;
     private DialogFragment dialogFragment;
     public static ToolBarCursorAdapter toolBarAdapter;
     FragmentManager fragmentManager = getSupportFragmentManager();
@@ -62,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private boolean mIsLargeLayout;
     private AddVehicleFragment mAddVehicleFragment;
     DrawerLayout drawer;
-    TagManager mTagManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,26 +66,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         ((MyApplication)getApplication()).startTracking();
-//        loadGTMContainer();
-        
 
         mIsLargeLayout=getResources().getBoolean(R.bool.large_layout);
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        toolbar.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.e("clicked??", "clicked maybe yes??");
-//                toolbar.setTitle("clicked");
-//            }
-//        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pressInitialButtonAction();
+                fabAdd();
             }
         });
 
@@ -113,10 +100,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         toolbar.addView(spinnerContainer, lp);
 
-        mDBHelper = MySQLiteHelper.getInstance(getApplicationContext());
-        final Cursor c = mDBHelper.getAllDataFromKeyTable();
+        mDBHelper = SQLiteHelper.getInstance(getApplicationContext());
+        final Cursor cursor=getContentResolver().query(Uri.parse(DataProvider.BASE_CONTENT_URI +"/key_table"),null,null,null,null);
 
-        toolBarAdapter = new ToolBarCursorAdapter(getApplicationContext(), c, 0);
+        toolBarAdapter = new ToolBarCursorAdapter(getApplicationContext(), cursor, 0);
         Spinner spinner = (Spinner) spinnerContainer.findViewById(R.id.toolbar_spinner);
         spinner.setAdapter(toolBarAdapter);
         spinner.setOnItemSelectedListener(toolBarAdapter);
@@ -127,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        }
     }
     public void openDrawer(){
-        mSharedPrefs = getSharedPreferences("prefs", 0);
+        mSharedPrefs = getSharedPreferences(Constants.SHARED_PREFS, 0);
         String veh=mSharedPrefs.getString("currentVehicle",null);
         if(veh==null) {
             new Handler().postDelayed(new Runnable() {
@@ -172,21 +159,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            }
 //        }, 2, TimeUnit.SECONDS);
 //    }
-//    public void selectStartupFragment(){
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction ft = fragmentManager.beginTransaction();
-//
-//        StatsFragment overallStatsFragment = StatsFragment.newInstance();
-//        mSharedPrefs = getSharedPreferences("prefs", 0);
-//        if(mSharedPrefs.getString("currentVehicle",null)==null) {
-//            StartupFragment startupFragment = new StartupFragment();
-//            ft.add(R.id.fragment_holder, startupFragment);
-//        }else {
-//            ft.add(R.id.fragment_holder, overallStatsFragment);
-//            ft.addToBackStack("stats");
-//        }
-//        ft.commit();
-//    }
 
     @Override
     protected void onPause() {
@@ -196,17 +168,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void updateSharedPrefsVehicles() {
-        mDBHelper = MySQLiteHelper.getInstance(getApplicationContext());
-        Cursor cursor = mDBHelper.getAllDataFromKeyTable();
+        final Cursor cursor=getContentResolver().query(Uri.parse(DataProvider.BASE_CONTENT_URI +"/key_table"),null,null,null,null);
 
-        mSharedPrefs = getSharedPreferences("prefs", 0);
+        mSharedPrefs = getSharedPreferences(Constants.SHARED_PREFS, 0);
         SharedPreferences.Editor editor = mSharedPrefs.edit();
 
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             ArrayList<String> vehicles = new ArrayList<>();
             do {
-                vehicles.add(cursor.getString(cursor.getColumnIndex(MySQLiteHelper.KEY_COLUMN_TABLE)));
+                vehicles.add(cursor.getString(cursor.getColumnIndex(SQLiteHelper.KEY_COLUMN_TABLE)));
             } while (cursor.moveToNext());
             String[] myStringList = vehicles.toArray(new String[vehicles.size()]);
             editor.putString("vehicle_list", TextUtils.join("‚‗‚", myStringList)).apply();
@@ -247,7 +218,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
@@ -273,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_add_record) {
-            pressInitialButtonAction();
+            fabAdd();
 
         } else if (id == R.id.nav_history_list) {
             HistoryFragment allDataListViewFragment = new HistoryFragment();
@@ -283,7 +253,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             EventBus.getDefault().post(new RefreshHistoryListViewEvent("hello test from Activity"));
 
         } else if (id == R.id.nav_stats) {
-//            if(!overallStatsFragment.isAdded()) {
             StatsFragment overallStatsFragment = StatsFragment.newInstance();
             ft.replace(R.id.fragment_holder, overallStatsFragment).commit();
 
@@ -292,35 +261,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.replace(R.id.fragment_holder, graphFrag).commit();
 
         } else if (id == R.id.nav_settings) {
-//            SettingsFragment settingsFragment = SettingsFragment.newInstance();
-//            ft.replace(R.id.fragment_holder, settingsFragment);
+            Intent intent=new Intent(this,SettingsActivity.class);
+            startActivity(intent);
 
-//            if(mIsLargeLayout){
-//                settingsFragment.show(fragmentManager,"dialog");
-//            }else {
-//                Log.e("main","small screen layout");
-                Intent intent=new Intent(this,SettingsActivity.class);
-                startActivity(intent);
-//                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-////            findViewById(android.R.id.content);
-//                popBackStack();
-//                ft.add(android.R.id.content, settingsFragment);
-////                ft.addToBackStack(null)
-//                ft.commit();
-//            }
-
-//            ft.addToBackStack(null);
-//            ft.commit();
         } else if (id == R.id.nav_send) {
-//            ExportDatabaseAsyncTask exportDb=new ExportDatabaseAsyncTask(getApplicationContext());
-//            exportDb.execute();
-
-//            Intent emailIntent=new Intent(MainActivity.this,SendEmailActivity.class);
-//            emailIntent.putExtra("attachent","testStringAttachment");
-//            MainActivity.this.startActivity(emailIntent);
-
             new AlertDialog.Builder(this)
-                .setTitle("Export Data")
+                .setTitle(R.string.export_data_title)
                 .setMessage(R.string.alert_email_to_yourself)
                 .setPositiveButton(R.string.alert_send, new DialogInterface.OnClickListener() {
                     @Override
@@ -336,8 +282,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     public void onClick(DialogInterface dialog, int which) {
                     }
                 })
-                    .setIcon(R.drawable.taxi)
-                    .show();
+                .setIcon(R.drawable.taxi)
+                .show();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -345,8 +291,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void pressInitialButtonAction() {
-        if (mDBHelper.keyTableHasData() == false) {
+    public void fabAdd() {
+        SharedPreferences sharedPrefs=getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
+        String currentVehicle= sharedPrefs.getString(Constants.SHARED_PREFS_CURRENT_VEHICLE, null);
+
+        if(currentVehicle==null){
             onAddVehicle();
         } else {
             android.support.v4.app.FragmentTransaction ftDialog = getSupportFragmentManager().beginTransaction();
@@ -385,8 +334,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void updateToolBarView() {
-        mDBHelper = MySQLiteHelper.getInstance(getApplicationContext());
-        Cursor cursor = mDBHelper.getAllDataFromKeyTable();
+        final Cursor cursor=getContentResolver().query(Uri.parse(DataProvider.BASE_CONTENT_URI +"/key_table"),null,null,null,null);
         toolBarAdapter.changeCursor(cursor);
         toolBarAdapter.notifyDataSetChanged();
         updateSharedPrefsVehicles();
@@ -396,7 +344,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void openEditVehicleEntryFragment() {
         EditHistoryFragment editHistoryLineItem = new EditHistoryFragment();
         editHistoryLineItem.show(getSupportFragmentManager(), "editLineItem");
-//        editHistoryLineItem.setFieldsWithData();
     }
 
     @Override

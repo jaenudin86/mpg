@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -14,13 +15,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 //import com.radicaldroids.mileagetracker.DataAccess.DialogInterfaces;
-//import com.radicaldroids.mileagetracker.DataAccess.MySQLiteHelper;
+//import com.radicaldroids.mileagetracker.DataAccess.SQLiteHelper;
 //import com.radicaldroids.mileagetracker.DataAccess.SettingInterfaces;
 //import com.radicaldroids.mileagetracker.Events.RefreshVehiclesEvent;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.radicaldroids.mileage.DataAccess.MySQLiteHelper;
+import com.radicaldroids.mileage.Constants;
+import com.radicaldroids.mileage.DataAccess.SQLiteHelper;
 import com.radicaldroids.mileage.Events.RefreshVehiclesEvent;
 import com.radicaldroids.mileage.MyApplication;
 import com.radicaldroids.mileage.R;
@@ -42,7 +44,8 @@ public class AddVehicleFragment extends DialogFragment {
 
     AddVehicleFragment.AddVehicle mListener;
     SharedPreferences mSharedPrefs;
-    private MySQLiteHelper dbHelper;
+    private SQLiteHelper dbHelper;
+    private String TAG="AddVehicleFragment";
     private Tracker mTracker;
 
     public static AddVehicleFragment newInstance() {
@@ -51,7 +54,7 @@ public class AddVehicleFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        dbHelper = MySQLiteHelper.getInstance(getActivity().getApplicationContext());
+        dbHelper = SQLiteHelper.getInstance(getActivity().getApplicationContext());
 
         MyApplication application=(MyApplication) getActivity().getApplication();
         mTracker=application.getTracker();
@@ -67,6 +70,7 @@ public class AddVehicleFragment extends DialogFragment {
             public void onClick(View v) {
             try {
                 int year=Integer.parseInt(addYear.getText().toString());
+                //verify that car's year is reasonable, can be entered as 4 digit or 2 digit year
                 if(year>1880&&year<2019||year<100){
                     String make=WordUtils.capitalizeFully(addMake.getText().toString());
                     String model=WordUtils.capitalizeFully(addModel.getText().toString());
@@ -80,13 +84,14 @@ public class AddVehicleFragment extends DialogFragment {
 
                         String currentVehicleGUI=year+" "+make+" "+model;
 
-                        mSharedPrefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                        mSharedPrefs=getActivity().getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editPrefs=mSharedPrefs.edit();
-                        editPrefs.putString("currentVehicle", currentVehicle);
-                        editPrefs.putString("currentVehicleGUI", currentVehicleGUI);
+                        editPrefs.putString(Constants.SHARED_PREFS_CURRENT_VEHICLE, currentVehicle);
+                        editPrefs.putString(Constants.SHARED_PREFS_CURRENT_VEHICLE_GUI, currentVehicleGUI);
                         editPrefs.commit();
                         try {
                             String cv=currentVehicle;
+                            Log.e(TAG,"year: "+year+" make: "+make+" model: "+model+" currentVehicle: "+cv);
                             dbHelper.createVehicleTable(year, make, model, cv);
                             mListener.onAddVehicleDismiss();
                             EventBus.getDefault().postSticky(new RefreshVehiclesEvent());
@@ -116,7 +121,7 @@ public class AddVehicleFragment extends DialogFragment {
     }
 
     private void sendAnalytic(){
-        mTracker.setScreenName("Vehicle Added");
+        mTracker.setScreenName(getString(R.string.vehicle_added_analytic_tag));
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
     @Override
