@@ -105,4 +105,8 @@
     <string name="stats_fragment_analytic_tag">StatsFragment</string>
     <string name="deleted_vehicle_analytic_tag">Deleted Vehicle</string>
 
+<!--widget-->
+    <string name="widget_screen_name">MPG Simple Stats</string>
+
+
 </resources>

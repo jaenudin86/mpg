@@ -81,6 +81,5 @@ public class ToolBarCursorAdapter extends CursorAdapter implements AdapterView.O
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
     }
 }

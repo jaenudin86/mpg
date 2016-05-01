@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,7 @@ import de.greenrobot.event.EventBus;
  */
 public class StatsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    private DialogInterfaces.DialogInterface mListener;
+//    private DialogInterfaces.DialogInterface mListener;
     private TextView mTitle;
     private TextView mMpgSinceLast;
     private TextView mMpgTotalView;
@@ -162,6 +163,7 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
             case 1:
                 SharedPreferences mSharedPrefs=getActivity().getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
                 String curVeh=mSharedPrefs.getString("currentVehicle",null);
+                Log.e("statsFrag","currentVehicle/last vehicle viewed?: "+curVeh);
                 if(curVeh!=null) {
                     CL = new CursorLoader(getActivity().getApplicationContext(), Uri.parse(DataProvider.BASE_CONTENT_URI +"/vehicle"), null, curVeh, null, null);
                 }
@@ -259,17 +261,17 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        // Verify that the host activity implements the callback interface
-        try {
-            // Instantiate the NoticeDialogListener so we can send events to the host
-            mListener = (DialogInterfaces.DialogInterface) activity;
-        } catch (ClassCastException e) {
-            // The activity doesn't implement the interface, throw exception
-            throw new ClassCastException(activity.toString()
-                    + " must implement NoticeDialogListener");
-        }
-    }
+//    @Override
+//    public void onAttach(Activity activity) {
+//        super.onAttach(activity);
+//        // Verify that the host activity implements the callback interface
+//        try {
+//            // Instantiate the NoticeDialogListener so we can send events to the host
+//            mListener = (DialogInterfaces.DialogInterface) activity;
+//        } catch (ClassCastException e) {
+//            // The activity doesn't implement the interface, throw exception
+//            throw new ClassCastException(activity.toString()
+//                    + " must implement NoticeDialogListener");
+//        }
+//    }
 }
