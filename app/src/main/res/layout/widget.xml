@@ -14,6 +14,7 @@
         android:padding="8dp">
 
         <ImageView
+            android:contentDescription="@string/widget_content_description"
             android:id="@+id/widget_icon"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -37,8 +38,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="sans-serif"
-                android:textAppearance="?android:textAppearanceLarge"
-                tools:text="29.58 MPG" />
+                android:textAppearance="?android:textAppearanceListItemSmall"
+                tools:text="@string/widget_mpg_placeholder"
+                android:maxLines="1"/>
 
             <TextView
                 android:id="@+id/miles_tracked"
@@ -47,7 +49,8 @@
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="sans-serif"
                 android:textAppearance="?android:textAppearanceSmall"
-                tools:text="1,852 miles tracked" />
+                tools:text="@string/widget_miles_tracked_placeholder"
+                android:maxLines="1"/>
         </LinearLayout>
     </RelativeLayout>
 </FrameLayout>

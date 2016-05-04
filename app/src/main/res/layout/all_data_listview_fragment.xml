@@ -4,34 +4,18 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!--android:layout_marginTop="20dp" >-->
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/all_data_listview_title"/>-->
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/listview"
         android:layout_marginLeft="12dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginRight="12dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
         android:layout_above="@+id/textView2">
-        <!--android:background="@color/extremelightgrey">-->
         </ListView>
-
-    <!--<Button-->
-        <!--style="@style/button_style"-->
-        <!--android:background="@drawable/custom_button"-->
-        <!--android:id="@+id/empty_history_button"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center"-->
-        <!--tools:text="@string/add_vehicle"-->
-        <!--android:visibility="visible"-->
-        <!--android:layout_centerVertical="true"-->
-        <!--android:layout_centerHorizontal="true" />-->
 
     <TextView
         android:id="@+id/init_message"

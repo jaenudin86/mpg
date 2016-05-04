@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -259,6 +260,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         } else if (id == R.id.nav_settings) {
             Intent intent=new Intent(this,SettingsActivity.class);
+//            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,)
             startActivity(intent);
 
         } else if (id == R.id.nav_send) {

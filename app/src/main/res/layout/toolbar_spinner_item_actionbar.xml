@@ -11,10 +11,11 @@
         android:drawablePadding="8dp"
         android:fontFamily="sans-serif"
         android:paddingLeft="16dp"
+        android:paddingStart="16dp"
         android:paddingRight="4dp"
+        android:paddingEnd="4dp"
         android:textColor="#ffffffff"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:textStyle="bold"/>
 
-    <!--android:drawableRight="@drawable/spinner_triangle"-->
 </LinearLayout>

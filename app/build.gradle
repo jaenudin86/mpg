@@ -13,9 +13,19 @@ android {
         versionCode 2
         versionName "1.2"
     }
+
+    signingConfigs {
+        release {
+            storeFile file('../keystore.jks')
+            storePassword "secret!"
+            keyAlias "mileage"
+            keyPassword "secret!"
+        }
+    }
     buildTypes {
         release {
-            minifyEnabled true
+            signingConfig signingConfigs.release
+            minifyEnabled false
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -35,6 +45,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
+    compile 'com.android.support:design:23.3.0'
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.google.android.gms:play-services-analytics:8.4.0'
     compile 'com.google.android.gms:play-services-ads:8.4.0'
@@ -43,6 +54,4 @@ dependencies {
     compile 'org.apache.poi:poi:3.12'
     compile 'org.apache.commons:commons-lang3:3.0'
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
-//    compile files('libs/opencsv-3.5.jar')
-//    compile 'com.google.android.gms:play-services:8.4.0'
 }

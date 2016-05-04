@@ -87,7 +87,7 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
 //        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity(), R.style.MyAlertDialogStyle);
 
         LayoutInflater inflater=getActivity().getLayoutInflater();
-        final View view = inflater.inflate(R.layout.edit_record_old_view, null);
+        final View view = inflater.inflate(R.layout.edit_record, null);
 
         mLocation = (EditText) view.findViewById(R.id.edit_station_location);
         mOdometer = (EditText) view.findViewById(R.id.edit_mileage);

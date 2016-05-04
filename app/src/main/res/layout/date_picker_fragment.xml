@@ -10,14 +10,14 @@
     tools:context=".MainActivity" >
 
     <EditText
-        android:id="@+id/etxt_fromdate"
+        android:id="@+id/date_picker_fromdate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight=".5"
         android:hint="@string/from_date" />
 
     <EditText
-        android:id="@+id/etxt_todate"
+        android:id="@+id/date_picker_todate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight=".5"

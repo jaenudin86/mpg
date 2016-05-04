@@ -2,8 +2,8 @@
 
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:initialLayout="@layout/simple_widget"
-    android:resizeMode="none"
+    android:initialLayout="@layout/widget"
+    android:resizeMode="horizontal"
     android:minHeight="@dimen/widget_height"
     android:minResizeHeight="@dimen/widget_min_resize_height"
     android:minResizeWidth="@dimen/widget_min_resize_width"

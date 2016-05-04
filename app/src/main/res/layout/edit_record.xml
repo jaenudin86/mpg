@@ -5,12 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/lightgray"
     android:orientation="vertical">
-    <!--android:background="@color/lightgray">-->
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Edit Record"
+        android:text="@string/edit_record"
         android:textColor="#fff"
         android:textSize="@dimen/dialog_header_text_size"
         android:gravity="center"
@@ -49,12 +48,12 @@
 
                 <TextView
                     android:textSize="24sp"
-                    android:text="Gas Station: " />
+                    android:text="@string/gas_station" />
                 <EditText
                     android:id="@+id/edit_station_location"
-                    android:hint="none"
+                    android:hint="@string/gas_station_hint"
                     android:ems="5"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:textColorHint="@color/verylightgrey"
                     android:background="@color/entryTextBoxColor"
                     android:textSize="@dimen/entry_text_size"
@@ -63,48 +62,38 @@
 
                 <TextView
                     android:textSize="24sp"
-                    android:text="Odometer: "/>
+                    android:text="@string/odometer"/>
 
                 <EditText
                     android:id="@+id/edit_mileage"
-                    android:hint="89045"
+                    android:hint="@string/odometer_hint"
                     android:ems="5"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:inputType="numberDecimal|numberSigned"
                     android:textSize="@dimen/entry_text_size"
                     android:background="@color/entryTextBoxColor"
                     android:layout_marginBottom="12dp"/>
-                <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textSize="24sp"-->
-                <!--android:text="mi"/>-->
+
                 <TextView
                     android:textSize="24sp"
-                    android:text="Gallons: "/>
+                    android:text="@string/gallons"/>
 
                 <EditText
                     android:id="@+id/edit_gallons"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:inputType="numberDecimal|numberSigned"
                     android:textSize="@dimen/entry_text_size"
                     android:ems="5"
                     android:background="@color/entryTextBoxColor"
                     android:layout_marginBottom="12dp"/>
 
-                <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textSize="24sp"-->
-                <!--android:text="gal"/>-->
-
                 <TextView
                     android:textSize="24sp"
-                    android:text="Price: "/>
+                    android:text="@string/price"/>
 
                 <EditText
                     android:id="@+id/edit_price"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:inputType="numberDecimal|numberSigned"
                     android:textSize="@dimen/entry_text_size"
                     android:background="@color/entryTextBoxColor"
@@ -113,18 +102,19 @@
 
                 <TextView
                     android:textSize="24sp"
-                    android:text="Date: "/>
+                    android:text="@string/date"/>
 
                 <EditText
                     android:id="@+id/edit_date"
                     android:inputType="date"
-                    android:hint="Jan-1-2016"
-                    android:gravity="left"
+                    android:hint="@string/date_hint"
+                    android:gravity="start"
                     android:layout_gravity="fill_horizontal"
                     android:textSize="@dimen/entry_text_size"
                     android:ems="5"
                     android:layout_marginBottom="12dp"
                     android:layout_marginRight="56dp"
+                    android:layout_marginEnd="56dp"
                     android:background="@color/entryTextBoxColor"/>
 
             </GridLayout>

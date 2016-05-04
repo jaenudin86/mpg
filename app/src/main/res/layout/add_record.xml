@@ -16,7 +16,8 @@
             android:gravity="center"
             android:background="@color/colorPrimary"
             android:paddingBottom="12dp"
-            android:paddingTop="12dp"/>
+            android:paddingTop="12dp"
+            android:contentDescription="@string/add_record_title"/>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -28,15 +29,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    tools:hint="vehicle text"
-                    android:layout_marginTop="8dp"
-                    android:id="@+id/current_vehicle_add_record_frag"
-                    android:textSize="20dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="8dp"
+                android:id="@+id/current_vehicle_add_record_frag"
+                android:textSize="20sp"/>
+
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,87 +53,92 @@
                     android:text="@string/gas_station" />
                 <EditText
                     android:id="@+id/station_location"
-                    android:hint="@string/gas_station_blank_name"
-                    android:gravity="left|center_vertical"
+                    android:hint="@string/gas_station_hint"
+                    android:gravity="start|center_vertical"
                     android:textColorHint="@color/verylightgrey"
                     android:textSize="@dimen/entry_text_size"
                     android:ems="5"
                     android:background="@color/entryTextBoxColor"
                     android:layout_marginBottom="@dimen/space_between_entry_fields"
-                    android:inputType="textCapWords"/>
+                    android:inputType="textCapWords"
+                    android:focusable="true"
+                    android:contentDescription="@string/gas_station"
+                    android:nextFocusDown="@+id/mileage"/>
 
                 <TextView
                     android:textSize="@dimen/add_record_text_size"
                     android:text="@string/odometer"/>
 
                 <EditText
-                    android:id="@+id/mileage"
-                    android:hint="@string/odometer_blank_text"
+                    android:id="@id/mileage"
+                    android:hint="@string/odometer_hint"
                     android:textColorHint="@color/verylightgrey"
                     android:ems="5"
-                    android:gravity="left|center_vertical"
+                    android:gravity="start|center_vertical"
                     android:inputType="numberDecimal|numberSigned"
                     android:textSize="@dimen/entry_text_size"
                     android:background="@color/entryTextBoxColor"
-                    android:layout_marginBottom="@dimen/space_between_entry_fields"/>
-                <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textSize="24sp"-->
-                <!--android:text="mi"/>-->
+                    android:layout_marginBottom="@dimen/space_between_entry_fields"
+                    android:contentDescription="@string/odometer_hint"
+                    android:focusable="true"
+                    android:nextFocusDown="@+id/gallons"/>
+
                 <TextView
                     android:textSize="@dimen/add_record_text_size"
-                    android:text="Gallons: "/>
+                    android:text="@string/gallons"/>
 
                 <EditText
-                    android:id="@+id/gallons"
-                    android:hint="quantity"
-                    android:gravity="left|center_vertical"
+                    android:id="@id/gallons"
+                    android:hint="@string/quantity_hint"
+                    android:gravity="start|center_vertical"
                     android:textColorHint="@color/verylightgrey"
                     android:inputType="numberDecimal|numberSigned"
                     android:textSize="@dimen/entry_text_size"
                     android:ems="5"
                     android:background="@color/entryTextBoxColor"
-                    android:layout_marginBottom="@dimen/space_between_entry_fields"/>
-
-                <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textSize="24sp"-->
-                <!--android:text="gal"/>-->
+                    android:layout_marginBottom="@dimen/space_between_entry_fields"
+                    android:contentDescription="@string/quantity_hint"
+                    android:focusable="true"
+                    android:nextFocusDown="@+id/price"/>
 
                 <TextView
                     android:textSize="@dimen/add_record_text_size"
                     android:text="@string/price"/>
 
                 <EditText
-                    android:id="@+id/price"
-                    android:gravity="left|center_vertical"
-                    android:hint="@string/price_blank_text"
+                    android:id="@id/price"
+                    android:gravity="start|center_vertical"
+                    android:hint="@string/price_hint"
                     android:textColorHint="@color/verylightgrey"
                     android:inputType="numberDecimal|numberSigned"
                     android:textSize="@dimen/entry_text_size"
                     android:ems="5"
                     android:background="@color/entryTextBoxColor"
-                    android:layout_marginBottom="@dimen/space_between_entry_fields"/>
+                    android:layout_marginBottom="@dimen/space_between_entry_fields"
+                    android:contentDescription="@string/price_hint"
+                    android:focusable="true"
+                    android:nextFocusDown="@+id/date"/>
 
                 <TextView
                     android:textSize="@dimen/add_record_text_size"
                     android:text="@string/date"/>
 
                 <EditText
-                    android:id="@+id/date"
+                    android:id="@id/date"
                     android:inputType="date"
-                    android:hint="@string/date_blank_text"
+                    android:hint="@string/date_hint"
                     android:textSize="@dimen/entry_text_size"
                     android:ems="5"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:layout_marginRight="56dp"
-                    android:background="@color/entryTextBoxColor"/>
+                    android:background="@color/entryTextBoxColor"
+                    android:contentDescription="@string/date"
+                    android:focusable="true"
+                    android:nextFocusDown="@+id/add_new_car_button"/>
             </GridLayout>
 
             <Button
-                android:id="@+id/add_new_car_button"
+                android:id="@id/add_new_car_button"
                 style="@style/button_style"
                 android:background="@drawable/custom_button"
                 android:textSize="@dimen/edit_record_button"
@@ -143,7 +149,9 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="12dp"
                 android:layout_gravity="center"
-                android:elevation="6dp"/>
+                android:elevation="6dp"
+                android:contentDescription="@string/add_record_button_description"
+                android:focusable="true"/>
             </LinearLayout>
         </ScrollView>
 </LinearLayout>

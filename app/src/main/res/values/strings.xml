@@ -20,21 +20,23 @@
     <string name="init_message_no_vehicles">There are no vehicles created. Click the button below to get started!</string>
     <string name="init_message_no_data">This vehicle needs data to create a record. Click the button below to create an entry!</string>
 
-    <!--<string name="get_started">Get Started</string>-->
 <!--add record-->
     <string name="add_record_title">Add Record</string>
     <string name="gas_station">Gas Station:</string>
-    <string name="gas_station_blank_name">none</string>
     <string name="odometer">Odometer:</string>
-    <string name="odometer_blank_text">odometer</string>
+    <string name="gallons">Gallons:</string>
     <string name="price">Price:</string>
-    <string name="price_blank_text">price</string>
     <string name="date">Date:</string>
-    <string name="date_blank_text">Jan-1-2016</string>
+    <string name="gas_station_hint">none</string>
+    <string name="odometer_hint">odometer</string>
+    <string name="quantity_hint">quantity</string>
+    <string name="price_hint">price</string>
+    <string name="date_hint">Jan-1-2016</string>
     <string name="wrong_number_format">Wrong Number Format</string>
+    <string name="add_record_button_description">submit record</string>
 
 <!--edit record-->
-    <string name="edit_record">Save Changes</string>
+    <string name="edit_record">Edit Record</string>
     <string name="alert_dialog_delete_record_message">This will delete this entry. Are you sure you want to continue?</string>
 
 <!--add vehicle-->
@@ -48,6 +50,8 @@
     <string name="reasonable_length">Make and model need to be 3 to 16 characters long</string>
     <string name="reasonable_year">Please enter a reasonable car year</string>
     <string name="invalid_make_or_type">Invalid vehicle make or type</string>
+    <string name="add_vehicle_button_description">add new vehicle button</string>
+
 
 <!--edit vehicle-->
     <string name="add_edit_vehicles">Add/Edit Vehicles</string>
@@ -63,10 +67,6 @@
     <string name="alert_dialog_delete_vehicle_message">This will delete all your data stored for this vehicle! Are you sure you want to continue?</string>
     <string name="alert_dialog_delete_vehicle_title">Delete Vehicle</string>
     <string name="delete_flag">Delete??</string>
-
-    <!--<string-array name="default_vehicle_list">-->
-        <!--<item>please add a vehicle</item>-->
-    <!--</string-array>-->
 
 <!--graph-->
     <string name="need_more_data1">Please press "Add Record" to get started!</string>
@@ -88,7 +88,6 @@
 <!--spreadsheet-->
     <string name="export_data_title">Export Data</string>
     <string name="alert_email_to_yourself">This will create a spreadsheet of all your collected data.</string>
-    <!--<string name="alert_email_to_yourself">This will create a spreadsheet of all your collected data. You can send it by email to yourself in the next screens! An email app must be installed on this device for this function to work properly.</string>-->
     <string name="alert_send">Send</string>
     <string name="alert_cancel">Cancel</string>
     <string name="not_enough_memory">Not enough memory to export</string>
@@ -107,6 +106,8 @@
 
 <!--widget-->
     <string name="widget_screen_name">MPG Simple Stats</string>
-
+    <string name="widget_mpg_placeholder">29.58 MPG</string>
+    <string name="widget_miles_tracked_placeholder">1,852 miles tracked</string>
+    <string name="widget_content_description">Mileage Tracker App Widget</string>
 
 </resources>
