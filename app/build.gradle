@@ -51,5 +51,5 @@ dependencies {
     compile 'com.android.support:design:23.3.0'
     compile 'org.apache.poi:poi:3.12'
     compile 'org.apache.commons:commons-lang3:3.0'
-    compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
+    compile 'com.github.PhilJay:MPAndroidChart:v2.2.4'
 }

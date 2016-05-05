@@ -40,7 +40,7 @@ import com.radicaldroids.mileage.Events.RefreshVehiclesEvent;
 import com.radicaldroids.mileage.Fragments.AddVehicleFragment;
 import com.radicaldroids.mileage.Fragments.AddRecordDialogFrag;
 import com.radicaldroids.mileage.Fragments.EditHistoryFragment;
-import com.radicaldroids.mileage.Fragments.GraphFragment;
+import com.radicaldroids.mileage.Fragments.Graph;
 import com.radicaldroids.mileage.Events.RefreshHistoryListViewEvent;
 import com.radicaldroids.mileage.Fragments.HistoryFragment;
 import com.radicaldroids.mileage.Fragments.StatsFragment;
@@ -257,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.replace(R.id.fragment_holder, overallStatsFragment).commit();
 
         } else if (id == R.id.nav_graph) {
-            GraphFragment graphFrag = GraphFragment.newInstance("sending message");
+            Graph graphFrag = new Graph();
             ft.replace(R.id.fragment_holder, graphFrag).commit();
 
         } else if (id == R.id.nav_settings) {
