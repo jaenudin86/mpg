@@ -28,22 +28,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginLeft="30dp"
-                android:layout_marginStart="30dp">
+                android:layout_marginLeft="@dimen/stats_start_margin"
+                android:layout_marginStart="@dimen/stats_start_margin">
                 <TextView
                     android:id="@+id/perfm_mpg_since_last"
                     android:theme="@style/perfm_text_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
-                    tools:text="perfm_mpg_since_last"/>
+                    tools:text="perfm_mpg_since_last"
+                    android:maxLines="1"/>
                 <TextView
                     android:id="@+id/perfm_mpg_overall"
                     android:theme="@style/perfm_text_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
-                    tools:text="perfm_mpg_overall"/>
+                    tools:text="perfm_mpg_overall"
+                    android:maxLines="1"/>
 
                 <TextView
                     android:id="@+id/perfm_miles_travelled_total"
@@ -51,14 +53,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
-                    tools:text="perfm_miles_travelled_total"/>
+                    tools:text="perfm_miles_travelled_total"
+                    android:maxLines="1"/>
 
                 <TextView
                     android:id="@+id/perfm_conclusion"
                     android:theme="@style/perfm_text_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="perfm_conclusion"/>
+                    tools:text="perfm_conclusion"
+                    android:maxLines="1"/>
 
             </LinearLayout>
         </LinearLayout>

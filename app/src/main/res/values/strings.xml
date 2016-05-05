@@ -12,6 +12,12 @@
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
 
+    <!--Drawer-->
+    <string name="history">History</string>
+    <string name="stats">Stats</string>
+    <string name="mpg_graph">MPG Graph</string>
+    <string name="settings">Settings</string>
+
 <!--stats page-->
     <string name="stats_title">Vehicle Stats</string>
     <string name="init_message_one_more_entry">This vehicle needs one more entry to calculate Statistics!</string>
@@ -21,7 +27,7 @@
     <string name="init_message_no_data">This vehicle needs data to create a record. Click the button below to create an entry!</string>
 
 <!--add record-->
-    <string name="add_record_title">Add Record</string>
+    <string name="add_entry">Add Entry</string>
     <string name="gas_station">Gas Station:</string>
     <string name="odometer">Odometer:</string>
     <string name="gallons">Gallons:</string>
@@ -71,6 +77,7 @@
 <!--graph-->
     <string name="need_more_data1">Please press "Add Record" to get started!</string>
     <string name="need_more_data2">Need more entries to create a graph for this vehicle</string>
+    <string name="zoom_scroll_text">Zoom, Scroll, or Pan the Graph. Rotate to Landscape for larger view.</string>
 
 <!--back press toast-->
     <string name="backpress">Press back again to exit</string>

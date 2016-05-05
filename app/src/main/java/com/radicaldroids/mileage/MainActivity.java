@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
@@ -87,12 +88,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-//        if (savedInstanceState == null) {
+        if (savedInstanceState == null) {
             //StatsFragment is the app starting page
             FragmentTransaction ft = fragmentManager.beginTransaction();
             StatsFragment overallStatsFragment = StatsFragment.newInstance();
             ft.replace(R.id.fragment_holder, overallStatsFragment).commit();
-//        }
+        }
 
         View spinnerContainer = LayoutInflater.from(this).inflate(R.layout.toolbar_spinner, toolbar, false);
         ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -124,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 //    // Load a TagManager container
+//    // borrowed from Udacity course on TagManager
 //    public void loadGTMContainer () {
 //        // TODO Get the TagManager
 //        mTagManager = ((MyApplication) getApplication()).getTagManager();
@@ -260,8 +262,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         } else if (id == R.id.nav_settings) {
             Intent intent=new Intent(this,SettingsActivity.class);
-//            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,)
-            startActivity(intent);
+
+            final Pair<View, String>[] pairs = TransitionHelper.createSafeTransitionParticipants(this, true);
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,pairs);
+
+            startActivity(intent, options.toBundle());
 
         } else if (id == R.id.nav_send) {
             final Context context=this;

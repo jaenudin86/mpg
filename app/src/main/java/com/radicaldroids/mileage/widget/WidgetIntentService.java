@@ -44,16 +44,17 @@ public class WidgetIntentService extends IntentService {
 
         //retrieving the latest MPG data
         Cursor data= getContentResolver().query(Uri.parse(DataProvider.BASE_CONTENT_URI +"/mpg_data"),null,null,null,null);
-        data.moveToFirst();
+
         Double lastMpg;
         String widgetStats;
         if(data!=null&&data.getCount()>1) {
+            data.moveToFirst();
             lastMpg = data.getDouble(0);
             widgetStats=lastMpg>0?lastMpg+" MPG":"Incomplete Data";
+            data.close();
         }else{
             widgetStats="Need More Data";
         }
-        data.close();
 
         //retrieving odometer data
         Cursor miles = getContentResolver().query(Uri.parse(DataProvider.BASE_CONTENT_URI +"/current_vehicle"),new String[]{SQLiteHelper.COLUMN_ODOMETER},null,null,null);
@@ -64,32 +65,29 @@ public class WidgetIntentService extends IntentService {
             miles.moveToLast();
             int minMiles = miles.getInt(miles.getColumnIndex(SQLiteHelper.COLUMN_ODOMETER));
             totalMiles= maxMiles - minMiles;
+            miles.close();
         }
-        miles.close();
 
-        if(data!=null) {
+        for (int appWidgetId : appWidgetIds) {
 
-            for (int appWidgetId : appWidgetIds) {
+            int layoutId = R.layout.widget;
 
-                int layoutId = R.layout.widget;
+            RemoteViews views = new RemoteViews(getPackageName(), layoutId);
 
-                RemoteViews views = new RemoteViews(getPackageName(), layoutId);
-
-                // Content Descriptions for RemoteViews were only added in ICS MR1
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-                    setRemoteContentDescription(views, "MPG widget");
-                }
-                views.setTextViewText(R.id.last_mpg_value, widgetStats);
-                views.setTextViewText(R.id.miles_tracked, totalMiles>0? totalMiles+" miles tracked":null);
-
-                // Create an Intent to launch MainActivity
-                Intent launchIntent = new Intent(this, MainActivity.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, launchIntent, 0);
-                views.setOnClickPendingIntent(R.id.widget, pendingIntent);
-
-                // Tell the AppWidgetManager to perform an update on the current app widget
-                appWidgetManager.updateAppWidget(appWidgetId, views);
+            // Content Descriptions for RemoteViews were only added in ICS MR1
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                setRemoteContentDescription(views, "MPG widget");
             }
+            views.setTextViewText(R.id.last_mpg_value, widgetStats);
+            views.setTextViewText(R.id.miles_tracked, totalMiles>0? totalMiles+" miles tracked":null);
+
+            // Create an Intent to launch MainActivity
+            Intent launchIntent = new Intent(this, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, launchIntent, 0);
+            views.setOnClickPendingIntent(R.id.widget, pendingIntent);
+
+            // Tell the AppWidgetManager to perform an update on the current app widget
+            appWidgetManager.updateAppWidget(appWidgetId, views);
         }
     }
 
