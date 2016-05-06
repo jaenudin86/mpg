@@ -14,7 +14,7 @@
 
     <color name="deleteButtonStart">#F00</color>
     <color name="deleteButtonEnd">#D32F2F</color>
-    <!--<color name="editButtonStart">#C5E1A5</color>-->
+    <color name="editButtonStart">#C5E1A5</color>
     <color name="editButtonEnd">#3c8c40</color>
     <color name="toolbarColor">#000</color>
 </resources>

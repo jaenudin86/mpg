@@ -65,15 +65,10 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
     private Button mEditButton;
     private long mId;
     private Tracker mTracker;
-
     String TAG="EditHistoryFragment";
 
     public EditHistoryFragment(){
     }
-
-//    public static EditHistoryFragment newInstance(){
-//        return new EditHistoryFragment();
-//    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -84,7 +79,6 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
         mDbHelper = SQLiteHelper.getInstance(getActivity().getApplicationContext());
 
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-//        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity(), R.style.MyAlertDialogStyle);
 
         LayoutInflater inflater=getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.edit_record, null);
@@ -111,40 +105,9 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
 
         mDeleteButton =(Button) view.findViewById(R.id.delete_details_button);
         mDeleteButton.setOnClickListener(this);
-//        builder.setPositiveButton("Save Changes", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                try{
-//                    NumberFormat formatNumber=NumberFormat.getCurrencyInstance();
-//                    Number pNumber=formatNumber.parse(mPrice.getText().toString());
-//                    DecimalFormat df3=new DecimalFormat("#.###");
-//
-//                    mDbHelper.addEntry(
-//                            (int) Math.round(Double.parseDouble(mOdometer.getText().toString())),
-//                            Double.parseDouble(df3.format(Double.parseDouble(mGallons.getText().toString()))),
-//                            Double.parseDouble(pNumber.toString()),
-//                            convertDateFieldToInt(),
-//                            mLocation.getText().toString());
-//                    mListener.dismissDialogFragment(getTag());
-//                    mDbHelper.deleteEntry(mId);
-//                    EventBus.getDefault().post(new RefreshHistoryListViewEvent("refresh history listview"));
-//                } catch (NumberFormatException e) {
-//                    Toast.makeText(getActivity(),"wrong number format",Toast.LENGTH_LONG).show();
-//                    e.printStackTrace();
-//                }catch (ParseException e){
-//
-//                }
-//            }
-//        }).setNegativeButton("Delete Record", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                mDbHelper.deleteEntry(mId);
-//                mListener.dismissDialogFragment(getTag());
-//                EventBus.getDefault().post(new RefreshHistoryListViewEvent("refresh historyListView"));
-//            }
-//        });
+
         builder.setView(view);
-//        builder.setPositiveButton("Edit",null).setNegativeButton("Delete",null).setNeutralButton("cancel",null);
+
         return builder.create();
     }
 
@@ -164,7 +127,6 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
         Cursor c=editHistoryEvent.mC;
         int position=editHistoryEvent.mPosition;
         mId = editHistoryEvent.mId;
-//        Log.e("event clicked", " clickedclickedclicked position==> " + editHistoryEvent.mPosition);
         c.moveToPosition(position);
 
         mLocation.setText(c.getString(c.getColumnIndex("location")));
@@ -214,7 +176,6 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
     private String convertTime(long l){
         Date dateInSeconds=new Date(l*1000);
         SimpleDateFormat sdf = new SimpleDateFormat("MMM-dd-yyyy");
-//        sdf.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
         String formatted = sdf.format(dateInSeconds);
         return formatted;
     }
@@ -237,7 +198,6 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
         SimpleDateFormat sdf=new SimpleDateFormat("MMM-dd-yyyy");
         try {
             Date date = sdf.parse(dateString);
-//            Log.e("date","date: "+date.getTime());
             return date.getTime()/1000;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -245,16 +205,12 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
         return 0;
     }
 
-    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        // Verify that the host activity implements the callback interface
         try {
-            // Instantiate the NoticeDialogListener so we can send events to the host
             mListener = (DialogInterfaces.DialogInterface) activity;
         } catch (ClassCastException e) {
-            // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(activity.toString()
                     + " must implement NoticeDialogListener");
         }
@@ -272,14 +228,12 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
                 .setPositiveButton(R.string.alert_dialog_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        mDbHelper.deleteEntry(mId);
                         getActivity().getContentResolver().delete(Uri.parse(DataProvider.BASE_CONTENT_URI +"/delete_entry"),Long.toString(mId),null);
                         mListener.dismissDialogFragment(getTag());
                         EventBus.getDefault().post(new RefreshHistoryListViewEvent("refresh historyListView"));
                     }
                 })
                 .setNegativeButton(R.string.alert_dialog_no, null)
-//                .setNegativeButton("No", new DialogInterface.OnClickListener() {
                 .setIcon(R.drawable.alert_48x48)
                 .show();
         }

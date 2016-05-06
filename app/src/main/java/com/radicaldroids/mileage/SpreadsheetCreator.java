@@ -212,12 +212,10 @@ public class SpreadsheetCreator extends AsyncTask {
             Intent email = new Intent(Intent.ACTION_SEND);
 
             email.setType("message/rfc822");
-//            email.setType("application/zip");
             email.putExtra(Intent.EXTRA_STREAM, Uri.parse(DataProvider.BASE_CONTENT_URI + "/spreadsheet.xls"));
 
             email.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             email.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivityForResult(Intent.createChooser(email, "Choose an Email client"), 1);
             Activity act = (Activity) mContext;
             act.startActivity(Intent.createChooser(email, "Choose an Email client"));
         }else{
@@ -228,7 +226,6 @@ public class SpreadsheetCreator extends AsyncTask {
     public void showNoDataAlert(){
         new AlertDialog.Builder(mContext)
             .setTitle(R.string.no_data_to_export)
-//            .setMessage()
             .setPositiveButton(R.string.ok, null)
             .setIcon(R.drawable.alert_48x48)
             .show();

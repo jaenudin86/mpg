@@ -42,7 +42,6 @@ import de.greenrobot.event.EventBus;
  */
 public class StatsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
-//    private DialogInterfaces.DialogInterface mListener;
     private TextView mTitle;
     private TextView mMpgSinceLast;
     private TextView mMpgTotalView;
@@ -95,44 +94,9 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
     private String getLastDate(long number){
         Date date=new Date(number*1000);
         SimpleDateFormat format=new SimpleDateFormat("MMM/dd/yyyy");
-//        sdf.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
         return format.format(date);
     }
 
-//     Deleteable methods for internal logging only
-//     @param
-//
-//    public void logData(){
-//        Cursor c= dbHelper.getMilesColumn();
-//
-//        String names="";
-//        for(String s: c.getColumnNames()){
-//            names=names+s+", ";
-//        }
-//
-//        Log.e("StatsFragment", "OverallstatsFrag columns returned: " + names);
-//
-//        if(c!=null){
-//            if(c.moveToFirst()){
-//                Log.e("row","row by row (first): "+c.getString(0));
-//            }
-//            if(c.moveToLast()){
-//                Log.e("row","row by row (last): "+c.getString(0));
-//            }
-//            c.moveToFirst();
-//            int n=0;
-//            while(c.moveToNext()){
-//                Log.e("row","row by row: "+n+", "+c.getString(0));
-//                n++;
-//            }
-//            c.moveToLast();
-//            Log.e("row", "row by row (last): " + c.getString(0));
-//            if(c.moveToPrevious()) {
-//                Log.e("row", "row by row (previous): " + c.getString(0));
-//            }
-//        }
-////        c.close();
-//    }
     public void onEvent(RefreshHistoryListViewEvent event){
         getLoaderManager().restartLoader(0, null, (LoaderManager.LoaderCallbacks) this);
         getLoaderManager().restartLoader(1, null, (LoaderManager.LoaderCallbacks) this);
@@ -260,18 +224,4 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
         mTracker.setScreenName(getString(R.string.stats_fragment_analytic_tag));
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
-
-//    @Override
-//    public void onAttach(Activity activity) {
-//        super.onAttach(activity);
-//        // Verify that the host activity implements the callback interface
-//        try {
-//            // Instantiate the NoticeDialogListener so we can send events to the host
-//            mListener = (DialogInterfaces.DialogInterface) activity;
-//        } catch (ClassCastException e) {
-//            // The activity doesn't implement the interface, throw exception
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement NoticeDialogListener");
-//        }
-//    }
 }

@@ -31,6 +31,10 @@ import com.radicaldroids.mileage.DataAccess.SQLiteHelper;
 import com.radicaldroids.mileage.MainActivity;
 import com.radicaldroids.mileage.R;
 
+/**
+ * A lot of this class was pulled and modified from the Udacity Sunshine app
+ */
+
 public class WidgetIntentService extends IntentService {
 
     public WidgetIntentService() {

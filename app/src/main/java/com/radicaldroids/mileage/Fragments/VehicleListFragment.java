@@ -71,7 +71,7 @@ public class VehicleListFragment extends DialogFragment implements LoaderManager
         MyApplication application=(MyApplication) getActivity().getApplication();
         mTracker=application.getTracker();
 
-        setRetainInstance(true);   //tends to cause problems on rotate?
+        setRetainInstance(true);
 
         if(savedInstanceState==null) {
             getLoaderManager().initLoader(0, null, (LoaderManager.LoaderCallbacks) this);
@@ -152,7 +152,6 @@ public class VehicleListFragment extends DialogFragment implements LoaderManager
     }
 
     public void onEvent(RefreshVehiclesEvent event){
-//        Log.e(TAG, "RefreshVehiclesEvent event caught");
         getLoaderManager().restartLoader(0, null, (LoaderManager.LoaderCallbacks) this);
     }
 
@@ -179,12 +178,9 @@ public class VehicleListFragment extends DialogFragment implements LoaderManager
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        // Verify that the host activity implements the callback interface
         try {
-            // Instantiate the NoticeDialogListener so we can send events to the host
             mListener = (VehicleList) activity;
         } catch (ClassCastException e) {
-            // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(activity.toString()
                     + " must implement NoticeDialogListener");
         }

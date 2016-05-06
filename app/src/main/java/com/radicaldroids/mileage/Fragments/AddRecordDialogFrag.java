@@ -52,12 +52,6 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
     private EditText dateView;
     private Tracker mTracker;
 
-//    public interface DialogInterface{
-//        void onDialogAddEntryDismiss();
-//        void onEditDate();
-//        void selectCurrentCar(String make, String model, int year);
-//    }
-
     public AddRecordDialogFrag(){}
 
     public static AddRecordDialogFrag newInstance(){
@@ -75,12 +69,6 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
         MyApplication application=(MyApplication) getActivity().getApplication();
         mTracker=application.getTracker();
         sendAnalyticName();
-
-//        final Spinner carSelector=(Spinner) view.findViewById(R.id.vehicle_dropdown_spinner);
-//        final Cursor c=dbHelper.getAllDataFromKeyTable();
-//        DropDownCursorAdapter dropDownAdapt = new DropDownCursorAdapter(getActivity(), c, 0);
-//        carSelector.setAdapter(dropDownAdapt);
-//        carSelector.setOnItemSelectedListener(dropDownAdapt);
 
         final EditText location= (EditText) view.findViewById(R.id.station_location);
         final EditText mileage = (EditText) view.findViewById(R.id.mileage);
@@ -106,8 +94,6 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
             public void onClick(View v) {
             convertDateFieldToInt();
             try {
-//                    String carSelectorString= ((Cursor)carSelector.getSelectedItem()).getString(c.getColumnIndex("key_table"));
-//                    Log.e("carselector spinner","csst: "+carSelectorString);
                 DecimalFormat df3=new DecimalFormat("#.###");
                 DecimalFormat df2=new DecimalFormat("0.00");
 
@@ -121,7 +107,6 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
 
                 getActivity().getContentResolver().insert(Uri.parse(DataProvider.BASE_CONTENT_URI +"/fillup"),values);
 
-//                        mListener.onDialogAddEntryDismiss();  //close dialog from Activity
                 mListener.dismissDialogFragment(getTag());
                 EventBus.getDefault().postSticky(new RefreshHistoryListViewEvent("refreshing"));
             } catch (NumberFormatException e) {
@@ -161,16 +146,12 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
         return 0;
     }
 
-    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        // Verify that the host activity implements the callback interface
         try {
-            // Instantiate the NoticeDialogListener so we can send events to the host
             mListener = (DialogInterfaces.DialogInterface) activity;
         } catch (ClassCastException e) {
-            // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(activity.toString()
                     + " must implement NoticeDialogListener");
         }

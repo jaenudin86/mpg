@@ -49,6 +49,7 @@ import de.greenrobot.event.EventBus;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         DialogInterfaces.DialogInterface, AddVehicleFragment.AddVehicle {
+
     private SharedPreferences mSharedPrefs;
     private DialogFragment dialogFragment;
     public static ToolBarCursorAdapter toolBarAdapter;
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) {
+
             //StatsFragment is the app starting page
             FragmentTransaction ft = fragmentManager.beginTransaction();
             StatsFragment overallStatsFragment = StatsFragment.newInstance();
@@ -273,6 +275,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
+
         //Update widget when leaving app
         Intent dataUpdatedIntent = new Intent(Constants.WIDGET_UPDATE).setPackage(getPackageName());
         sendBroadcast(dataUpdatedIntent);
