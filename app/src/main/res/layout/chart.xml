@@ -16,6 +16,7 @@
 
     </com.github.mikephil.charting.charts.LineChart>
     <TextView
+        android:id="@+id/graph_words"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/zoom_scroll_text"
@@ -23,7 +24,7 @@
         android:layout_centerInParent="true"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="48dp"
-        android:layout_marginLeft="128dp"
-        android:layout_marginStart="128dp"/>
+        android:layout_marginBottom="32dp"
+        android:layout_marginLeft="160dp"
+        android:layout_marginStart="160dp"/>
 </RelativeLayout>

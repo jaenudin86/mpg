@@ -76,7 +76,7 @@
 
 <!--graph-->
     <string name="need_more_data1">Please press "Add Record" to get started!</string>
-    <string name="need_more_data2">Need more entries to create a graph for this vehicle</string>
+    <string name="need_more_data2">This vehicle needs more data to create a graph</string>
     <string name="zoom_scroll_text">Zoom, Scroll, or Pan the Graph. Rotate to Landscape for larger view.</string>
 
 <!--back press toast-->

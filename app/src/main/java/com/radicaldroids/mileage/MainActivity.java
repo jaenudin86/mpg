@@ -40,7 +40,7 @@ import com.radicaldroids.mileage.Events.RefreshVehiclesEvent;
 import com.radicaldroids.mileage.Fragments.AddVehicleFragment;
 import com.radicaldroids.mileage.Fragments.AddRecordDialogFrag;
 import com.radicaldroids.mileage.Fragments.EditHistoryFragment;
-import com.radicaldroids.mileage.Fragments.Graph;
+import com.radicaldroids.mileage.Fragments.GraphFragment;
 import com.radicaldroids.mileage.Events.RefreshHistoryListViewEvent;
 import com.radicaldroids.mileage.Fragments.HistoryFragment;
 import com.radicaldroids.mileage.Fragments.StatsFragment;
@@ -105,12 +105,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Spinner spinner = (Spinner) spinnerContainer.findViewById(R.id.toolbar_spinner);
         spinner.setAdapter(toolBarAdapter);
         spinner.setOnItemSelectedListener(toolBarAdapter);
-//        updateSharedPrefsVehicles();
-//        }else{
-//            Log.e("main activity","getCount<0");
-////            toolBarAdapter = new ToolBarCursorAdapter(getApplicationContext(), c, 0);
-//        }
     }
+
     public void openDrawer(){
         //if no vehicles are created, open the drawer to show the user where to control the app
         mSharedPrefs = getSharedPreferences(Constants.SHARED_PREFS, 0);
@@ -124,67 +120,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }, 750);
         }
     }
-//    // Load a TagManager container
-//    // borrowed from Udacity course on TagManager
-//    public void loadGTMContainer () {
-//        // TODO Get the TagManager
-//        mTagManager = ((MyApplication) getApplication()).getTagManager();
-//
-//        // Enable verbose logging
-//        mTagManager.setVerboseLoggingEnabled(true);
-//
-//        // Load the container
-//        PendingResult pending = mTagManager.loadContainerPreferFresh("GTM-123456",R.raw.gtm_default);
-//
-//        // Define the callback to store the loaded container
-//        pending.setResultCallback(new ResultCallback<ContainerHolder>() {
-//            @Override
-//            public void onResult(ContainerHolder containerHolder) {
-//
-//                // If unsuccessful, return
-//                if (!containerHolder.getStatus().isSuccess()) {
-//                    // Deal with failure
-//                    return;
-//                }
-//
-//                // Manually refresh the container holder
-//                // Can only do this once every 15 minutes or so
-//                containerHolder.refresh();
-//
-//                // Set the container holder, only want one per running app
-//                // We can retrieve it later as needed
-//                ((MyApplication) getApplication()).setContainerHolder(
-//                        containerHolder);
-//
-//            }
-//        }, 2, TimeUnit.SECONDS);
-//    }
 
     @Override
     protected void onPause() {
         super.onPause();
         overridePendingTransition(0, 0);
     }
-
-//    @Override
-//    public void updateSharedPrefsVehicles() {
-//        final Cursor cursor=getContentResolver().query(Uri.parse(DataProvider.BASE_CONTENT_URI +"/key_table"),null,null,null,null);
-//
-//        mSharedPrefs = getSharedPreferences(Constants.SHARED_PREFS, 0);
-//        SharedPreferences.Editor editor = mSharedPrefs.edit();
-//
-//        cursor.moveToFirst();
-//        if (cursor.getCount() > 0) {
-//            ArrayList<String> vehicles = new ArrayList<>();
-//            do {
-//                vehicles.add(cursor.getString(cursor.getColumnIndex(SQLiteHelper.KEY_COLUMN_TABLE)));
-//            } while (cursor.moveToNext());
-//            String[] myStringList = vehicles.toArray(new String[vehicles.size()]);
-//            editor.putString("vehicle_list", TextUtils.join("‚‗‚", myStringList)).apply();
-//        }else{
-//            editor.remove("vehicle_list").commit();
-//        }
-//    }
 
     @Override
     public void onBackPressed() {
@@ -257,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.replace(R.id.fragment_holder, overallStatsFragment).commit();
 
         } else if (id == R.id.nav_graph) {
-            Graph graphFrag = new Graph();
+            GraphFragment graphFrag = new GraphFragment();
             ft.replace(R.id.fragment_holder, graphFrag).commit();
 
         } else if (id == R.id.nav_settings) {
@@ -343,7 +284,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         final Cursor cursor=getContentResolver().query(Uri.parse(DataProvider.BASE_CONTENT_URI +"/key_table"),null,null,null,null);
         toolBarAdapter.changeCursor(cursor);
         toolBarAdapter.notifyDataSetChanged();
-//        updateSharedPrefsVehicles();
     }
 
     @Override
