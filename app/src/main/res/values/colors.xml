@@ -17,4 +17,7 @@
     <color name="editButtonStart">#C5E1A5</color>
     <color name="editButtonEnd">#3c8c40</color>
     <color name="toolbarColor">#000</color>
+
+    <color name="text_white">#fff</color>
+    <color name="delete_flag">#D60000</color>
 </resources>

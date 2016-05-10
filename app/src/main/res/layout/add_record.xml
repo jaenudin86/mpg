@@ -42,9 +42,11 @@
                 android:layout_height="wrap_content"
                 android:columnCount="2"
                 android:rowCount="5"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginTop="@dimen/grid_margin_top"
+                android:layout_marginLeft="@dimen/grid_margin_l_r"
+                android:layout_marginStart="@dimen/grid_margin_l_r"
+                android:layout_marginRight="@dimen/grid_margin_l_r"
+                android:layout_marginEnd="@dimen/grid_margin_l_r"
                 android:layout_gravity="center">
 
                 <TextView
@@ -130,6 +132,7 @@
                     android:ems="5"
                     android:gravity="start"
                     android:layout_marginRight="56dp"
+                    android:layout_marginEnd="56dp"
                     android:background="@color/entryTextBoxColor"
                     android:contentDescription="@string/date"
                     android:focusable="true"

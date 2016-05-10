@@ -31,4 +31,17 @@
     <dimen name="widget_detail_default_height">180dp</dimen>
     <dimen name="widget_detail_min_resize_width">220dp</dimen>
     <dimen name="widget_detail_min_resize_height">@dimen/widget_detail_default_height</dimen>
+
+    <!--Add/Edit Record-->
+    <dimen name="grid_margin_top">20dp</dimen>
+    <dimen name="grid_margin_l_r">8dp</dimen>
+
+    <!--delete flag-->
+    <dimen name="delete_flag_padding_l_r">16dp</dimen>
+
+    <!--add vehicle-->
+    <dimen name="add_vehicle_button_padding">20dp</dimen>
+
+    <!--chart-->
+    <dimen name="chart_margin">16dp</dimen>
 </resources>

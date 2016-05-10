@@ -9,9 +9,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="32dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginLeft="@dimen/chart_margin"
+        android:layout_marginStart="@dimen/chart_margin"
+        android:layout_marginRight="@dimen/chart_margin"
+        android:layout_marginEnd="@dimen/chart_margin"
+        android:layout_marginTop="@dimen/chart_margin"
         android:layout_marginBottom="96dp">
 
     </com.github.mikephil.charting.charts.LineChart>
