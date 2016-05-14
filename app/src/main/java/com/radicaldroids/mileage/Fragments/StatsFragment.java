@@ -82,11 +82,11 @@ public class StatsFragment extends Fragment implements LoaderManager.LoaderCallb
         mEmptyStats =(TextView) view.findViewById(R.id.init_stats_message);
 
         //AdMob for ads
-        AdView mAdView=(AdView) view.findViewById(R.id.ad_view);
-        AdRequest adRequest=new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .build();
-        mAdView.loadAd(adRequest);
+//        AdView mAdView=(AdView) view.findViewById(R.id.ad_view);
+//        AdRequest adRequest=new AdRequest.Builder()
+//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+//                .build();
+//        mAdView.loadAd(adRequest);
 
         return view;
     }
