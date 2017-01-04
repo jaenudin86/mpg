@@ -16,7 +16,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
@@ -50,12 +49,9 @@ import de.greenrobot.event.EventBus;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         DialogInterfaces.DialogInterface, AddVehicleFragment.AddVehicle {
 
-    private SharedPreferences mSharedPrefs;
-    private DialogFragment dialogFragment;
-    public static ToolBarCursorAdapter toolBarAdapter;
+    public ToolBarCursorAdapter toolBarAdapter;
     FragmentManager fragmentManager = getSupportFragmentManager();
     private boolean backPressedToExitOnce = false;
-    private boolean mIsLargeLayout;
     private AddVehicleFragment mAddVehicleFragment;
     DrawerLayout drawer;
 
@@ -65,8 +61,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         ((MyApplication)getApplication()).startTracking();
-
-        mIsLargeLayout=getResources().getBoolean(R.bool.large_layout);
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -90,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) {
-
             //StatsFragment is the app starting page
             FragmentTransaction ft = fragmentManager.beginTransaction();
             StatsFragment overallStatsFragment = StatsFragment.newInstance();
@@ -101,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ActionBar.LayoutParams lp = new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         toolbar.addView(spinnerContainer, lp);
 
-        final Cursor cursor=getContentResolver().query(Uri.parse(DataProvider.BASE_CONTENT_URI +"/key_table"),null,null,null,null);
+        final Cursor cursor=getContentResolver().query(Uri.parse(DataProvider.BASE_CONTENT_URI +"/key_table"), null, null, null, null);
 
         toolBarAdapter = new ToolBarCursorAdapter(getApplicationContext(), cursor, 0);
         Spinner spinner = (Spinner) spinnerContainer.findViewById(R.id.toolbar_spinner);
@@ -109,17 +102,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         spinner.setOnItemSelectedListener(toolBarAdapter);
     }
 
+    //if no vehicles are created, open the drawer to show the user where to control the app
     public void openDrawer(){
-        //if no vehicles are created, open the drawer to show the user where to control the app
-        mSharedPrefs = getSharedPreferences(Constants.SHARED_PREFS, 0);
-        String veh=mSharedPrefs.getString("currentVehicle",null);
-        if(veh==null) {
+        SharedPreferences mSharedPrefs = getSharedPreferences(Constants.SHARED_PREFS, 0);
+        String veh= mSharedPrefs.getString("currentVehicle",null);
+        if(veh == null) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    drawer.openDrawer(Gravity.LEFT);
+                    drawer.openDrawer(GravityCompat.START);
                 }
-            }, 750);
+            }, 750);    //delay for effect when first using app
         }
     }
 
@@ -132,9 +125,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if(drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } else{
             popBackStack();
         }
     }
@@ -249,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 ftDialog.remove(prev);
             }
             ftDialog.addToBackStack(null);
-            dialogFragment = AddRecordDialogFrag.newInstance();
+            DialogFragment dialogFragment = AddRecordDialogFrag.newInstance();
             dialogFragment.show(ftDialog, "dialog");
         }
     }
@@ -266,17 +259,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onEvent(RefreshVehiclesEvent event){
         updateToolBarView();
     }
+
     @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().registerSticky(this);
     }
 
+    //Update widget when leaving app
     @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
-
-        //Update widget when leaving app
         Intent dataUpdatedIntent = new Intent(Constants.WIDGET_UPDATE).setPackage(getPackageName());
         sendBroadcast(dataUpdatedIntent);
         super.onStop();
