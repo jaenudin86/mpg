@@ -28,7 +28,6 @@ import com.radicaldroids.mileage.Events.RefreshHistoryListViewEvent;
 import com.radicaldroids.mileage.MyApplication;
 import com.radicaldroids.mileage.R;
 
-
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.text.DecimalFormat;

@@ -1,6 +1,6 @@
 package com.radicaldroids.mileage.Fragments;
 
-import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,9 +30,8 @@ import de.greenrobot.event.EventBus;
  */
 public class HistoryFragment extends Fragment {
 
-    private ListView mListView;
     private DialogInterfaces.DialogInterface mListener;
-    public static HistoryCursorAdapter mHistoryCursorAdapter;
+    private HistoryCursorAdapter mHistoryCursorAdapter;
     private TextView mInitMessage;
     private Tracker mTracker;
 
@@ -40,8 +39,8 @@ public class HistoryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        MyApplication application=(MyApplication) getActivity().getApplication();
-        mTracker=application.getTracker();
+        MyApplication application = (MyApplication) getActivity().getApplication();
+        mTracker = application.getTracker();
         sendAnalyticName();
     }
 
@@ -49,15 +48,15 @@ public class HistoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.all_data_listview_fragment, container, false);
-        mInitMessage=(TextView) view.findViewById(R.id.init_message);
-        mListView = (ListView) view.findViewById(R.id.listview);
+        mInitMessage = (TextView) view.findViewById(R.id.init_message);
+        ListView mListView = (ListView) view.findViewById(R.id.listview);
 
-        final Cursor cursor = getActivity().getContentResolver().query(Uri.parse(DataProvider.BASE_CONTENT_URI +"/current_vehicle"),null,null,null,null);
+        Cursor cursor = getActivity().getContentResolver().query(Uri.parse(DataProvider.BASE_CONTENT_URI + "/current_vehicle"), null, null, null, null);
 
-        if(cursor==null){
+        if(cursor == null) {
             mInitMessage.setText(R.string.init_message_no_vehicles);
             mInitMessage.setVisibility(View.VISIBLE);
-        }else if (cursor.getCount()<1){
+        }else if (cursor.getCount() < 1){
             mInitMessage.setText(R.string.init_message_no_data);
             mInitMessage.setVisibility(View.VISIBLE);
         }else{
@@ -66,15 +65,15 @@ public class HistoryFragment extends Fragment {
 
         mHistoryCursorAdapter = new HistoryCursorAdapter(getActivity(), cursor, 0);
         mListView.setAdapter(mHistoryCursorAdapter);
+
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            final Cursor cursor = getActivity().getContentResolver().query(Uri.parse(DataProvider.BASE_CONTENT_URI +"/current_vehicle"),null,null,null,null);
-            mListener.openEditVehicleEntryFragment();
-            EventBus.getDefault().postSticky(new EditHistoryEvent(cursor, position, id));
-
-//                Log.e("long click", "long clicked: " + view + ", " + position + ", " + id);
-            return true;
+                final Cursor cursor = getActivity().getContentResolver().query(Uri.parse(DataProvider.BASE_CONTENT_URI + "/current_vehicle"), null, null, null, null);
+                mListener.openEditVehicleEntryFragment();
+                EventBus.getDefault().postSticky(new EditHistoryEvent(cursor, position, id));
+                cursor.close();
+                return true;
             }
         });
         mListView.setDivider(null);
@@ -83,19 +82,22 @@ public class HistoryFragment extends Fragment {
     }
 
     public void onEvent(RefreshHistoryListViewEvent event){
-        final Cursor cursor = getActivity().getContentResolver().query(Uri.parse(DataProvider.BASE_CONTENT_URI +"/current_vehicle"),null,null,null,null);
+        Cursor cursor = getActivity().getContentResolver().query(Uri.parse(DataProvider.BASE_CONTENT_URI + "/current_vehicle"), null, null, null, null);
         mHistoryCursorAdapter.changeCursor(cursor);
         mHistoryCursorAdapter.notifyDataSetChanged();
 
-        if(cursor==null){
+        if(cursor == null) {
             mInitMessage.setText(R.string.init_message_no_vehicles);
             mInitMessage.setVisibility(View.VISIBLE);
-        }else if (cursor.getCount()<1){
+
+        }else if(cursor.getCount() < 1) {
             mInitMessage.setText(R.string.init_message_no_data);
             mInitMessage.setVisibility(View.VISIBLE);
-        }else{
+
+        }else {
             mInitMessage.setVisibility(View.GONE);
         }
+        cursor.close();
     }
 
     @Override
@@ -111,13 +113,13 @@ public class HistoryFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (DialogInterfaces.DialogInterface) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement NoticeDialogListener");
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof DialogInterfaces.DialogInterface) {
+            mListener = (DialogInterfaces.DialogInterface) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OpenScoreCards");
         }
     }
 
@@ -126,6 +128,7 @@ public class HistoryFragment extends Fragment {
         super.onResume();
         sendAnalyticName();
     }
+
     private void sendAnalyticName(){
         mTracker.setScreenName(getString(R.string.history_fragment_analytic_tag));
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());

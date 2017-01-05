@@ -2,7 +2,6 @@ package com.radicaldroids.mileage;
 
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
@@ -23,7 +22,7 @@ import com.radicaldroids.mileage.DataAccess.SettingInterfaces;
 import com.radicaldroids.mileage.Fragments.AddVehicleFragment;
 import com.radicaldroids.mileage.Fragments.VehicleListFragment;
 
-public class SettingsActivity extends AppCompatActivity implements View.OnClickListener, SettingInterfaces.SettingInterface, AddVehicleFragment.AddVehicle,VehicleListFragment.VehicleList, LoaderManager.LoaderCallbacks<Cursor> {
+public class SettingsActivity extends AppCompatActivity implements View.OnClickListener, SettingInterfaces.SettingInterface, AddVehicleFragment.OnAddVehicleInterface,VehicleListFragment.VehicleList, LoaderManager.LoaderCallbacks<Cursor> {
     TextView mGarage;
     private AddVehicleFragment mAddVehicleFragment;
 

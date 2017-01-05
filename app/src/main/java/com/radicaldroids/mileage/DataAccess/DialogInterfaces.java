@@ -8,7 +8,6 @@ public class DialogInterfaces {
         void fabAdd();
         void openEditVehicleEntryFragment();
         void dismissDialogFragment(String tag);
-//        void updateSharedPrefsVehicles();
         void updateToolBarView();
     }
 }

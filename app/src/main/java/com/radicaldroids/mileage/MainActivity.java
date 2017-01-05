@@ -47,7 +47,7 @@ import com.radicaldroids.mileage.Fragments.StatsFragment;
 import de.greenrobot.event.EventBus;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        DialogInterfaces.DialogInterface, AddVehicleFragment.AddVehicle {
+        DialogInterfaces.DialogInterface, AddVehicleFragment.OnAddVehicleInterface {
 
     public ToolBarCursorAdapter toolBarAdapter;
     FragmentManager fragmentManager = getSupportFragmentManager();
