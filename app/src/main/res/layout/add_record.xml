@@ -135,12 +135,11 @@
                     android:layout_marginEnd="56dp"
                     android:background="@color/entryTextBoxColor"
                     android:contentDescription="@string/date"
-                    android:focusable="true"
-                    android:nextFocusDown="@+id/add_new_car_button"/>
+                    android:focusable="true"/>
             </GridLayout>
 
             <Button
-                android:id="@id/add_new_car_button"
+                android:id="@+id/add_record"
                 style="@style/button_style"
                 android:background="@drawable/custom_button"
                 android:textSize="@dimen/edit_record_button"

@@ -87,7 +87,7 @@ public class AddRecordDialogFrag extends DialogFragment implements View.OnClickL
 
         setDateField();
 
-        Button bt = (Button) view.findViewById(R.id.add_new_car_button);
+        Button bt = (Button) view.findViewById(R.id.add_record);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
