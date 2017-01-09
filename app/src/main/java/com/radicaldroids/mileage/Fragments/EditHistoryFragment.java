@@ -123,9 +123,9 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
         super.onStop();
     }
 
-    public void onEvent(EditHistoryEvent editHistoryEvent){
-        Cursor c=editHistoryEvent.mC;
-        int position=editHistoryEvent.mPosition;
+    public void onEvent(EditHistoryEvent editHistoryEvent) {
+        Cursor c = editHistoryEvent.mCursor;
+        int position = editHistoryEvent.mPosition;
         mId = editHistoryEvent.mId;
         c.moveToPosition(position);
 
@@ -133,9 +133,9 @@ public class EditHistoryFragment extends DialogFragment implements View.OnClickL
         mOdometer.setText(c.getString(c.getColumnIndex("odometer")));
         mGallons.setText(c.getString(c.getColumnIndex("quantity")));
 
-        Double pD=c.getDouble(c.getColumnIndex("price"));
+        Double price = c.getDouble(c.getColumnIndex("price"));
         mPrice.addTextChangedListener(textWatcher);
-        mPrice.setText(NumberFormat.getCurrencyInstance().format(pD));
+        mPrice.setText(NumberFormat.getCurrencyInstance().format(price));
 
         mDateView.setText(convertTime(c.getInt(c.getColumnIndex("date"))));
     }
